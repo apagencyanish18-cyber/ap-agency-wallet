@@ -135,7 +135,7 @@ button{
   border-radius:50%;
   object-fit:cover;
   display:block;
-  margin:0 auto 15px;
+  margin:0 auto 10px;
 }
 .note{
   background:#fff7ed;
@@ -202,7 +202,7 @@ button{
       <button data-page="withdrawPage">💸<br>Withdraw Fund</button>
       <button data-page="transactionsPage">📋<br>Transaction History</button>
       <button data-page="profilePage">👤<br>Profile</button>
-      <button data-page="settingsPage">⚙️️<br>Settings</button>
+      <button data-page="settingsPage">⚙️<br>Settings</button>
     </div>
 
     <div class="card" style="margin-top:16px;">
@@ -264,6 +264,12 @@ button{
     <div class="card">
       <h2>My Profile</h2>
       <img id="profilePhoto" class="profile-photo" src="https://via.placeholder.com/90" alt="Profile">
+
+      <!-- Hidden File Input for Avatar Upload -->
+      <input type="file" id="profilePhotoInput" accept="image/png, image/jpeg, image/jpg" class="hidden">
+      <button id="changePhotoBtn" class="secondary" style="margin-top:0; margin-bottom:15px; font-size:13px; padding:8px;">
+        Change Profile Photo
+      </button>
 
       <label>Worker ID</label>
       <input id="profileWorkerId" readonly>
@@ -400,6 +406,248 @@ async function signup(){
     await openApp();
   } else {
     showMessage("signupMessage", "Account created! Please check email or login.", "success");
+  }
+}
+
+async function openApp(){
+  if(!currentUser) return;
+
+  try {
+    await loadProfile();
+    await loadWallet();
+
+    $("authBox").classList.add("hidden");
+    $("app").classList.remove("hidden");
+    showPage("homePage");
+  } catch(error) {
+    console.error(error);
+    $("authBox").classList.remove("hidden");
+    $("app").classList.add("hidden");
+    showMessage("loginMessage", "Could not load account: " + error.message, "error");
+  }
+}
+
+async function loadProfile(){
+  if(!currentUser) return;
+  const result = await supabaseClient
+    .from("profiles")
+    .select("*")
+    .eq("id", currentUser.id)
+    .maybeSingle();
+
+  if(result.error) throw result.error;
+
+  currentProfile = result.data;
+  if(!currentProfile) return;
+
+  $("workerId").textContent = "Worker ID: " + (currentProfile.worker_id || "-");
+  $("welcomeText").textContent = "Welcome, " + (currentProfile.full_name || "Worker") + "!";
+  $("profileWorkerId").value = currentProfile.worker_id || "";
+  $("profileName").value = currentProfile.full_name || "";
+  $("profileEmail").value = currentUser.email || "";
+  $("profileDob").value = currentProfile.date_of_birth || "";
+
+  if(currentProfile.avatar_url){
+    $("profilePhoto").src = currentProfile.avatar_url;
+  }
+}
+
+async function saveProfile(){
+  const name = $("profileName").value.trim();
+  const dob = $("profileDob").value;
+
+  showMessage("profileMessage", "Saving...", "muted");
+
+  const result = await supabaseClient
+    .from("profiles")
+    .update({ full_name: name, date_of_birth: dob })
+    .eq("id", currentUser.id);
+
+  if(result.error){
+    showMessage("profileMessage", result.error.message, "error");
+  } else {
+    showMessage("profileMessage", "Profile updated successfully!", "success");
+    await loadProfile();
+  }
+}
+
+async function uploadProfilePhoto(file){
+  if(!file || !currentUser) return;
+
+  showMessage("profileMessage", "Uploading photo...", "muted");
+
+  const fileExt = file.name.split('.').pop();
+  const filePath = `${currentUser.id}/${Date.now()}.${fileExt}`;
+
+  // Upload to Supabase Storage 'avatars' bucket
+  const { data: uploadData, error: uploadError } = await supabaseClient
+    .storage
+    .from("avatars")
+    .upload(filePath, file, { upsert: true });
+
+  if(uploadError){
+    showMessage("profileMessage", "Upload error: " + uploadError.message, "error");
+    return;
+  }
+
+  // Get Public URL
+  const { data: publicUrlData } = supabaseClient
+    .storage
+    .from("avatars")
+    .getPublicUrl(filePath);
+
+  const publicUrl = publicUrlData.publicUrl;
+
+  // Save public URL to profiles table
+  const { error: updateError } = await supabaseClient
+    .from("profiles")
+    .update({ avatar_url: publicUrl })
+    .eq("id", currentUser.id);
+
+  if(updateError){
+    showMessage("profileMessage", "Error saving photo URL: " + updateError.message, "error");
+  } else {
+    $("profilePhoto").src = publicUrl;
+    showMessage("profileMessage", "Profile photo updated!", "success");
+  }
+}
+
+async function loadWallet(){
+  if(!currentUser) return;
+  const result = await supabaseClient
+    .from("wallets")
+    .select("*")
+    .eq("user_id", currentUser.id)
+    .maybeSingle();
+
+  if(result.error) throw result.error;
+
+  currentWallet = result.data;
+  const balance = currentWallet ? (currentWallet.balance || 0) : 0;
+  $("balance").textContent = "₹" + balance.toFixed(2);
+}
+
+async function loadTransactions(){
+  if(!currentUser) return;
+  $("transactions").innerHTML = '<div class="muted">Loading...</div>';
+
+  const result = await supabaseClient
+    .from("transactions")
+    .select("*")
+    .eq("user_id", currentUser.id)
+    .order("created_at", { ascending: false });
+
+  if(result.error){
+    $("transactions").innerHTML = '<div class="error">'+escapeHtml(result.error.message)+'</div>';
+    return;
+  }
+
+  if(!result.data || result.data.length === 0){
+    $("transactions").innerHTML = '<div class="muted">No transactions found.</div>';
+    return;
+  }
+
+  let html = "";
+  result.data.forEach(tx => {
+    const isCredit = tx.type === "credit";
+    html += `
+      <div class="transaction">
+        <div class="transaction-row">
+          <div><strong>${escapeHtml(tx.description || 'Transaction')}</strong></div>
+          <div class="${isCredit ? 'credit' : 'debit'}">
+            ${isCredit ? '+' : '-'}₹${parseFloat(tx.amount).toFixed(2)}
+          </div>
+        </div>
+        <div class="muted">${new Date(tx.created_at).toLocaleString()}</div>
+      </div>
+    `;
+  });
+  $("transactions").innerHTML = html;
+}
+
+async function withdraw(){
+  const amount = parseFloat($("withdrawAmount").value);
+  const method = $("paymentMethod").value;
+
+  if(!amount || amount < 10){
+    showMessage("withdrawMessage", "Minimum withdrawal is ₹10.", "error");
+    return;
+  }
+
+  if(!method){
+    showMessage("withdrawMessage", "Select payment method.", "error");
+    return;
+  }
+
+  showMessage("withdrawMessage", "Processing request...", "muted");
+
+  const result = await supabaseClient
+    .from("withdrawals")
+    .insert([{
+      user_id: currentUser.id,
+      amount: amount,
+      method: method,
+      details: method === "upi" ? $("upiId").value : $("giftCardType").value
+    }]);
+
+  if(result.error){
+    showMessage("withdrawMessage", result.error.message, "error");
+  } else {
+    showMessage("withdrawMessage", "Withdrawal request submitted!", "success");
+    $("withdrawAmount").value = "";
+    await loadWallet();
+  }
+}
+
+async function logout(){
+  await supabaseClient.auth.signOut();
+  currentUser = null;
+  currentProfile = null;
+  currentWallet = null;
+
+  $("app").classList.add("hidden");
+  $("authBox").classList.remove("hidden");
+  showLogin();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  $("loginBtn").onclick = login;
+  $("signupBtn").onclick = signup;
+  $("showSignupBtn").onclick = showSignup;
+  $("showLoginBtn").onclick = showLogin;
+  $("logoutBtn").onclick = logout;
+  $("settingsLogoutBtn").onclick = logout;
+  $("saveProfileBtn").onclick = saveProfile;
+  $("withdrawBtn").onclick = withdraw;
+
+  $("changePhotoBtn").onclick = () => $("profilePhotoInput").click();
+  $("profilePhotoInput").onchange = (e) => {
+    if(e.target.files && e.target.files[0]){
+      uploadProfilePhoto(e.target.files[0]);
+    }
+  };
+
+  $("paymentMethod").onchange = (e) => {
+    const val = e.target.value;
+    $("upiBox").classList.toggle("hidden", val !== "upi");
+    $("giftCardBox").classList.toggle("hidden", val !== "gift_card");
+  };
+
+  document.querySelectorAll("[data-page]").forEach(btn => {
+    btn.onclick = () => showPage(btn.getAttribute("data-page"));
+  });
+
+  supabaseClient.auth.getSession().then(({ data }) => {
+    if (data && data.session) {
+      currentUser = data.session.user;
+      openApp();
+    }
+  });
+});
+</script>
+</body>
+</html>
+owMessage("signupMessage", "Account created! Please check email or login.", "success");
   }
 }
 
