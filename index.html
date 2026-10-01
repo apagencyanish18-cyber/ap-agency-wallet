@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AP Agency Wallet</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f4f6fb;
+      color: #172033;
+      min-height: 100vh;
+    }
+
+    .header {
+      background: white;
+      padding: 22px 20px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .header h1 {
+      font-size: 24px;
+    }
+
+    .header p {
+      color: #777;
+      margin-top: 5px;
+    }
+
+    .container {
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    .balance {
+      background: linear-gradient(135deg, #203b9b, #008b68);
+      color: white;
+      border-radius: 22px;
+      padding: 28px 24px;
+      margin-bottom: 20px;
+    }
+
+    .balance small {
+      font-size: 15px;
+      opacity: .85;
+    }
+
+    .balance h2 {
+      font-size: 42px;
+      margin-top: 12px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 15px rgba(0,0,0,.06);
+    }
+
+    .card h3 {
+      margin-bottom: 15px;
+    }
+
+    button {
+      width: 100%;
+      border: none;
+      padding: 15px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .withdraw {
+      background: #f0b400;
+      color: white;
+    }
+
+    .history {
+      background: #eaf0ff;
+      color: #2451b2;
+    }
+
+    .settings {
+      background: white;
+      border: 1px solid #ddd;
+      color: #333;
+    }
+
+    .bottom {
+      margin-top: 25px;
+      padding-bottom: 25px;
+    }
+
+    .profile {
+      display: none;
+    }
+
+    .profile img {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #ddd;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px;
+      margin: 8px 0 15px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+    }
+
+    .back {
+      background: #eee;
+      color: #333;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="header">
+    <h1>AP Agency Wallet</h1>
+    <p>Worker Wallet Management System</p>
+  </div>
+
+  <div class="container">
+
+    <div id="home">
+
+      <div class="balance">
+        <small>Your Balance</small>
+        <h2>₹0.00</h2>
+      </div>
+
+      <div class="card">
+        <h3>Withdraw Fund</h3>
+        <button class="withdraw">Withdraw</button>
+      </div>
+
+      <div class="card">
+        <h3>Transaction History</h3>
+        <button class="history">View Transactions</button>
+      </div>
+
+      <div class="card bottom">
+        <h3>Settings</h3>
+        <button class="settings" onclick="showProfile()">
+          My Profile
+        </button>
+      </div>
+
+    </div>
+
+    <div id="profile" class="profile">
+
+      <div class="card">
+        <h2>My Profile</h2>
+
+        <br>
+
+        <img id="avatar" src="https://via.placeholder.com/90">
+
+        <br><br>
+
+        <label>Profile Photo</label>
+        <input type="file" accept="image/*">
+
+        <label>Worker ID</label>
+        <input type="text" value="AP000001" readonly>
+
+        <label>Email</label>
+        <input type="email" value="">
+
+        <label>Date of Birth</label>
+        <input type="date">
+
+        <button class="settings" onclick="showHome()">
+          Back to Home
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    function showProfile() {
+      document.getElementById("home").style.display = "none";
+      document.getElementById("profile").style.display = "block";
+    }
+
+    function showHome() {
+      document.getElementById("profile").style.display = "none";
+      document.getElementById("home").style.display = "block";
+    }
+  </script>
+
+</body>
+          </html>
