@@ -8,36 +8,30 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
-
+*{box-sizing:border-box}
 body{
+  margin:0;
   background:#f4f6f9;
   color:#111827;
-  min-height:100vh;
+  font-family:Arial,sans-serif;
 }
-
 .hidden{display:none!important}
-
 .container{
-  width:100%;
   max-width:430px;
   margin:auto;
   padding:20px;
 }
-
 .logo{
   text-align:center;
-  font-size:29px;
+  font-size:30px;
   font-weight:800;
-  margin:30px 0 5px;
+  margin:35px 0 5px;
 }
-
 .subtitle{
   text-align:center;
   color:#6b7280;
   margin-bottom:25px;
 }
-
 .card{
   background:#fff;
   border-radius:18px;
@@ -45,31 +39,21 @@ body{
   margin-bottom:16px;
   box-shadow:0 5px 20px rgba(0,0,0,.07);
 }
-
-h2{margin-bottom:18px}
-h3{margin-bottom:10px}
-
+h2{margin:0 0 18px}
 label{
   display:block;
   font-size:14px;
   font-weight:600;
   margin:12px 0 6px;
 }
-
 input,select{
   width:100%;
   padding:13px;
   border:1px solid #d1d5db;
   border-radius:10px;
-  outline:none;
   font-size:15px;
-  background:white;
+  background:#fff;
 }
-
-input:focus,select:focus{
-  border-color:#2563eb;
-}
-
 button{
   width:100%;
   padding:13px;
@@ -77,99 +61,26 @@ button{
   border-radius:10px;
   font-size:15px;
   font-weight:700;
-  cursor:pointer;
   margin-top:12px;
 }
-
-.primary{
-  background:#2563eb;
-  color:white;
-}
-
-.secondary{
-  background:#eef2ff;
-  color:#1d4ed8;
-}
-
-.danger{
-  background:#fee2e2;
-  color:#b91c1c;
-}
-
-.link{
-  background:none;
-  color:#2563eb;
-}
-
-.error{
-  color:#dc2626;
-  font-size:14px;
-  margin-top:10px;
-}
-
-.success{
-  color:#16a34a;
-  font-size:14px;
-  margin-top:10px;
-}
-
-.small{
-  color:#6b7280;
-  font-size:13px;
-  margin-top:5px;
-}
-
-.balance-card{
-  background:#2563eb;
-  color:white;
-  padding:24px;
-  border-radius:20px;
-  margin-bottom:18px;
-}
-
-.balance-label{
-  font-size:14px;
-  opacity:.9;
-}
-
-.balance{
-  font-size:35px;
-  font-weight:800;
-  margin-top:8px;
-}
-
-.worker-id{
-  margin-top:10px;
-  font-size:14px;
-}
-
-.menu{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-}
-
-.menu button{
-  background:white;
-  color:#111827;
-  border:1px solid #e5e7eb;
-  min-height:80px;
-  margin:0;
-}
-
+.primary{background:#2563eb;color:white}
+.secondary{background:#eef2ff;color:#1d4ed8}
+.danger{background:#fee2e2;color:#b91c1c}
+.link{background:none;color:#2563eb}
+.error{color:#dc2626;font-size:14px;margin-top:10px}
+.success{color:#16a34a;font-size:14px;margin-top:10px}
+.muted{color:#6b7280;font-size:13px}
 .topbar{
   display:flex;
-  align-items:center;
   justify-content:space-between;
+  align-items:center;
   margin-bottom:18px;
 }
-
-.topbar-title{
-  font-size:21px;
+.title{
+  font-size:22px;
   font-weight:800;
 }
-
-.logout-btn{
+.logout{
   width:auto;
   margin:0;
   padding:8px 12px;
@@ -177,56 +88,46 @@ button{
   color:#b91c1c;
   font-size:12px;
 }
-
+.balance{
+  background:#2563eb;
+  color:white;
+  border-radius:20px;
+  padding:24px;
+  margin-bottom:18px;
+}
+.balance-amount{
+  font-size:36px;
+  font-weight:800;
+  margin-top:7px;
+}
+.worker-id{
+  margin-top:9px;
+  font-size:14px;
+}
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.grid button{
+  margin:0;
+  min-height:82px;
+  background:white;
+  border:1px solid #e5e7eb;
+  color:#111827;
+}
 .transaction{
   padding:13px 0;
   border-bottom:1px solid #eee;
 }
-
-.transaction:last-child{
-  border-bottom:0;
-}
-
-.transaction-top{
+.transaction:last-child{border-bottom:0}
+.transaction-row{
   display:flex;
   justify-content:space-between;
   gap:10px;
 }
-
-.credit{
-  color:#16a34a;
-  font-weight:700;
-}
-
-.debit{
-  color:#dc2626;
-  font-weight:700;
-}
-
-.withdraw-box{
-  background:#f8fafc;
-  padding:14px;
-  border-radius:12px;
-  margin-top:10px;
-}
-
-.note{
-  background:#fff7ed;
-  color:#9a3412;
-  padding:10px;
-  border-radius:10px;
-  font-size:13px;
-  margin-bottom:10px;
-}
-
-.loading{
-  text-align:center;
-  color:#6b7280;
-  padding:25px;
-}
-
-.center{text-align:center}
-
+.credit{color:#16a34a;font-weight:700}
+.debit{color:#dc2626;font-weight:700}
 .profile-photo{
   width:90px;
   height:90px;
@@ -235,91 +136,72 @@ button{
   display:block;
   margin:0 auto 15px;
 }
+.note{
+  background:#fff7ed;
+  color:#9a3412;
+  padding:10px;
+  border-radius:10px;
+  font-size:13px;
+  margin-bottom:10px;
+}
 </style>
 </head>
 
 <body>
 
-<!-- ================= AUTH ================= -->
+<!-- LOGIN / SIGNUP -->
 
 <div id="authBox" class="container">
 
   <div class="logo">AP Agency</div>
   <div class="subtitle">Worker Wallet</div>
 
-  <!-- LOGIN -->
-
   <div id="loginCard" class="card">
 
     <h2>Worker Login</h2>
 
     <label>Email</label>
-    <input
-      id="loginEmail"
-      type="email"
-      placeholder="Enter email"
-    >
+    <input id="loginEmail" type="email" placeholder="Enter email">
 
     <label>Password</label>
-    <input
-      id="loginPassword"
-      type="password"
-      placeholder="Enter password"
-    >
+    <input id="loginPassword" type="password" placeholder="Enter password">
 
-    <button class="primary" onclick="login()">
+    <button id="loginBtn" class="primary">
       Login
     </button>
 
     <div id="loginMessage"></div>
 
-    <button class="link" onclick="showSignup()">
+    <button id="showSignupBtn" class="link">
       Create New Account
     </button>
 
   </div>
 
 
-  <!-- SIGNUP -->
-
   <div id="signupCard" class="card hidden">
 
     <h2>Create Account</h2>
 
     <label>Full Name</label>
-    <input
-      id="signupName"
-      type="text"
-      placeholder="Enter full name"
-    >
+    <input id="signupName" type="text" placeholder="Enter full name">
 
     <label>Email</label>
-    <input
-      id="signupEmail"
-      type="email"
-      placeholder="Enter email"
-    >
+    <input id="signupEmail" type="email" placeholder="Enter email">
 
     <label>Date of Birth</label>
-    <input
-      id="signupDob"
-      type="date"
-    >
+    <input id="signupDob" type="date">
 
     <label>Password</label>
-    <input
-      id="signupPassword"
-      type="password"
-      placeholder="Create password"
-    >
+    <input id="signupPassword" type="password" placeholder="Create password">
 
-    <button class="primary" onclick="signup()">
+    <button id="signupBtn" class="primary">
       Create Account
     </button>
 
     <div id="signupMessage"></div>
 
-    <button class="link" onclick="showLogin()">
+    <button id="showLoginBtn" class="link">
       Back to Login
     </button>
 
@@ -328,20 +210,17 @@ button{
 </div>
 
 
-<!-- ================= APP ================= -->
+<!-- APP -->
 
 <div id="app" class="container hidden">
 
   <div class="topbar">
 
-    <div class="topbar-title">
+    <div class="title">
       AP Agency
     </div>
 
-    <button
-      class="logout-btn"
-      onclick="logout()"
-    >
+    <button id="logoutBtn" class="logout">
       Logout
     </button>
 
@@ -350,15 +229,13 @@ button{
 
   <!-- HOME -->
 
-  <div id="homePage">
+  <section id="homePage">
 
-    <div class="balance-card">
+    <div class="balance">
 
-      <div class="balance-label">
-        Available Balance
-      </div>
+      <div>Available Balance</div>
 
-      <div id="balance" class="balance">
+      <div id="balance" class="balance-amount">
         ₹0.00
       </div>
 
@@ -369,33 +246,30 @@ button{
     </div>
 
 
-    <div class="menu">
+    <div class="grid">
 
-      <button onclick="showPage('withdrawPage')">
+      <button data-page="withdrawPage">
         💸<br>
         Withdraw Fund
       </button>
 
-      <button
-        onclick="showPage('transactionsPage');loadTransactions()"
-      >
+      <button data-page="transactionsPage">
         📋<br>
         Transaction History
       </button>
 
-      <button
-        onclick="showPage('profilePage');loadProfile(currentUser)"
-      >
+      <button data-page="profilePage">
         👤<br>
         Profile
       </button>
 
-      <button onclick="showPage('settingsPage')">
+      <button data-page="settingsPage">
         ⚙️<br>
         Settings
       </button>
 
     </div>
+
 
     <div class="card">
 
@@ -407,12 +281,12 @@ button{
 
     </div>
 
-  </div>
+  </section>
 
 
   <!-- WITHDRAW -->
 
-  <div id="withdrawPage" class="hidden">
+  <section id="withdrawPage" class="hidden">
 
     <div class="card">
 
@@ -433,10 +307,7 @@ button{
 
       <label>Payment Method</label>
 
-      <select
-        id="paymentMethod"
-        onchange="paymentChanged()"
-      >
+      <select id="paymentMethod">
 
         <option value="">
           Select payment method
@@ -453,10 +324,7 @@ button{
       </select>
 
 
-      <div
-        id="upiBox"
-        class="withdraw-box hidden"
-      >
+      <div id="upiBox" class="hidden">
 
         <label>UPI ID</label>
 
@@ -469,10 +337,7 @@ button{
       </div>
 
 
-      <div
-        id="giftCardBox"
-        class="withdraw-box hidden"
-      >
+      <div id="giftCardBox" class="hidden">
 
         <label>Gift Card</label>
 
@@ -499,73 +364,59 @@ button{
       </div>
 
 
-      <button
-        class="primary"
-        onclick="withdraw()"
-      >
+      <button id="withdrawBtn" class="primary">
         Submit Withdrawal
       </button>
 
       <div id="withdrawMessage"></div>
 
 
-      <button
-        class="secondary"
-        onclick="showPage('homePage')"
-      >
+      <button class="secondary" data-page="homePage">
         Back
       </button>
 
     </div>
 
-  </div>
+  </section>
 
 
   <!-- TRANSACTIONS -->
 
-  <div id="transactionsPage" class="hidden">
+  <section id="transactionsPage" class="hidden">
 
     <div class="card">
 
       <h2>Transaction History</h2>
 
       <div id="transactions">
-        <div class="loading">
-          No transactions yet.
+        <div class="muted">
+          Loading...
         </div>
       </div>
 
-      <button
-        class="secondary"
-        onclick="showPage('homePage')"
-      >
+      <button class="secondary" data-page="homePage">
         Back
       </button>
 
     </div>
 
-  </div>
+  </section>
 
 
   <!-- PROFILE -->
 
-  <div id="profilePage" class="hidden">
+  <section id="profilePage" class="hidden">
 
     <div class="card">
 
       <h2>My Profile</h2>
 
-      <div class="center">
-
-        <img
-          id="profilePhoto"
-          class="profile-photo"
-          src="https://via.placeholder.com/90"
-          alt="Profile"
-        >
-
-      </div>
-
+      <img
+        id="profilePhoto"
+        class="profile-photo"
+        src="https://via.placeholder.com/90"
+        alt="Profile"
+      >
 
       <label>Worker ID</label>
 
@@ -574,22 +425,16 @@ button{
         readonly
       >
 
-
       <label>Full Name</label>
 
-      <input
-        id="profileName"
-      >
-
+      <input id="profileName">
 
       <label>Email</label>
 
       <input
         id="profileEmail"
-        type="email"
         readonly
       >
-
 
       <label>Date of Birth</label>
 
@@ -598,67 +443,49 @@ button{
         type="date"
       >
 
-
-      <button
-        class="primary"
-        onclick="saveProfile()"
-      >
+      <button id="saveProfileBtn" class="primary">
         Save Profile
       </button>
 
       <div id="profileMessage"></div>
 
-
-      <button
-        class="secondary"
-        onclick="showPage('homePage')"
-      >
+      <button class="secondary" data-page="homePage">
         Back
       </button>
 
     </div>
 
-  </div>
+  </section>
 
 
   <!-- SETTINGS -->
 
-  <div id="settingsPage" class="hidden">
+  <section id="settingsPage" class="hidden">
 
     <div class="card">
 
       <h2>Settings</h2>
 
-      <p class="small">
+      <div class="muted">
         AP Agency Worker Wallet
-      </p>
+      </div>
 
-      <button
-        class="danger"
-        onclick="logout()"
-      >
+      <button id="settingsLogoutBtn" class="danger">
         Logout
       </button>
 
-      <button
-        class="secondary"
-        onclick="showPage('homePage')"
-      >
+      <button class="secondary" data-page="homePage">
         Back
       </button>
 
     </div>
 
-  </div>
+  </section>
 
 </div>
 
 
 <script>
-
-/* =====================================================
-   SUPABASE
-===================================================== */
 
 const SUPABASE_URL =
 "https://ykswgkrmqsmdneobykri.supabase.co";
@@ -673,11 +500,342 @@ window.supabase.createClient(
 );
 
 
-/* =====================================================
-   GLOBALS
-===================================================== */
-
 let currentUser = null;
+let currentProfile = null;
+let currentWallet = null;
+
+
+function $(id){
+  return document.getElementById(id);
+}
+
+
+function escapeHtml(value){
+
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+function showMessage(id,text,type){
+
+  $(id).innerHTML =
+    text
+      ? '<div class="'+type+'">'+
+        escapeHtml(text)+
+        '</div>'
+      : "";
+
+}
+
+
+function showPage(pageId){
+
+  const pages = [
+    "homePage",
+    "withdrawPage",
+    "transactionsPage",
+    "profilePage",
+    "settingsPage"
+  ];
+
+  pages.forEach(function(id){
+
+    $(id).classList.add("hidden");
+
+  });
+
+  $(pageId).classList.remove("hidden");
+
+
+  if(pageId === "transactionsPage"){
+    loadTransactions();
+  }
+
+  if(pageId === "profilePage"){
+    loadProfile();
+  }
+
+}
+
+
+function showSignup(){
+
+  $("loginCard").classList.add("hidden");
+
+  $("signupCard").classList.remove("hidden");
+
+}
+
+
+function showLogin(){
+
+  $("signupCard").classList.add("hidden");
+
+  $("loginCard").classList.remove("hidden");
+
+}
+
+
+async function login(){
+
+  const email =
+    $("loginEmail").value.trim();
+
+  const password =
+    $("loginPassword").value;
+
+  if(!email || !password){
+
+    showMessage(
+      "loginMessage",
+      "Enter email and password.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  showMessage(
+    "loginMessage",
+    "Logging in...",
+    "muted"
+  );
+
+
+  const result =
+    await supabaseClient.auth.signInWithPassword({
+
+      email: email,
+      password: password
+
+    });
+
+
+  if(result.error){
+
+    showMessage(
+      "loginMessage",
+      result.error.message,
+      "error"
+    );
+
+    return;
+  }
+
+
+  currentUser =
+    result.data.user;
+
+  await openApp();
+
+}
+
+
+async function signup(){
+
+  const name =
+    $("signupName").value.trim();
+
+  const email =
+    $("signupEmail").value.trim();
+
+  const dob =
+    $("signupDob").value;
+
+  const password =
+    $("signupPassword").value;
+
+
+  if(!name || !email || !dob || !password){
+
+    showMessage(
+      "signupMessage",
+      "Please fill all fields.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  if(password.length < 6){
+
+    showMessage(
+      "signupMessage",
+      "Password must be at least 6 characters.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  showMessage(
+    "signupMessage",
+    "Creating account...",
+    "muted"
+  );
+
+
+  const result =
+    await supabaseClient.auth.signUp({
+
+      email: email,
+
+      password: password,
+
+      options: {
+
+        data: {
+
+          full_name: name,
+
+          date_of_birth: dob
+
+        }
+
+      }
+
+    });
+
+
+  if(result.error){
+
+    showMessage(
+      "signupMessage",
+      result.error.message,
+      "error"
+    );
+
+    return;
+  }
+
+
+  if(result.data.session){
+
+    currentUser =
+      result.data.user;
+
+    await openApp();
+
+  }else{
+
+    showMessage(
+      "signupMessage",
+      "Account created. Verify your email if required, then login.",
+      "success"
+    );
+
+  }
+
+}
+
+
+async function openApp(){
+
+  if(!currentUser){
+    return;
+  }
+
+
+  try{
+
+    await loadProfile();
+
+    await loadWallet();
+
+
+    $("authBox")
+      .classList.add("hidden");
+
+    $("app")
+      .classList.remove("hidden");
+
+
+    showPage("homePage");
+
+
+  }catch(error){
+
+    console.error(error);
+
+    $("authBox")
+      .classList.remove("hidden");
+
+    $("app")
+      .classList.add("hidden");
+
+
+    showMessage(
+      "loginMessage",
+      "Could not load account: "+
+      error.message,
+      "error"
+    );
+
+  }
+
+}
+
+
+async function loadProfile(){
+
+  const result =
+    await supabaseClient
+      .from("profiles")
+      .select("*")
+      .eq("id",currentUser.id)
+      .maybeSingle();
+
+
+  if(result.error){
+
+    throw result.error;
+
+  }
+
+
+  currentProfile =
+    result.data;
+
+
+  if(!currentProfile){
+    return;
+  }
+
+
+  $("workerId").textContent =
+    "Worker ID: "+
+    (currentProfile.worker_id || "-");
+
+
+  $("welcomeText").textContent =
+    "Welcome, "+
+    (currentProfile.full_name || "Worker")+
+    "!";
+
+
+  $("profileWorkerId").value =
+    currentProfile.worker_id || "";
+
+
+  $("profileName").value =
+    currentProfile.full_name || "";
+
+
+  $("profileEmail").value =
+    currentUser.email || "";
+
+
+  $("profileDob").value =
+    = null;
 let currentProfile = null;
 let currentWallet = null;
 
