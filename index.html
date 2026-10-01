@@ -1,645 +1,225 @@
-<script- SETTINGS -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <div id="settingsPage" class="hidden">
+  <title>AP Agency - Worker Wallet</title>
 
-    <div class="card">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-      <h2>Settings</h2>
-
-      <p class="small">
-        AP Agency Worker Wallet
-      </p>
-
-      <button
-        class="danger"
-        onclick="logout()"
-      >
-        Logout
-      </button>
-
-      <button
-        class="secondary"
-        onclick="showPage('homePage')"
-      >
-        Back
-      </button>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<script>
-
-/* =====================================================
-   SUPABASE CONFIG
-===================================================== */
-
-const SUPABASE_URL =
-  "https://ykswgkrmqsmdneobykri.supabase.co";
-
-const SUPABASE_KEY =
-  "sb_publishable_iED-0Op0GP8e1msvL7ksdw_53rXjJ_H";
-
-const supabaseClient =
-  window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
-
-
-/* =====================================================
-   GLOBAL USER
-===================================================== */
-
-let currentUser = null;
-let currentProfile = null;
-let currentWallet = null;
-
-
-/* =====================================================
-   AUTH SCREEN
-===================================================== */
-
-function showSignup(){
-
-  document
-    .getElementById("loginCard")
-    .classList.add("hidden");
-
-  document
-    .getElementById("signupCard")
-    .classList.remove("hidden");
-
-}
-
-
-function showLogin(){
-
-  document
-    .getElementById("signupCard")
-    .classList.add("hidden");
-
-  document
-    .getElementById("loginCard")
-    .classList.remove("hidden");
-
-}
-
-
-/* =====================================================
-   LOGIN
-===================================================== */
-
-async function login(){
-
-  const email =
-    document
-      .getElementById("loginEmail")
-      .value
-      .trim();
-
-  const password =
-    document
-      .getElementById("loginPassword")
-      .value;
-
-  const message =
-    document.getElementById("loginMessage");
-
-  message.innerHTML = "";
-
-  if(!email || !password){
-
-    message.innerHTML =
-      '<div class="error">Enter email and password.</div>';
-
-    return;
-  }
-
-  message.innerHTML =
-    '<div class="small">Logging in...</div>';
-
-  try{
-
-    const { data, error } =
-      await supabaseClient.auth.signInWithPassword({
-        email: email,
-        password: password
-      });
-
-    if(error){
-      throw error;
+  <style>
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+      font-family:Arial,Helvetica,sans-serif;
     }
 
-    currentUser = data.user;
-
-    await loadApp();
-
-  }catch(error){
-
-    console.error(error);
-
-    message.innerHTML =
-      '<div class="error">' +
-      escapeHtml(error.message) +
-      '</div>';
-
-  }
-
-}
-
-
-/* =====================================================
-   SIGNUP
-===================================================== */
-
-async function signup(){
-
-  const name =
-    document
-      .getElementById("signupName")
-      .value
-      .trim();
-
-  const email =
-    document
-      .getElementById("signupEmail")
-      .value
-      .trim();
-
-  const dob =
-    document
-      .getElementById("signupDob")
-      .value;
-
-  const password =
-    document
-      .getElementById("signupPassword")
-      .value;
-
-  const message =
-    document.getElementById("signupMessage");
-
-  message.innerHTML = "";
-
-  if(!name || !email || !dob || !password){
-
-    message.innerHTML =
-      '<div class="error">Please fill all fields.</div>';
-
-    return;
-  }
-
-  if(password.length < 6){
-
-    message.innerHTML =
-      '<div class="error">Password must be at least 6 characters.</div>';
-
-    return;
-  }
-
-  message.innerHTML =
-    '<div class="small">Creating account...</div>';
-
-  try{
-
-    const { data, error } =
-      await supabaseClient.auth.signUp({
-
-        email: email,
-
-        password: password,
-
-        options:{
-          data:{
-            full_name:name,
-            date_of_birth:dob
-          }
-        }
-
-      });
-
-    if(error){
-      throw error;
+    body{
+      background:#f4f6f8;
+      color:#222;
+      min-height:100vh;
     }
 
-    if(data.session){
-
-      currentUser = data.user;
-
-      await loadApp();
-
-    }else{
-
-      message.innerHTML =
-        '<div class="success">' +
-        'Account created. Please confirm your email if required, then login.' +
-        '</div>';
-
+    .hidden{
+      display:none !important;
     }
 
-  }catch(error){
-
-    console.error(error);
-
-    message.innerHTML =
-      '<div class="error">' +
-      escapeHtml(error.message) +
-      '</div>';
-
-  }
-
-}
-
-
-/* =====================================================
-   LOAD APP
-===================================================== */
-
-async function loadApp(){
-
-  try{
-
-    if(!currentUser){
-
-      const {
-        data,
-        error
-      } = await supabaseClient.auth.getUser();
-
-      if(error){
-        throw error;
-      }
-
-      currentUser = data.user;
-
+    .container{
+      width:100%;
+      max-width:430px;
+      margin:0 auto;
+      min-height:100vh;
+      padding:20px;
     }
 
-    if(!currentUser){
-      return;
+    .logo{
+      text-align:center;
+      margin:35px 0 25px;
     }
 
-
-    await loadProfile(currentUser);
-
-    await loadWallet();
-
-    await loadTransactions();
-
-
-    document
-      .getElementById("authBox")
-      .classList.add("hidden");
-
-    document
-      .getElementById("app")
-      .classList.remove("hidden");
-
-    showPage("homePage");
-
-  }catch(error){
-
-    console.error("LOAD APP ERROR:",error);
-
-    document
-      .getElementById("authBox")
-      .classList.remove("hidden");
-
-    document
-      .getElementById("app")
-      .classList.add("hidden");
-
-    alert(
-      "Could not load account: " +
-      error.message
-    );
-
-  }
-
-}
-
-
-/* =====================================================
-   LOAD PROFILE
-===================================================== */
-
-async function loadProfile(user){
-
-  if(!user){
-    return;
-  }
-
-  const {
-    data,
-    error
-  } = await supabaseClient
-    .from("profiles")
-    .select("*")
-    .eq("id", user.id)
-    .single();
-
-  if(error){
-
-    console.error("PROFILE ERROR:",error);
-
-    throw error;
-
-  }
-
-  currentProfile = data;
-
-
-  document
-    .getElementById("workerId")
-    .textContent =
-      "Worker ID: " +
-      (data.worker_id || "-");
-
-
-  document
-    .getElementById("welcomeText")
-    .textContent =
-      "Welcome, " +
-      (data.full_name || "Worker") +
-      "!";
-
-
-  document
-    .getElementById("profileWorkerId")
-    .value =
-      data.worker_id || "";
-
-
-  document
-    .getElementById("profileName")
-    .value =
-      data.full_name || "";
-
-
-  document
-    .getElementById("profileEmail")
-    .value =
-      user.email || "";
-
-
-  document
-    .getElementById("profileDob")
-    .value =
-      data.date_of_birth || "";
-
-
-  if(data.avatar_url){
-
-    document
-      .getElementById("profilePhoto")
-      .src =
-        data.avatar_url;
-
-  }
-
-}
-
-
-/* =====================================================
-   LOAD WALLET
-===================================================== */
-
-async function loadWallet(){
-
-  const {
-    data,
-    error
-  } = await supabaseClient
-    .from("wallets")
-    .select("*")
-    .eq("user_id", currentUser.id)
-    .single();
-
-  if(error){
-
-    console.error("WALLET ERROR:",error);
-
-    throw error;
-
-  }
-
-  currentWallet = data;
-
-
-  document
-    .getElementById("balance")
-    .textContent =
-      "₹" +
-      Number(data.balance || 0)
-        .toFixed(2);
-
-}
-
-
-/* =====================================================
-   LOAD TRANSACTIONS
-===================================================== */
-
-async function loadTransactions(){
-
-  if(!currentUser){
-    return;
-  }
-
-  const box =
-    document.getElementById("transactions");
-
-  box.innerHTML =
-    '<div class="loading">Loading...</div>';
-
-
-  const {
-    data,
-    error
-  } = await supabaseClient
-    .from("transactions")
-    .select("*")
-    .eq("user_id", currentUser.id)
-    .order("created_at", {
-      ascending:false
-    });
-
-
-  if(error){
-
-    console.error(error);
-
-    box.innerHTML =
-      '<div class="error">' +
-      escapeHtml(error.message) +
-      '</div>';
-
-    return;
-
-  }
-
-
-  if(!data || data.length === 0){
-
-    box.innerHTML =
-      '<div class="small">No transactions yet.</div>';
-
-    return;
-
-  }
-
-
-  box.innerHTML = "";
-
-
-  data.forEach(tx => {
-
-    const div =
-      document.createElement("div");
-
-    div.className =
-      "transaction";
-
-
-    const type =
-      tx.type === "credit"
-        ? "credit"
-        : "debit";
-
-
-    const sign =
-      tx.type === "credit"
-        ? "+"
-        : "-";
-
-
-    const date =
-      tx.created_at
-        ? new Date(tx.created_at)
-            .toLocaleString()
-        : "";
-
-
-    div.innerHTML = `
-
-      <div class="transaction-top">
-
-        <div>
-          <strong>
-            ${escapeHtml(
-              tx.description || "Transaction"
-            )}
-          </strong>
-
-          <div class="small">
-            ${escapeHtml(date)}
-          </div>
-        </div>
-
-        <div class="${type}">
-          ${sign}₹${Number(tx.amount || 0).toFixed(2)}
-        </div>
-
-      </div>
-
-      ${
-        tx.balance_after !== null &&
-        tx.balance_after !== undefined
-        ? `
-          <div class="small">
-            Balance: ₹${Number(
-              tx.balance_after
-            ).toFixed(2)}
-          </div>
-        `
-        : ""
-      }
-
-    `;
-
-
-    box.appendChild(div);
-
-  });
-
-}
-
-
-/* =====================================================
-   PAYMENT METHOD
-===================================================== */
-
-function paymentChanged(){
-
-  const method =
-    document
-      .getElementById("paymentMethod")
-      .value;
-
-
-  const upiBox =
-    document.getElementById("upiBox");
-
-  const giftBox =
-    document.getElementById("giftCardBox");
-
-
-  upiBox.classList.add("hidden");
-
-  giftBox.classList.add("hidden");
-
-
-  if(method === "upi"){
-
-    upiBox.classList.remove("hidden");
-
-  }
-
-
-  if(method === "gift_card"){
-
-    giftBox.classList.remove("hidden");
-
-  }
-
-}
-
-
-/* =====================================================
-   WITHDRAW
-===================================================== */
-
-async function withdraw(){
-
-  const message =
-    document.getElementById("withdrawMessage");
-
-  message.innerHTML = "";
-
-
-  const amount =
-    Number(
-      document
-        .getElementById("withdrawAmount")
-        .value
-    );
-
-
-  const method =
-    document
-      .getElementById("paymentMethod")
-      .value;
-
-
-  const upi =
-    document
-      .getElementById("upiId")
-      .value
-      .trim();
-
+    .logo h1{
+      font-size:30px;
+      color:#111827;
+      margin-bottom:6px;
+    }
+
+    .logo p{
+      color:#6b7280;
+      font-size:14px;
+    }
+
+    .card{
+      background:white;
+      border-radius:18px;
+      padding:20px;
+      margin-bottom:15px;
+      box-shadow:0 4px 18px rgba(0,0,0,0.06);
+    }
+
+    h2{
+      font-size:22px;
+      margin-bottom:18px;
+      color:#111827;
+    }
+
+    h3{
+      margin-bottom:8px;
+      color:#111827;
+    }
+
+    label{
+      display:block;
+      font-size:14px;
+      font-weight:bold;
+      margin:12px 0 6px;
+      color:#374151;
+    }
+
+    input,
+    select{
+      width:100%;
+      padding:13px;
+      border:1px solid #d1d5db;
+      border-radius:10px;
+      outline:none;
+      font-size:15px;
+      background:white;
+    }
+
+    input:focus,
+    select:focus{
+      border-color:#111827;
+    }
+
+    button{
+      width:100%;
+      padding:14px;
+      border:none;
+      border-radius:11px;
+      background:#111827;
+      color:white;
+      font-size:15px;
+      font-weight:bold;
+      cursor:pointer;
+      margin-top:12px;
+    }
+
+    button:hover{
+      opacity:.92;
+    }
+
+    button.secondary{
+      background:#e5e7eb;
+      color:#111827;
+    }
+
+    button.danger{
+      background:#dc2626;
+    }
+
+    button.green{
+      background:#15803d;
+    }
+
+    .link-btn{
+      background:none;
+      color:#2563eb;
+      padding:5px;
+      margin-top:10px;
+    }
+
+    .balance-card{
+      background:#111827;
+      color:white;
+      border-radius:18px;
+      padding:24px;
+      margin-bottom:15px;
+    }
+
+    .balance-label{
+      font-size:13px;
+      opacity:.75;
+      margin-bottom:8px;
+    }
+
+    .balance{
+      font-size:34px;
+      font-weight:bold;
+    }
+
+    .worker-id{
+      margin-top:12px;
+      font-size:13px;
+      opacity:.8;
+    }
+
+    .menu-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    .menu-btn{
+      background:white;
+      color:#111827;
+      min-height:95px;
+      border:1px solid #e5e7eb;
+      box-shadow:0 3px 12px rgba(0,0,0,.04);
+      margin:0;
+    }
+
+    .menu-icon{
+      font-size:27px;
+      display:block;
+      margin-bottom:7px;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom:18px;
+    }
+
+    .topbar button{
+      width:auto;
+      margin:0;
+      padding:9px 14px;
+    }
+
+    .topbar h2{
+      margin:0;
+      font-size:20px;
+    }
+
+    .info-row{
+      display:flex;
+      justify-content:space-between;
+      padding:12px 0;
+      border-bottom:1px solid #eee;
+      gap:10px;
+    }
+
+    .info-row:last-child{
+      border-bottom:none;
+    }
+
+    .info-label{
+      color:#6b7280;
+      font-size:14px;
+    }
+
+    .info-value{
+      font-weight:bold;
+      text-align:right;
+      word-break:break-word;
+    }
+
+    .transaction{
+      border-bottom:1px solid #eee;
+      padding:14px
 
   conr.message;
     return;
