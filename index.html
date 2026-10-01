@@ -9,19 +9,30 @@
 
 <style>
 *{box-sizing:border-box}
+
 body{
   margin:0;
   font-family:Arial,sans-serif;
   background:#f5f7fb;
   color:#172033;
 }
+
 header{
   background:#111827;
   color:white;
   padding:18px 20px;
 }
-header h2{margin:0;font-size:22px}
-header p{margin:5px 0 0;color:#b9c1d0;font-size:13px}
+
+header h2{
+  margin:0;
+  font-size:22px;
+}
+
+header p{
+  margin:5px 0 0;
+  color:#b9c1d0;
+  font-size:13px;
+}
 
 .container{
   max-width:520px;
@@ -41,7 +52,11 @@ header p{margin:5px 0 0;color:#b9c1d0;font-size:13px}
   background:linear-gradient(135deg,#2563eb,#0d9488);
   color:white;
 }
-.balance small{opacity:.85}
+
+.balance small{
+  opacity:.85;
+}
+
 .balance h1{
   margin:8px 0 0;
   font-size:34px;
@@ -56,9 +71,21 @@ button{
   font-weight:bold;
   cursor:pointer;
 }
-.primary{background:#f4b400;color:#111}
-.secondary{background:#eef2ff;color:#334155}
-.danger{background:#fee2e2;color:#991b1b}
+
+.primary{
+  background:#f4b400;
+  color:#111;
+}
+
+.secondary{
+  background:#eef2ff;
+  color:#334155;
+}
+
+.danger{
+  background:#fee2e2;
+  color:#991b1b;
+}
 
 input,select{
   width:100%;
@@ -74,7 +101,9 @@ label{
   font-weight:bold;
 }
 
-.hidden{display:none}
+.hidden{
+  display:none;
+}
 
 .row{
   display:flex;
@@ -82,16 +111,26 @@ label{
   gap:10px;
 }
 
-.row button{flex:1}
+.row button{
+  flex:1;
+}
 
 .tx{
   border-bottom:1px solid #eee;
   padding:12px 0;
 }
-.tx:last-child{border-bottom:0}
 
-.credit{color:#059669}
-.debit{color:#dc2626}
+.tx:last-child{
+  border-bottom:0;
+}
+
+.credit{
+  color:#059669;
+}
+
+.debit{
+  color:#dc2626;
+}
 
 .notice{
   padding:12px;
@@ -110,8 +149,14 @@ label{
   background:#e5e7eb;
 }
 
-.center{text-align:center}
-.small{font-size:12px;color:#64748b}
+.center{
+  text-align:center;
+}
+
+.small{
+  font-size:12px;
+  color:#64748b;
+}
 </style>
 </head>
 
@@ -126,63 +171,103 @@ label{
 
 <!-- LOGIN -->
 <div id="authBox" class="card">
+
   <h3>Worker Login</h3>
 
   <div id="loginForm">
+
     <label>Email</label>
-    <input id="loginEmail" type="email" placeholder="Enter email">
+    <input
+      id="loginEmail"
+      type="email"
+      placeholder="Enter email"
+    >
 
     <label>Password</label>
-    <input id="loginPassword" type="password" placeholder="Enter password">
+    <input
+      id="loginPassword"
+      type="password"
+      placeholder="Enter password"
+    >
 
-    <button class="primary" onclick="login()">Login</button>
+    <button class="primary" onclick="login()">
+      Login
+    </button>
 
     <br><br>
 
     <button class="secondary" onclick="showSignup()">
       Create Worker Account
     </button>
+
   </div>
+
 
   <div id="signupForm" class="hidden">
 
     <label>Full Name</label>
-    <input id="signupName" placeholder="Full name">
+    <input
+      id="signupName"
+      placeholder="Full name"
+    >
 
     <label>Email</label>
-    <input id="signupEmail" type="email" placeholder="Email">
+    <input
+      id="signupEmail"
+      type="email"
+      placeholder="Email"
+    >
 
     <label>Date of Birth</label>
-    <input id="signupDob" type="date">
+    <input
+      id="signupDob"
+      type="date"
+    >
 
     <label>Password</label>
-    <input id="signupPassword" type="password" placeholder="Password">
+    <input
+      id="signupPassword"
+      type="password"
+      placeholder="Password"
+    >
 
-    <button class="primary" onclick="signup()">Create Account</button>
+    <button class="primary" onclick="signup()">
+      Create Account
+    </button>
 
     <br><br>
 
     <button class="secondary" onclick="showLogin()">
       Back to Login
     </button>
+
   </div>
 
   <p id="authMsg" class="small"></p>
+
 </div>
 
 
 <!-- APP -->
 <div id="app" class="hidden">
 
+  <!-- BALANCE -->
   <div class="card balance">
+
     <small>Your Balance</small>
-    <h1 id="balance">₹0.00</h1>
+
+    <h1 id="balance">
+      ₹0.00
+    </h1>
+
     <p id="workerId" class="small"></p>
+
   </div>
 
 
   <!-- WITHDRAW -->
   <div class="card">
+
     <h3>Withdraw Fund</h3>
 
     <div class="notice">
@@ -190,61 +275,145 @@ label{
     </div>
 
     <label>Amount</label>
-    <input id="withdrawAmount" type="number" min="10" placeholder="Enter amount">
+
+    <input
+      id="withdrawAmount"
+      type="number"
+      min="10"
+      placeholder="Enter amount"
+    >
 
     <label>Payment Method</label>
-    <select id="paymentMethod" onchange="paymentChanged()">
-      <option value="">Select method</option>
-      <option value="upi">UPI</option>
-      <option value="gift_card">Gift Card</option>
+
+    <select
+      id="paymentMethod"
+      onchange="paymentChanged()"
+    >
+
+      <option value="">
+        Select method
+      </option>
+
+      <option value="upi">
+        UPI
+      </option>
+
+      <option value="gift_card">
+        Gift Card
+      </option>
+
     </select>
 
+
     <div id="upiBox" class="hidden">
+
       <label>UPI ID</label>
-      <input id="upiId" placeholder="example@upi">
+
+      <input
+        id="upiId"
+        placeholder="example@upi"
+      >
+
     </div>
+
 
     <div id="giftBox" class="hidden">
+
       <label>Gift Card Type</label>
+
       <select id="giftCardType">
-        <option value="">Select gift card</option>
-        <option value="amazon">Amazon</option>
-        <option value="flipkart">Flipkart</option>
-        <option value="google_play">Google Play</option>
+
+        <option value="">
+          Select gift card
+        </option>
+
+        <option value="amazon">
+          Amazon
+        </option>
+
+        <option value="flipkart">
+          Flipkart
+        </option>
+
+        <option value="google_play">
+          Google Play
+        </option>
+
       </select>
+
     </div>
 
-    <button class="primary" onclick="withdraw()">
+
+    <button
+      class="primary"
+      onclick="withdraw()"
+    >
       Withdraw
     </button>
 
-    <p id="withdrawMsg" class="small"></p>
+    <p
+      id="withdrawMsg"
+      class="small"
+    ></p>
+
   </div>
 
 
   <!-- TRANSACTIONS -->
   <div class="card">
+
     <h3>Transaction History</h3>
+
     <div id="transactions">
       Loading...
     </div>
+
   </div>
 
 
   <!-- PROFILE -->
   <div class="card">
+
     <h3>My Profile</h3>
 
     <div class="center">
-      <img id="avatar" class="profile-img" src="">
+
+      <img
+        id="avatar"
+        class="profile-img"
+        src=""
+        alt="Profile"
+      >
+
     </div>
 
-    <p><b>Name:</b> <span id="profileName">-</span></p>
-    <p><b>Email:</b> <span id="profileEmail">-</span></p>
-    <p><b>Worker ID:</b> <span id="profileWorkerId">-</span></p>
-    <p><b>Date of Birth:</b> <span id="profileDob">-</span></p>
+    <p>
+      <b>Name:</b>
+      <span id="profileName">-</span>
+    </p>
 
-    <button class="danger" onclick="logout()">Logout</button>
+    <p>
+      <b>Email:</b>
+      <span id="profileEmail">-</span>
+    </p>
+
+    <p>
+      <b>Worker ID:</b>
+      <span id="profileWorkerId">-</span>
+    </p>
+
+    <p>
+      <b>Date of Birth:</b>
+      <span id="profileDob">-</span>
+    </p>
+
+    <button
+      class="danger"
+      onclick="logout()"
+    >
+      Logout
+    </button>
+
   </div>
 
 </div>
@@ -254,6 +423,10 @@ label{
 
 <script>
 
+/* ================================
+   SUPABASE
+================================ */
+
 const SUPABASE_URL =
 "https://ykswgkrmqsmdneobykri.supabase.co";
 
@@ -261,252 +434,156 @@ const SUPABASE_KEY =
 "sb_publishable_iED-0Op0GP8e1msvL7ksdw_53rXjJ_H";
 
 const supabaseClient =
-supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
 
 
-/* ---------------- AUTH ---------------- */
+/* ================================
+   AUTH SCREEN
+================================ */
 
 function showSignup(){
-  document.getElementById("loginForm").classList.add("hidden");
-  document.getElementById("signupForm").classList.remove("hidden");
+
+  document
+    .getElementById("loginForm")
+    .classList.add("hidden");
+
+  document
+    .getElementById("signupForm")
+    .classList.remove("hidden");
 }
 
+
 function showLogin(){
-  document.getElementById("signupForm").classList.add("hidden");
-  document.getElementById("loginForm").classList.remove("hidden");
+
+  document
+    .getElementById("signupForm")
+    .classList.add("hidden");
+
+  document
+    .getElementById("loginForm")
+    .classList.remove("hidden");
 }
+
+
+function setAuthMsg(msg){
+
+  document
+    .getElementById("authMsg")
+    .textContent = msg;
+}
+
+
+/* ================================
+   SIGNUP
+================================ */
 
 async function signup(){
 
   const name =
-    document.getElementById("signupName").value.trim();
+    document
+      .getElementById("signupName")
+      .value
+      .trim();
 
   const email =
-    document.getElementById("signupEmail").value.trim();
+    document
+      .getElementById("signupEmail")
+      .value
+      .trim();
 
   const dob =
-    document.getElementById("signupDob").value;
+    document
+      .getElementById("signupDob")
+      .value;
 
   const password =
-    document.getElementById("signupPassword").value;
+    document
+      .getElementById("signupPassword")
+      .value;
+
 
   if(!name || !email || !dob || !password){
-    setAuthMsg("Please fill all fields.");
+
+    setAuthMsg(
+      "Please fill all fields."
+    );
+
     return;
   }
 
-  setAuthMsg("Creating account...");
+
+  if(password.length < 6){
+
+    setAuthMsg(
+      "Password must be at least 6 characters."
+    );
+
+    return;
+  }
+
+
+  setAuthMsg(
+    "Creating account..."
+  );
+
 
   const {data,error} =
     await supabaseClient.auth.signUp({
-      email:email,
-      password:password
+
+      email: email,
+
+      password: password,
+
+      options: {
+
+        data: {
+
+          full_name: name,
+
+          date_of_birth: dob
+
+        }
+
+      }
+
     });
 
+
   if(error){
-    setAuthMsg(error.message);
+
+    setAuthMsg(
+      error.message
+    );
+
     return;
   }
+
 
   if(!data.user){
-    setAuthMsg("Account created. Please login.");
+
+    setAuthMsg(
+      "Account created. Please login."
+    );
+
+    showLogin();
+
     return;
   }
 
-  const {error:profileError} =
-    await supabaseClient
-      .from("profiles")
-      .upsert({
-        id:data.user.id,
-        full_name:name,
-        date_of_birth:dob,
-        role:"worker",
-        is_active:true
-      });
-
-  if(profileError){
-    setAuthMsg(profileError.message);
-    return;
-  }
 
   setAuthMsg(
     "Account created successfully. You can now login."
   );
 
-  showLogin();
-}
-
-
-async function login(){
-
-  const email =
-    document.getElementById("loginEmail").value.trim();
-
-  const password =
-    document.getElementById("loginPassword").value;
-
-  if(!email || !password){
-    setAuthMsg("Enter email and password.");
-    return;
-  }
-
-  setAuthMsg("Logging in...");
-
-  const {error} =
-    await supabaseClient.auth.signInWithPassword({
-      email,
-      password
-    });
-
-  if(error){
-    setAuthMsg(error.message);
-    return;
-  }
-
-  await loadApp();
-}
-
-
-async function logout(){
-
-  await supabaseClient.auth.signOut();
-
-  document.getElementById("app").classList.add("hidden");
-  document.getElementById("authBox").classList.remove("hidden");
 
   showLogin();
 }
 
 
-function setAuthMsg(msg){
-  document.getElementById("authMsg").textContent = msg;
-}
-
-
-/* ---------------- APP LOAD ---------------- */
-
-async function loadApp(){
-
-  const {
-    data:{user}
-  } = await supabaseClient.auth.getUser();
-
-  if(!user){
-    return;
-  }
-
-  document.getElementById("authBox").classList.add("hidden");
-  document.getElementById("app").classList.remove("hidden");
-
-  await loadProfile(user.id);
-  await loadWallet(user.id);
-  await loadTransactions(user.id);
-}
-
-
-/* ---------------- PROFILE ---------------- */
-
-async function loadProfile(userId){
-
-  const {data,error} =
-    await supabaseClient
-      .from("profiles")
-      .select("*")
-      .eq("id",userId)
-      .single();
-
-  if(error){
-    console.log(error);
-    return;
-  }
-
-  document.getElementById("profileName").textContent =
-    data.full_name || "-";
-
-  document.getElementById("profileEmail").textContent =
-    data.email || userId;
-
-  document.getElementById("profileWorkerId").textContent =
-    data.worker_id || "Generating...";
-
-  document.getElementById("workerId").textContent =
-    data.worker_id ? "Worker ID: " + data.worker_id : "";
-
-  document.getElementById("profileDob").textContent =
-    data.date_of_birth || "-";
-
-  if(data.avatar_url){
-    document.getElementById("avatar").src =
-      data.avatar_url;
-  }
-}
-
-
-/* ---------------- WALLET ---------------- */
-
-async function loadWallet(userId){
-
-  const {data,error} =
-    await supabaseClient
-      .from("wallets")
-      .select("balance")
-      .eq("user_id",userId)
-      .single();
-
-  if(error){
-    console.log(error);
-    document.getElementById("balance").textContent =
-      "₹0.00";
-    return;
-  }
-
-  const balance =
-    Number(data.balance || 0);
-
-  document.getElementById("balance").textContent =
-    "₹" + balance.toFixed(2);
-}
-
-
-/* ---------------- TRANSACTIONS ---------------- */
-
-async function loadTransactions(userId){
-
-  const box =
-    document.getElementById("transactions");
-
-  const {data,error} =
-    await supabaseClient
-      .from("transactions")
-      .select("*")
-      .eq("user_id",userId)
-      .order("created_at",{ascending:false})
-      .limit(30);
-
-  if(error){
-    box.innerHTML =
-      "<p class='small'>Unable to load transactions.</p>";
-    return;
-  }
-
-  if(!data || data.length === 0){
-    box.innerHTML =
-      "<p class='small'>No transactions yet.</p>";
-    return;
-  }
-
-  box.innerHTML =
-    data.map(tx => {
-
-      const amount =
-        Number(tx.amount || 0);
-
-      const positive =
-        tx.type === "credit";
-
-      return `
-        <div class="tx">
-          <b>${escapeHtml(tx.description || tx.type || "Transaction")}</b>
+/*scription || tx.type || "Transaction")}</b>
           <br>
           <span class="${positive ? "credit":"debit"}">
             ${positive ? "+" : "-"}₹${amount.toFixed(2)}
