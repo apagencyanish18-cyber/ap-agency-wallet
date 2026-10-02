@@ -162,10 +162,169 @@ button{width:100%;padding:14px;border:0;border-radius:12px;font-size:15px;font-w
       <button class="secondary" data-page="homePage">Back</button>
     </div>
   </section>
-</div>
+                                                     </div>
+                                                     <script>
+const SUPABASE_URL = "https://ykswgkrmqsmdneobykri.supabase.co";
+const SUPABASE_KEY = "sb_publishable_iED-0Op0GP8e1msvL7ksdw_53rXjJ_H";
+const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 
-<script>
-const SUPABASE_URL="https://ykswgkrmqsmdneobykri.supabase.co",SUPABASE_KEY="sb_publishable_iED-0Op0GP8e1msvL7ksdw_53rXjJ_H",supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);let currentUser=null,currentProfile=null,currentWallet=null;function $(e){return document.getElementById(e)}function escapeHtml(e){return String(e??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;")}function showMessage(e,t,n){$(e).innerHTML=t?'<div class="'+n+'">'+escapeHtml(t)+"</div>":""}function showPage(e){["homePage","withdrawPage","transactionsPage","profilePage","settingsPage"].forEach(t=>$(t).classList.add("hidden")),$(e).classList.remove("hidden"),"transactionsPage"===e&&loadTransactions(),"profilePage"===e&&loadProfile()}function showSignup(){$("loginCard").classList.add("hidden"),$("signupCard").classList.remove("hidden")}function showLogin(){$("signupCard").classList.add("hidden"),$("loginCard").classList.remove("hidden")}async function login(){const e=$("loginEmail").value.trim(),t=$("loginPassword").value;if(!e||!t)return showMessage("loginMessage","Enter email and password.","error");showMessage("loginMessage","Logging in...","muted");const n=await supabaseClient.auth.signInWithPassword({email:e,password:t});if(n.error)return showMessage("loginMessage",n.error.message,"error");currentUser=n.data.user,await openApp()}async function signup(){const e=$("signupName").value.trim(),t=$("signupEmail").value.trim(),n=$("signupDob").value,a=$("signupPassword").value;if(!e||!t||!n||!a)return showMessage("signupMessage","Please fill all fields.","error");if(a.length<6)return showMessage("signupMessage","Password must be at least 6 characters.","error");showMessage("signupMessage","Creating account...","muted");const s=await supabaseClient.auth.signUp({email:t,password:a,options:{data:{full_name:e,date_of_birth:n}}});if(s.error)return showMessage("signupMessage",s.error.message,"error");s.data.session?(currentUser=s.data.user,await openApp()):showMessage("signupMessage","Account created! Please login.","success")}async function openApp(){if(currentUser)try{await loadProfile(),await loadWallet(),$("authBox").classList.add("hidden"),$("app").classList.remove("hidden"),showPage("homePage")}catch(e){console.error(e),$("authBox").classList.remove("hidden"),$("app").classList.add("hidden"),showMessage("loginMessage","Could not load account: "+e.message,"error")}}async function loadProfile(){if(!currentUser)return;const e=await supabaseClient.from("profiles").select("*").eq("id",currentUser.id).maybeSingle();if(e.error)throw e.error;currentProfile=e.data,currentProfile&&($("workerId").textContent="Worker ID: "+(currentProfile.worker_id||"-"),$("welcomeText").textContent="Welcome back, "+(currentProfile.full_name||"Worker")+"!",$("profileWorkerId").value=currentProfile.worker_id||"",$("profileName").value=currentProfile.full_name\vert{}\vert{}"",$("profileEmail").value=currentUser.email||"",$("profileDob").value=currentProfile.date_of_birth\vert{}\vert{}"",currentProfile.avatar_url&&($("profilePhoto").src=currentProfile.avatar_url))}async function saveProfile(){const e=$("profileName").value.trim(),t=$("profileDob").value;showMessage("profileMessage","Saving...","muted");const n=await supabaseClient.from("profiles").update({full_name:e,date_of_birth:t}).eq("id",currentUser.id);n.error?showMessage("profileMessage",n.error.message,"error"):(showMessage("profileMessage","Profile updated successfully!","success"),await loadProfile())}async function uploadProfilePhoto(e){if(!e||!currentUser)return;showMessage("profileMessage","Uploading photo...","muted");const t=e.name.split(".").pop(),n=`${currentUser.id}/${Date.now()}.${t}`,{data:a,error:s}=await supabaseClient.storage.from("avatars").upload(n,e,{upsert:!0});if(s)return void showMessage("profileMessage","Upload error: "+s.message,"error");const{data:r}=supabaseClient.storage.from("avatars").getPublicUrl(n),i=r.publicUrl,{error:o}=await supabaseClient.from("profiles").update({avatar_url:i}).eq("id",currentUser.id);o?showMessage("profileMessage","Error saving photo URL: "+o.message,"error"):($("profilePhoto").src=i,showMessage("profileMessage","Profile photo updated!","success"))}async function loadWallet(){if(!currentUser)return;const e=await supabaseClient.from("wallets").select("*").eq("user_id",currentUser.id).maybeSingle();if(e.error)throw e.error;currentWallet=e.data;const t=currentWallet?currentWallet.balance||0:0;$("balance").textContent="₹"+t.toFixed(2)}async function loadTransactions(){if(!currentUser)return;$("transactions").innerHTML='<div class="muted">Loading...</div>';const e=await supabaseClient.from("transactions").select("*").eq("user_id",currentUser.id).order("created_at",{ascending:!0});if(e.error)return void($("transactions").innerHTML='<div class="error">'+escapeHtml(e.error.message)+"</div>");if(!e.data||0===e.data.length)return void($("transactions").innerHTML='<div class="muted">No transactions found.</div>');let t="";e.data.forEach(e=>{const n="credit"===e.type;t+=`\n<div class="transaction"><div class="transaction-row"><div><strong>${escapeHtml(e.description||"Transaction")}</strong></div><div class="${n?"credit":"debit"}">${n?"+":"-"}₹${parseFloat(e.amount).toFixed(2)}</div></div><div class="muted">${new Date(e.created_at).toLocaleString()}</div></div>`}),$("transactions").innerHTML=t}async function withdraw(){const e=parseFloat($("withdrawAmount").value),t=$("paymentMethod").value;if(!e||e<10)return void showMessage("withdrawMessage","Minimum withdrawal is ₹10.","error");if(!t)return void showMessage("withdrawMessage","Select payment method.","error");showMessage("withdrawMessage","Processing request...","muted");const n=await supabaseClient.from("withdrawals").insert([{user_id:currentUser.id,amount:e,method:t,details:"upi"===t?$("upiId").value:$("giftCardType").value}]);n.error?showMessage("withdrawMessage",n.error.message,"error"):(showMessage("withdrawMessage","Withdrawal request submitted!","success"),$("withdrawAmount").value="",await loadWallet())}async function logout(){await supabaseClient.auth.signOut(),currentUser=null,currentProfile=null,currentWallet=null,$("app").classList.add("hidden"),$("authBox").classList.remove("hidden"),showLogin()}document.addEventListener("DOMContentLoaded",()=>{if($("loginBtn").onclick=login,$("signupBtn").onclick=signup,$("showSignupBtn").onclick=showSignup,$("showLoginBtn").onclick=showLogin,$("settingsLogoutBtn").onclick=logout,$("saveProfileBtn").onclick=saveProfile,$("withdrawBtn").onclick=withdraw,$("changePhotoBtn").onclick=()=>$("profilePhotoInput").click(),$("profilePhotoInput").onchange=e=>{e.target.files&&e.target.files[0]&&uploadProfilePhoto(e.target.files[0])},$("paymentMethod").onchange=e=>{const t=e.target.value;$("upiBox").classList.toggle("hidden","upi"!==t),$("giftCardBox").classList.toggle("hidden","gift_card"!==t)},document.querySelectorAll("[data-page]").forEach(e=>{e.onclick=()=>showPage(e.getAttribute("data-page"))}),supabaseClient){supabaseClient.auth.getSession().then(({data:e})=>{e&&e.session&&(currentUser=e.session.user,openApp())})}});
+let currentUser = null;
+let currentProfile = null;
+let currentWallet = null;
+
+function $(e) { return document.getElementById(e); }
+function escapeHtml(e) { return String(e ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;"); }
+function showMessage(e, t, n) { $(e).innerHTML = t ? '<div class="' + n + '">' + escapeHtml(t) + "</div>" : ""; }
+
+function showPage(e) {
+  ["homePage", "withdrawPage", "transactionsPage", "profilePage", "settingsPage"].forEach(t => $(t).classList.add("hidden"));
+  $(e).classList.remove("hidden");
+  if (e === "transactionsPage") loadTransactions();
+  if (e === "profilePage") loadProfile();
+}
+
+function showSignup() { $("loginCard").classList.add("hidden"); $("signupCard").classList.remove("hidden"); }
+function showLogin() { $("signupCard").classList.add("hidden"); $("loginCard").classList.remove("hidden"); }
+
+async function login() {
+  const e = $("loginEmail").value.trim(), t = $("loginPassword").value;
+  if (!e || !t) return showMessage("loginMessage", "Enter email and password.", "error");
+  showMessage("loginMessage", "Logging in...", "muted");
+  const n = await supabaseClient.auth.signInWithPassword({ email: e, password: t });
+  if (n.error) return showMessage("loginMessage", n.error.message, "error");
+  currentUser = n.data.user;
+  await openApp();
+}
+
+async function signup() {
+  const e = $("signupName").value.trim(), t = $("signupEmail").value.trim(), n = $("signupDob").value, a = $("signupPassword").value;
+  if (!e || !t || !n || !a) return showMessage("signupMessage", "Please fill all fields.", "error");
+  if (a.length < 6) return showMessage("signupMessage", "Password must be at least 6 characters.", "error");
+  showMessage("signupMessage", "Creating account...", "muted");
+  const s = await supabaseClient.auth.signUp({ email: t, password: a, options: { data: { full_name: e, date_of_birth: n } } });
+  if (s.error) return showMessage("signupMessage", s.error.message, "error");
+  if (s.data.session) { currentUser = s.data.user; await openApp(); }
+  else { showMessage("signupMessage", "Account created! Please login.", "success"); }
+}
+
+async function openApp() {
+  if (currentUser) {
+    try {
+      await loadProfile();
+      await loadWallet();
+      $("authBox").classList.add("hidden");
+      $("app").classList.remove("hidden");
+      showPage("homePage");
+    } catch (e) {
+      console.error(e);
+      $("authBox").classList.remove("hidden");
+      $("app").classList.add("hidden");
+      showMessage("loginMessage", "Could not load account: " + e.message, "error");
+    }
+  }
+}
+
+async function loadProfile() {
+  if (!currentUser) return;
+  const e = await supabaseClient.from("profiles").select("*").eq("id", currentUser.id).maybeSingle();
+  if (e.error) throw e.error;
+  currentProfile = e.data;
+  if (currentProfile) {
+    $("workerId").textContent = "Worker ID: " + (currentProfile.worker_id || "-");
+    $("welcomeText").textContent = "Welcome back, " + (currentProfile.full_name || "Worker") + "!";
+    $("profileWorkerId").value = currentProfile.worker_id || "";
+    $("profileName").value = currentProfile.full_name || "";
+    $("profileEmail").value = currentUser.email || "";
+    $("profileDob").value = currentProfile.date_of_birth || "";
+    if (currentProfile.avatar_url) $("profilePhoto").src = currentProfile.avatar_url;
+  }
+}
+
+async function saveProfile() {
+  const e = $("profileName").value.trim(), t = $("profileDob").value;
+  showMessage("profileMessage", "Saving...", "muted");
+  const n = await supabaseClient.from("profiles").update({ full_name: e, date_of_birth: t }).eq("id", currentUser.id);
+  if (n.error) showMessage("profileMessage", n.error.message, "error");
+  else { showMessage("profileMessage", "Profile updated successfully!", "success"); await loadProfile(); }
+}
+
+async function uploadProfilePhoto(e) {
+  if (!e || !currentUser) return;
+  showMessage("profileMessage", "Uploading photo...", "muted");
+  const t = e.name.split(".").pop(), n = `${currentUser.id}/${Date.now()}.${t}`;
+  const { data: a, error: s } = await supabaseClient.storage.from("avatars").upload(n, e, { upsert: true });
+  if (s) return showMessage("profileMessage", "Upload error: " + s.message, "error");
+  const { data: r } = supabaseClient.storage.from("avatars").getPublicUrl(n);
+  const i = r.publicUrl;
+  const { error: o } = await supabaseClient.from("profiles").update({ avatar_url: i }).eq("id", currentUser.id);
+  if (o) showMessage("profileMessage", "Error saving photo URL: " + o.message, "error");
+  else { $("profilePhoto").src = i; showMessage("profileMessage", "Profile photo updated!", "success"); }
+}
+
+async function loadWallet() {
+  if (!currentUser) return;
+  const e = await supabaseClient.from("wallets").select("*").eq("user_id", currentUser.id).maybeSingle();
+  if (e.error) throw e.error;
+  currentWallet = e.data;
+  const t = currentWallet ? currentWallet.balance || 0 : 0;
+  $("balance").textContent = "₹" + t.toFixed(2);
+}
+
+async function loadTransactions() {
+  if (!currentUser) return;
+  $("transactions").innerHTML = '<div class="muted">Loading...</div>';
+  const e = await supabaseClient.from("transactions").select("*").eq("user_id", currentUser.id).order("created_at", { ascending: false });
+  if (e.error) return showMessage("transactions", e.error.message, "error");
+  if (!e.data || e.data.length === 0) return $("transactions").innerHTML = '<div class="muted">No transactions found.</div>';
+  let t = "";
+  e.data.forEach(tr => {
+    const isCredit = tr.type === "credit";
+    t += `<div class="transaction"><div class="transaction-row"><div><strong>${escapeHtml(tr.description || "Transaction")}</strong></div><div class="${isCredit ? "credit" : "debit"}">${isCredit ? "+" : "-"}₹${parseFloat(tr.amount).toFixed(2)}</div></div><div class="muted">${new Date(tr.created_at).toLocaleString()}</div></div>`;
+  });
+  $("transactions").innerHTML = t;
+}
+
+async function withdraw() {
+  const e = parseFloat($("withdrawAmount").value), t = $("paymentMethod").value;
+  if (!e || e < 10) return showMessage("withdrawMessage", "Minimum withdrawal is ₹10.", "error");
+  if (!t) return showMessage("withdrawMessage", "Select payment method.", "error");
+  showMessage("withdrawMessage", "Processing request...", "muted");
+  const n = await supabaseClient.from("withdrawals").insert([{ user_id: currentUser.id, amount: e, method: t, details: t === "upi" ? $("upiId").value : $("giftCardType").value }]);
+  if (n.error) showMessage("withdrawMessage", n.error.message, "error");
+  else { showMessage("withdrawMessage", "Withdrawal request submitted!", "success"); $("withdrawAmount").value = ""; await loadWallet(); }
+}
+
+async function logout() {
+  if (supabaseClient) await supabaseClient.auth.signOut();
+  currentUser = null; currentProfile = null; currentWallet = null;
+  $("app").classList.add("hidden");
+  $("authBox").classList.remove("hidden");
+  showLogin();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  if ($("loginBtn")) $("loginBtn").onclick = login;
+  if ($("signupBtn")) $("signupBtn").onclick = signup;
+  if ($("showSignupBtn")) $("showSignupBtn").onclick = showSignup;
+  if ($("showLoginBtn")) $("showLoginBtn").onclick = showLogin;
+  if ($("settingsLogoutBtn")) $("settingsLogoutBtn").onclick = logout;
+  if ($("saveProfileBtn")) $("saveProfileBtn").onclick = saveProfile;
+  if ($("withdrawBtn")) $("withdrawBtn").onclick = withdraw;
+  if ($("changePhotoBtn")) $("changePhotoBtn").onclick = () => $("profilePhotoInput").click();
+  if ($("profilePhotoInput")) $("profilePhotoInput").onchange = e => { if (e.target.files && e.target.files[0]) uploadProfilePhoto(e.target.files[0]); };
+  if ($("paymentMethod")) $("paymentMethod").onchange = e => {
+    const t = e.target.value;
+    $("upiBox").classList.toggle("hidden", t !== "upi");
+    $("giftCardBox").classList.toggle("hidden", t !== "gift_card");
+  };
+  document.querySelectorAll("[data-page]").forEach(e => { e.onclick = () => showPage(e.getAttribute("data-page")); });
+
+  if (supabaseClient) {
+    supabaseClient.auth.getSession().then(({ data: e }) => {
+      if (e && e.session) { currentUser = e.session.user; openApp(); }
+    });
+  }
+});
 </script>
 </body>
 </html>
