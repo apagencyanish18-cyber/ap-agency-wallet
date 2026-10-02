@@ -1,156 +1,355 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AP AGENCY WALLET</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <style>
-        :root {
-            --bg-color: #f4f6f9;
-            --card-bg: #ffffff;
-            --text-color: #1e293b;
-            --subtext: #64748b;
-            --primary: #1d4ed8;
-            --card-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        }
-        .dark-mode {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --text-color: #f8fafc;
-            --subtext: #94a3b8;
-            --card-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-        * { box-sizing: border-box; font-family: sans-serif; transition: background 0.3s, color 0.3s; }
-        body { background-color: var(--bg-color); color: var(--text-color); margin: 0; padding: 16px; }
-        .hidden { display: none !important; }
-        
-        .header { display: flex; justify-content: space-between; align-items: center; background: var(--card-bg); padding: 12px 16px; border-radius: 16px; box-shadow: var(--card-shadow); margin-bottom: 20px; }
-        .header-left { display: flex; align-items: center; gap: 12px; }
-        .logo { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; }
-        .title { font-weight: 800; font-size: 18px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .subtitle { font-size: 11px; color: var(--subtext); }
-        .theme-toggle { background: var(--bg-color); border: none; font-size: 20px; cursor: pointer; padding: 8px 12px; border-radius: 50%; color: var(--text-color); }
-
-        .balance-card { background: linear-gradient(135deg, #1e3c72, #2a5298); color: white; padding: 20px; border-radius: 20px; box-shadow: var(--card-shadow); margin-bottom: 24px; position: relative; }
-        .wallet-tag { position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 12px; font-size: 12px; }
-        .balance-amount { font-size: 32px; font-weight: bold; margin: 12px 0; }
-        .worker-id { background: rgba(0,0,0,0.2); display: inline-block; padding: 6px 12px; border-radius: 8px; font-size: 13px; }
-
-        .actions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
-        .action-btn { background: var(--card-bg); padding: 16px; border-radius: 16px; text-align: center; border: none; color: var(--text-color); font-weight: 600; cursor: pointer; box-shadow: var(--card-shadow); }
-        .action-icon { font-size: 24px; margin-bottom: 8px; display: block; }
-
-        .welcome-card { background: var(--card-bg); padding: 16px; border-radius: 16px; box-shadow: var(--card-shadow); }
-        .input-field { width: 100%; padding: 12px; margin: 8px 0 16px; border-radius: 8px; border: 1px solid var(--subtext); background: var(--bg-color); color: var(--text-color); }
-        .btn-primary { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AP AGENCY WORKER WALLET</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root {
+  --bg-color: #f0f3f8;
+  --card-bg: #ffffff;
+  --text-color: #0f172a;
+  --subtext: #64748b;
+  --border-color: #e2e8f0;
+  --input-bg: #f8fafc;
+}
+body.dark-mode {
+  --bg-color: #0f172a;
+  --card-bg: #1e293b;
+  --text-color: #f8fafc;
+  --subtext: #94a3b8;
+  --border-color: #334155;
+  --input-bg: #0f172a;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg-color);color:var(--text-color);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;-webkit-tap-highlight-color:transparent;transition:background 0.3s, color 0.3s}
+.hidden{display:none!important}
+.container{max-width:430px;margin:auto;padding:16px}
+.brand-header{display:flex;align-items:center;justify-content:space-between;background:var(--card-bg);padding:12px 16px;border-radius:18px;box-shadow:0 4px 15px rgba(0,0,0,.04);margin-bottom:18px}
+.brand-info{display:flex;align-items:center;gap:12px}
+.brand-logo-img{width:44px;height:44px;border-radius:50%;object-fit:cover}
+.brand-text h1{font-size:18px;font-weight:900;margin:0;color:var(--text-color);text-transform:UPPERCASE;letter-spacing:0.5px}
+.brand-text p{font-size:10px;font-weight:700;margin:1px 0 0;color:#2563eb;text-transform:uppercase}
+.header-action-btn{background:var(--input-bg);border:0;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;color:var(--text-color)}
+.logo-large{text-align:center;margin:30px 0 10px}
+.logo-large img{width:90px;height:90px;border-radius:50%;object-fit:cover;box-shadow:0 8px 25px rgba(37,99,235,.25)}
+.subtitle-auth{text-align:center;color:var(--subtext);font-size:14px;margin-bottom:25px;font-weight:800;text-transform:UPPERCASE}
+.card{background:var(--card-bg);border-radius:20px;padding:22px;margin-bottom:16px;box-shadow:0 8px 25px rgba(0,0,0,.04)}
+h2{margin:0 0 18px;font-size:20px;font-weight:700;color:var(--text-color)}
+label{display:block;font-size:13px;font-weight:600;margin:14px 0 6px;color:var(--subtext)}
+input,select{width:100%;padding:14px;border:1.5px solid var(--border-color);border-radius:12px;font-size:15px;background:var(--input-bg);color:var(--text-color);outline:0}
+input:focus,select:focus{border-color:#2563eb;background:var(--card-bg)}
+button{width:100%;padding:14px;border:0;border-radius:12px;font-size:15px;font-weight:700;margin-top:14px;cursor:pointer}
+.primary{background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff}
+.secondary{background:var(--input-bg);color:var(--text-color)}
+.danger{background:#fef2f2;color:#dc2626}
+.link{background:none;color:#2563eb;font-weight:600;font-size:14px}
+.error{color:#dc2626;font-size:13px;margin-top:10px;font-weight:600}
+.success{color:#16a34a;font-size:13px;margin-top:10px;font-weight:600}
+.muted{color:var(--subtext);font-size:13px}
+.wallet-card{background:linear-gradient(135deg,#0f172a 0%,#1e293b 50%,#1e3a8a 100%);color:#fff;border-radius:24px;padding:24px;margin-bottom:20px}
+.wallet-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.wallet-label{font-size:13px;color:#94a3b8;font-weight:600;text-transform:uppercase}
+.wallet-chip{background:rgba(255,255,255,.12);padding:5px 10px;border-radius:20px;font-size:11px;color:#cbd5e1}
+.balance-amount{font-size:38px;font-weight:800;margin:6px 0}
+.worker-id-badge{margin-top:14px;display:inline-block;background:rgba(255,255,255,.1);padding:6px 12px;border-radius:10px;font-size:13px}
+.section-title{font-size:16px;font-weight:700;color:var(--text-color);margin:0 0 12px 4px}
+.actions-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.action-card{background:var(--card-bg);border-radius:18px;padding:18px 14px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border:1px solid var(--border-color);cursor:pointer;min-height:110px;margin:0}
+.action-icon-box{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:10px}
+.icon-withdraw{background:#fef3c7;color:#d97706}
+.icon-history{background:#e0f2fe;color:#0284c7}
+.icon-profile{background:#f3e8ff;color:#9333ea}
+.icon-settings{background:#f1f5f9;color:#475569}
+.action-card span{font-size:13px;font-weight:700;color:var(--text-color)}
+.transaction{padding:14px 0;border-bottom:1px solid var(--border-color)}
+.transaction-row{display:flex;justify-content:space-between;gap:10px;margin-bottom:4px}
+.credit{color:#16a34a;font-weight:700}
+.debit{color:#dc2626;font-weight:700}
+.profile-photo{width:96px;height:96px;border-radius:50%;object-fit:cover;display:block;margin:0 auto 12px;border:3px solid #2563eb}
+.note{background:#fffbebf0;color:#b45309;padding:12px;border-radius:12px;font-size:13px;margin-bottom:14px;border:1px solid #fef3c7}
+</style>
 </head>
 <body>
 
-<div id="authBox" class="welcome-card" style="max-width: 400px; margin: 40px auto;">
-    <h2>Login / Signup</h2>
-    <input type="email" id="emailInput" class="input-field" placeholder="Email">
-    <input type="password" id="passInput" class="input-field" placeholder="Password">
-    <button id="loginBtn" class="btn-primary" style="margin-bottom: 8px;">Login</button>
-    <button id="signupBtn" class="btn-primary" style="background: #475569;">Signup</button>
+<div id="authBox" class="container">
+  <div class="logo-large"><img src="file_00000000e37481fabb8b78aea4e71cd6.png" alt="AP Agency Logo"></div>
+  <div class="subtitle-auth">AP AGENCY WORKER WALLET</div>
+
+  <div id="loginCard" class="card">
+    <h2>Worker Login</h2>
+    <label>Email</label>
+    <input id="loginEmail" type="email" placeholder="Enter email">
+    <label>Password</label>
+    <input id="loginPassword" type="password" placeholder="Enter password">
+    <button id="loginBtn" class="primary">Login</button>
+    <div id="loginMessage"></div>
+    <button id="showSignupBtn" class="link">Create New Account</button>
+  </div>
+
+  <div id="signupCard" class="card hidden">
+    <h2>Create Account</h2>
+    <label>Full Name</label>
+    <input id="signupName" type="text" placeholder="Enter full name">
+    <label>Email</label>
+    <input id="signupEmail" type="email" placeholder="Enter email">
+    <label>Date of Birth</label>
+    <input id="signupDob" type="date">
+    <label>Password</label>
+    <input id="signupPassword" type="password" placeholder="Create password">
+    <button id="signupBtn" class="primary">Create Account</button>
+    <div id="signupMessage"></div>
+    <button id="showLoginBtn" class="link">Back to Login</button>
+  </div>
 </div>
 
-<div id="app" class="hidden">
-    <div class="header">
-        <div class="header-left">
-            <img src="file_00000000e37481fabb8b78aea4e71cd6.png" class="logo" alt="Logo">
-            <div>
-                <div class="title">AP AGENCY</div>
-                <div class="subtitle">TOGETHER WE GROW</div>
-            </div>
-        </div>
-        <button id="themeToggleBtn" class="theme-toggle">🌙</button>
+<div id="app" class="container hidden">
+  <header class="brand-header">
+    <div class="brand-info">
+      <img src="file_00000000e37481fabb8b78aea4e71cd6.png" alt="AP Agency Logo" class="brand-logo-img">
+      <div class="brand-text"><h1>AP AGENCY</h1><p>Together We Grow</p></div>
+    </div>
+    <button id="themeToggleBtn" class="header-action-btn">🌙</button>
+  </header>
+
+  <section id="homePage">
+    <div class="wallet-card">
+      <div class="wallet-top"><span class="wallet-label">Available Balance</span><span class="wallet-chip">Worker Wallet</span></div>
+      <div id="balance" class="balance-amount">₹0.00</div>
+      <div id="workerId" class="worker-id-badge">Worker ID: -</div>
     </div>
 
-    <div class="balance-card">
-        <span class="wallet-tag">Worker Wallet</span>
-        <div style="font-size: 12px; opacity: 0.8;">AVAILABLE BALANCE</div>
-        <div class="balance-amount">₹<span id="balanceText">0.00</span></div>
-        <div class="worker-id">Worker ID: <span id="workerIdText">AP000000</span></div>
-    </div>
-
+    <div class="section-title">Quick Actions</div>
     <div class="actions-grid">
-        <button id="withdrawBtn" class="action-btn"><span class="action-icon">💸</span>Withdraw Fund</button>
-        <button id="historyBtn" class="action-btn"><span class="action-icon">📋</span>Transaction History</button>
-        <button id="profileBtn" class="action-btn"><span class="action-icon">👤</span>My Profile</button>
-        <button id="settingsLogoutBtn" class="action-btn"><span class="action-icon">🚪</span>Logout</button>
+      <button class="action-card" data-page="withdrawPage"><div class="action-icon-box icon-withdraw">💸</div><span>Withdraw Fund</span></button>
+      <button class="action-card" data-page="transactionsPage"><div class="action-icon-box icon-history">📋</div><span>Transaction History</span></button>
+      <button class="action-card" data-page="profilePage"><div class="action-icon-box icon-profile">👤</div><span>My Profile</span></button>
+      <button class="action-card" data-page="settingsPage"><div class="action-icon-box icon-settings">⚙️</div><span>Settings</span></button>
     </div>
 
-    <div class="welcome-card">
-        <h3 style="margin:0 0 8px 0;">Welcome 👋</h3>
-        <p style="margin:0; color:var(--subtext);">Welcome back, <span id="userNameText">Worker</span>!</p>
+    <div class="card"><h3 style="margin:0 0 8px;font-size:16px">Welcome 👋</h3><div id="welcomeText" class="muted">Welcome to AP Agency.</div></div>
+  </section>
+
+  <section id="withdrawPage" class="hidden">
+    <div class="card">
+      <h2>Withdraw Fund</h2>
+      <div class="note">Minimum withdrawal amount: ₹10</div>
+      <label>Amount</label><input id="withdrawAmount" type="number" min="10" placeholder="Enter amount">
+      <label>Payment Method</label>
+      <select id="paymentMethod"><option value="">Select payment method</option><option value="upi">UPI</option><option value="gift_card">Gift Card</option></select>
+      <div id="upiBox" class="hidden"><label>UPI ID</label><input id="upiId" type="text" placeholder="example@upi"></div>
+      <div id="giftCardBox" class="hidden"><label>Gift Card</label><select id="giftCardType"><option value="">Select gift card</option><option value="amazon">Amazon</option><option value="flipkart">Flipkart</option><option value="google_play">Google Play</option></select></div>
+      <button id="withdrawBtn" class="primary">Submit Withdrawal</button>
+      <div id="withdrawMessage"></div>
+      <button class="secondary" data-page="homePage">Back</button>
     </div>
-</div>
-<script>
-    const SUPABASE_URL = "https://ykswgkrmqsmdneobykri.supabase.co";
-    const SUPABASE_KEY = "sb_publishable_iED-0Op0GP8e1msvL7ksdw_53rXjJ_H";
-    const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+  </section>
 
-    const $ = selector => document.querySelector(selector);
+  <section id="transactionsPage" class="hidden">
+    <div class="card">
+      <h2>Transaction History</h2>
+      <div id="transactions"><div class="muted">Loading...</div></div>
+      <button class="secondary" data-page="homePage">Back</button>
+    </div>
+  </section>
 
-    // Dark/Light Mode Switcher
-    const themeBtn = $("#themeToggleBtn");
-    if(themeBtn) {
-        themeBtn.onclick = () => {
-            document.body.classList.toggle("dark-mode");
-            const isDark = document.body.classList.contains("dark-mode");
-            themeBtn.innerText = isDark ? "☀️" : "🌙";
-        };
+  <section id="profilePage" class="hidden">
+    <div class="card">
+      <h2>My Profile</h2>
+      <img id="profilePhoto" class="profile-photo" src="https://via.placeholder.com/90" alt="Profile">
+      <input type="file" id="profilePhotoInput" accept="image/*" class="hidden">
+      <button id="changePhotoBtn" class="secondary" style="margin-top:0;margin-bottom:15px;font-size:13px;padding:10px">Change Profile Photo</button>
+      <label>Worker ID</label><input id="profileWorkerId" readonly>
+      <label>Full Name</label><input id="profileName">
+      <label>Email</label><input id="profileEmail" readonly>
+      <label>Date of Birth</label><input id="profileDob" type="date">
+      <button id="saveProfileBtn" class="primary">Save Profile</button>
+      <div id="profileMessage"></div>
+      <button class="secondary" data-page="homePage">Back</button>
+    </div>
+  </section>
+
+  <section id="settingsPage" class="hidden">
+    <div class="card">
+      <h2>Settings</h2>
+      <div class="muted" style="margin-bottom:15px">AP Agency Worker Wallet v2.0</div>
+      <button id="settingsLogoutBtn" class="danger">Logout Account</button>
+      <button class="secondary" data-page="homePage">Back</button>
+    </div>
+  </section>
+    </div>
+        <script>
+const SUPABASE_URL = "https://ykswgkrmqsmdneobykri.supabase.co";
+const SUPABASE_KEY = "sb_publishable_iED-0Op0GP8e1msvL7ksdw_53rXjJ_H";
+const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+let currentUser = null;
+let currentProfile = null;
+let currentWallet = null;
+
+function $(e) { return document.getElementById(e); }
+function escapeHtml(e) { return String(e ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;"); }
+function showMessage(e, t, n) { $(e).innerHTML = t ? '<div class="' + n + '">' + escapeHtml(t) + "</div>" : ""; }
+
+function showPage(e) {
+  ["homePage", "withdrawPage", "transactionsPage", "profilePage", "settingsPage"].forEach(t => $(t).classList.add("hidden"));
+  $(e).classList.remove("hidden");
+  if (e === "transactionsPage") loadTransactions();
+  if (e === "profilePage") loadProfile();
+}
+
+function showSignup() { $("loginCard").classList.add("hidden"); $("signupCard").classList.remove("hidden"); }
+function showLogin() { $("signupCard").classList.add("hidden"); $("loginCard").classList.remove("hidden"); }
+
+async function login() {
+  const e = $("loginEmail").value.trim(), t = $("loginPassword").value;
+  if (!e || !t) return showMessage("loginMessage", "Enter email and password.", "error");
+  showMessage("loginMessage", "Logging in...", "muted");
+  const n = await supabaseClient.auth.signInWithPassword({ email: e, password: t });
+  if (n.error) return showMessage("loginMessage", n.error.message, "error");
+  currentUser = n.data.user;
+  await openApp();
+}
+
+async function signup() {
+  const e = $("signupName").value.trim(), t = $("signupEmail").value.trim(), n = $("signupDob").value, a = $("signupPassword").value;
+  if (!e || !t || !n || !a) return showMessage("signupMessage", "Please fill all fields.", "error");
+  if (a.length < 6) return showMessage("signupMessage", "Password must be at least 6 characters.", "error");
+  showMessage("signupMessage", "Creating account...", "muted");
+  const s = await supabaseClient.auth.signUp({ email: t, password: a, options: { data: { full_name: e, date_of_birth: n } } });
+  if (s.error) return showMessage("signupMessage", s.error.message, "error");
+  if (s.data.session) { currentUser = s.data.user; await openApp(); }
+  else { showMessage("signupMessage", "Account created! Please login.", "success"); }
+}
+
+async function openApp() {
+  if (currentUser) {
+    try {
+      await loadProfile();
+      await loadWallet();
+      $("authBox").classList.add("hidden");
+      $("app").classList.remove("hidden");
+      showPage("homePage");
+    } catch (e) {
+      console.error(e);
+      $("authBox").classList.remove("hidden");
+      $("app").classList.add("hidden");
+      showMessage("loginMessage", "Could not load account: " + e.message, "error");
     }
+  }
+}
 
-    let currentUser = null;
+async function loadProfile() {
+  if (!currentUser) return;
+  const e = await supabaseClient.from("profiles").select("*").eq("id", currentUser.id).maybeSingle();
+  if (e.error) throw e.error;
+  currentProfile = e.data;
+  if (currentProfile) {
+    $("workerId").textContent = "Worker ID: " + (currentProfile.worker_id || "-");
+    $("welcomeText").textContent = "Welcome back, " + (currentProfile.full_name || "Worker") + "!";
+    $("profileWorkerId").value = currentProfile.worker_id || "";
+    $("profileName").value = currentProfile.full_name || "";
+    $("profileEmail").value = currentUser.email || "";
+    $("profileDob").value = currentProfile.date_of_birth || "";
+    if (currentProfile.avatar_url) $("profilePhoto").src = currentProfile.avatar_url;
+  }
+}
 
-    async function login() {
-        const email = $("#emailInput").value;
-        const password = $("#passInput").value;
-        if (!email || !password) return alert("Fill all fields");
-        const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-        if (error) alert(error.message);
-        else initApp(data.user);
-    }
+async function saveProfile() {
+  const e = $("profileName").value.trim(), t = $("profileDob").value;
+  showMessage("profileMessage", "Saving...", "muted");
+  const n = await supabaseClient.from("profiles").update({ full_name: e, date_of_birth: t }).eq("id", currentUser.id);
+  if (n.error) showMessage("profileMessage", n.error.message, "error");
+  else { showMessage("profileMessage", "Profile updated successfully!", "success"); await loadProfile(); }
+}
 
-    async function signup() {
-        const email = $("#emailInput").value;
-        const password = $("#passInput").value;
-        if (!email || !password) return alert("Fill all fields");
-        const { data, error } = await supabaseClient.auth.signUp({ email, password });
-        if (error) alert(error.message);
-        else alert("Signup successful! Please login.");
-    }
+async function uploadProfilePhoto(e) {
+  if (!e || !currentUser) return;
+  showMessage("profileMessage", "Uploading photo...", "muted");
+  const t = e.name.split(".").pop(), n = `${currentUser.id}/${Date.now()}.${t}`;
+  const { data: a, error: s } = await supabaseClient.storage.from("avatars").upload(n, e, { upsert: true });
+  if (s) return showMessage("profileMessage", "Upload error: " + s.message, "error");
+  const { data: r } = supabaseClient.storage.from("avatars").getPublicUrl(n);
+  const i = r.publicUrl;
+  const { error: o } = await supabaseClient.from("profiles").update({ avatar_url: i }).eq("id", currentUser.id);
+  if (o) showMessage("profileMessage", "Error saving photo URL: " + o.message, "error");
+  else { $("profilePhoto").src = i; showMessage("profileMessage", "Profile photo updated!", "success"); }
+}
 
-    async function logout() {
-        if (supabaseClient) await supabaseClient.auth.signOut();
-        currentUser = null;
-        $("#app").classList.add("hidden");
-        $("#authBox").classList.remove("hidden");
-    }
+async function loadWallet() {
+  if (!currentUser) return;
+  const e = await supabaseClient.from("wallets").select("*").eq("user_id", currentUser.id).maybeSingle();
+  if (e.error) throw e.error;
+  currentWallet = e.data;
+  const t = currentWallet ? currentWallet.balance || 0 : 0;
+  $("balance").textContent = "₹" + t.toFixed(2);
+}
 
-    function initApp(user) {
-        currentUser = user;
-        $("#authBox").classList.add("hidden");
-        $("#app").classList.remove("hidden");
-        $("#userNameText").innerText = user.email ? user.email.split('@')[0] : "Worker";
-    }
+async function loadTransactions() {
+  if (!currentUser) return;
+  $("transactions").innerHTML = '<div class="muted">Loading...</div>';
+  const e = await supabaseClient.from("transactions").select("*").eq("user_id", currentUser.id).order("created_at", { ascending: false });
+  if (e.error) return showMessage("transactions", e.error.message, "error");
+  if (!e.data || e.data.length === 0) return $("transactions").innerHTML = '<div class="muted">No transactions found.</div>';
+  let t = "";
+  e.data.forEach(tr => {
+    const isCredit = tr.type === "credit";
+    t += `<div class="transaction"><div class="transaction-row"><div><strong>${escapeHtml(tr.description || "Transaction")}</strong></div><div class="${isCredit ? "credit" : "debit"}">${isCredit ? "+" : "-"}₹${parseFloat(tr.amount).toFixed(2)}</div></div><div class="muted">${new Date(tr.created_at).toLocaleString()}</div></div>`;
+  });
+  $("transactions").innerHTML = t;
+}
 
-    document.addEventListener("DOMContentLoaded", () => {
-        if ($("#loginBtn")) $("#loginBtn").onclick = login;
-        if ($("#signupBtn")) $("#signupBtn").onclick = signup;
-        if ($("#settingsLogoutBtn")) $("#settingsLogoutBtn").onclick = logout;
+async function withdraw() {
+  const e = parseFloat($("withdrawAmount").value), t = $("paymentMethod").value;
+  if (!e || e < 10) return showMessage("withdrawMessage", "Minimum withdrawal is ₹10.", "error");
+  if (!t) return showMessage("withdrawMessage", "Select payment method.", "error");
+  showMessage("withdrawMessage", "Processing request...", "muted");
+  const n = await supabaseClient.from("withdrawals").insert([{ user_id: currentUser.id, amount: e, method: t, details: t === "upi" ? $("upiId").value : $("giftCardType").value }]);
+  if (n.error) showMessage("withdrawMessage", n.error.message, "error");
+  else { showMessage("withdrawMessage", "Withdrawal request submitted!", "success"); $("withdrawAmount").value = ""; await loadWallet(); }
+}
 
-        if (supabaseClient) {
-            supabaseClient.auth.getSession().then(({ data }) => {
-                if (data && data.session) {
-                    initApp(data.session.user);
-                }
-            });
-        }
+async function logout() {
+  if (supabaseClient) await supabaseClient.auth.signOut();
+  currentUser = null; currentProfile = null; currentWallet = null;
+  $("app").classList.add("hidden");
+  $("authBox").classList.remove("hidden");
+  showLogin();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  if ($("loginBtn")) $("loginBtn").onclick = login;
+  if ($("signupBtn")) $("signupBtn").onclick = signup;
+  if ($("showSignupBtn")) $("showSignupBtn").onclick = showSignup;
+  if ($("showLoginBtn")) $("showLoginBtn").onclick = showLogin;
+  if ($("settingsLogoutBtn")) $("settingsLogoutBtn").onclick = logout;
+  if ($("saveProfileBtn")) $("saveProfileBtn").onclick = saveProfile;
+  if ($("withdrawBtn")) $("withdrawBtn").onclick = withdraw;
+  if ($("changePhotoBtn")) $("changePhotoBtn").onclick = () => $("profilePhotoInput").click();
+  if ($("profilePhotoInput")) $("profilePhotoInput").onchange = e => { if (e.target.files && e.target.files[0]) uploadProfilePhoto(e.target.files[0]); };
+  if ($("paymentMethod")) $("paymentMethod").onchange = e => {
+    const t = e.target.value;
+    $("upiBox").classList.toggle("hidden", t !== "upi");
+    $("giftCardBox").classList.toggle("hidden", t !== "gift_card");
+  };
+  
+  if ($("themeToggleBtn")) {
+    $("themeToggleBtn").onclick = () => {
+      document.body.classList.toggle("dark-mode");
+      const isDark = document.body.classList.contains("dark-mode");
+      $("themeToggleBtn").textContent = isDark ? "☀️" : "🌙";
+    };
+  }
+
+  document.querySelectorAll("[data-page]").forEach(e => { e.onclick = () => showPage(e.getAttribute("data-page")); });
+
+  if (supabaseClient) {
+    supabaseClient.auth.getSession().then(({ data: e }) => {
+      if (e && e.session) { currentUser = e.session.user; openApp(); }
     });
+  }
+});
 </script>
 </body>
 </html>
