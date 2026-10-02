@@ -455,6 +455,259 @@ document.addEventListener("DOMContentLoaded", () => {
     </div>
   </div>
 </div>
-  
+  <script>
+let allWorkersData = [];
+let selectedWorkerForMoney = null;
+let selectedWithdrawalForProcess = null;
+
+async function initAdminDashboard() {
+  if (!currentUser || !currentProfile || currentProfile.role !== "admin") {
+    alert("Access denied");
+    return;
+  }
+
+  $("authBox").classList.add("hidden");
+  $("app").classList.add("hidden");
+  $("adminPage").classList.remove("hidden");
+
+  await loadAdminStats();
+  await loadPendingWithdrawals();
+  await loadWorkerDirectory();
+}
+
+async function loadAdminStats() {
+  const { count: workers } = await supabaseClient
+    .from("profiles")
+    .select("*", { count: "exact", head: true })
+    .eq("role", "worker");
+
+  const { data: wallets } = await supabaseClient
+    .from("wallets")
+    .select("balance");
+
+  const { count: pending } = await supabaseClient
+    .from("withdrawals")
+    .select("*", { count: "exact", head: true })
+    .eq("status", "pending");
+
+  const totalBalance = (wallets || []).reduce(
+    (sum, w) => sum + Number(w.balance || 0), 0
+  );
+
+  $("adminTotalWorkers").textContent = workers || 0;
+  $("adminTotalBalance").textContent = "₹" + totalBalance.toFixed(2);
+  $("adminPendingWithdrawals").textContent = pending || 0;
+}
+
+async function loadWorkerDirectory() {
+  const { data, error } = await supabaseClient
+    .from("profiles")
+    .select("id, full_name, worker_id, role, is_active")
+    .eq("role", "worker")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  allWorkersData = data || [];
+  renderWorkerList(allWorkersData);
+}
+
+async function renderWorkerList(workers) {
+  const tbody = $("adminWorkersList");
+  tbody.innerHTML = "";
+
+  for (const worker of workers) {
+    const { data: wallet } = await supabaseClient
+      .from("wallets")
+      .select("balance")
+      .eq("user_id", worker.id)
+      .maybeSingle();
+
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+      <td>${escapeHtml(worker.worker_id || "-")}</td>
+      <td>${escapeHtml(worker.full_name || "Worker")}</td>
+      <td>-</td>
+      <td>₹${Number(wallet?.balance || 0).toFixed(2)}</td>
+      <td>
+        <button class="btn btn-primary"
+          onclick="openAddMoney('${worker.id}', '${escapeHtml(worker.full_name || "Worker")}', '${worker.worker_id || ""}')">
+          Add Money
+        </button>
+      </td>
+    `;
+
+    tbody.appendChild(row);
+  }
+}
+
+function filterWorkerList() {
+  const q = $("workerSearchInput").value.toLowerCase().trim();
+
+  const filtered = allWorkersData.filter(w =>
+    (w.worker_id || "").toLowerCase().includes(q) ||
+    (w.full_name || "").toLowerCase().includes(q)
+  );
+
+  renderWorkerList(filtered);
+}
+
+function openAddMoney(userId, name, workerId) {
+  selectedWorkerForMoney = userId;
+
+  $("addMoneyTargetWorker").textContent =
+    `${name} (${workerId})`;
+
+  $("addMoneyAmount").value = "";
+  $("addMoneyNote").value = "";
+
+  $("addMoneyModal").classList.remove("hidden");
+}
+
+async function submitAddMoney() {
+  if (!selectedWorkerForMoney) return;
+
+  const amount = Number($("addMoneyAmount").value);
+  const note = $("addMoneyNote").value.trim() || "Admin credit";
+
+  if (!amount || amount < 1) {
+    alert("Minimum amount is ₹1");
+    return;
+  }
+
+  const { error } = await supabaseClient.rpc("admin_add_money", {
+    p_user_id: selectedWorkerForMoney,
+    p_amount: amount,
+    p_description: note
+  });
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  alert("Money added successfully!");
+
+  closeModal("addMoneyModal");
+  await loadAdminStats();
+  await loadWorkerDirectory();
+}
+
+async function loadPendingWithdrawals() {
+  const { data, error } = await supabaseClient
+    .from("withdrawals")
+    .select("*")
+    .eq("status", "pending")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  const tbody = $("adminWithdrawalsList");
+  tbody.innerHTML = "";
+
+  if (!data || data.length === 0) {
+    tbody.innerHTML =
+      `<tr><td colspan="7" class="text-center">No pending withdrawals.</td></tr>`;
+    return;
+  }
+
+  for (const withdrawal of data) {
+    const { data: worker } = await supabaseClient
+      .from("profiles")
+      .select("full_name, worker_id")
+      .eq("id", withdrawal.user_id)
+      .maybeSingle();
+
+    const details =
+      withdrawal.payment_method === "upi"
+        ? (withdrawal.upi_id || "UPI")
+        : (withdrawal.gift_card_type || "Gift Card");
+
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+      <td>${new Date(withdrawal.created_at).toLocaleString()}</td>
+      <td>${escapeHtml(worker?.worker_id || "-")}</td>
+      <td>${escapeHtml(worker?.full_name || "Worker")}</td>
+      <td>₹${Number(withdrawal.amount).toFixed(2)}</td>
+      <td>${escapeHtml(withdrawal.payment_method || "-")}</td>
+      <td>${escapeHtml(details)}</td>
+      <td>
+        <button class="btn btn-success"
+          onclick="openApproveWithdrawal(${withdrawal.id})">
+          Approve
+        </button>
+      </td>
+    `;
+
+    tbody.appendChild(row);
+  }
+}
+
+function openApproveWithdrawal(id) {
+  selectedWithdrawalForProcess = id;
+
+  $("approveRefCode").value = "";
+  $("approveAdminNote").value = "";
+
+  $("approveWithdrawalModal").classList.remove("hidden");
+}
+
+async function submitApproveWithdrawal() {
+  if (!selectedWithdrawalForProcess) return;
+
+  const reference = $("approveRefCode").value.trim();
+  const note = $("approveAdminNote").value.trim();
+
+  if (!reference) {
+    alert("UTR / Payment Reference / Gift Card Code is required.");
+    return;
+  }
+
+  const { error } = await supabaseClient.rpc(
+    "admin_approve_withdrawal",
+    {
+      p_withdrawal_id: selectedWithdrawalForProcess,
+      p_payment_reference: reference,
+      p_admin_note: note || null
+    }
+  );
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  alert("Withdrawal approved successfully!");
+
+  closeModal("approveWithdrawalModal");
+  await loadAdminStats();
+  await loadPendingWithdrawals();
+}
+
+function switchAdminTab(tab) {
+  $("adminWithdrawalsTab").classList.toggle(
+    "hidden",
+    tab !== "withdrawals"
+  );
+
+  $("adminWorkersTab").classList.toggle(
+    "hidden",
+    tab !== "workers"
+  );
+}
+
+function closeModal(id) {
+  $(id).classList.add("hidden");
+}
+
+  </script>
 </body>
 </html>
