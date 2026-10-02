@@ -351,5 +351,110 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 </script>
+  <!-- ADMIN DASHBOARD CONTAINER -->
+<div id="adminPage" class="page-container hidden">
+  <div class="admin-header">
+    <h2>Admin Dashboard</h2>
+    <p>AP Agency Management Panel</p>
+  </div>
+
+  <!-- Stat Counters -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <span class="stat-title">Total Workers</span>
+      <h3 id="adminTotalWorkers">0</h3>
+    </div>
+    <div class="stat-card">
+      <span class="stat-title">Total Wallet Balance</span>
+      <h3 id="adminTotalBalance">₹0.00</h3>
+    </div>
+    <div class="stat-card">
+      <span class="stat-title">Pending Withdrawals</span>
+      <h3 id="adminPendingWithdrawals">0</h3>
+    </div>
+  </div>
+
+  <!-- Navigation Tabs -->
+  <div class="admin-tabs">
+    <button class="tab-btn active" onclick="switchAdminTab('withdrawals')">Pending Withdrawals</button>
+    <button class="tab-btn" onclick="switchAdminTab('workers')">Worker Directory</button>
+  </div>
+
+  <!-- TAB 1: PENDING WITHDRAWALS -->
+  <div id="adminWithdrawalsTab" class="tab-content">
+    <h3>Pending Withdrawal Requests</h3>
+    <div class="table-responsive">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Worker ID</th>
+            <th>Name</th>
+            <th>Amount</th>
+            <th>Method</th>
+            <th>Details</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="adminWithdrawalsList">
+          <tr><td colspan="7" class="text-center">Loading pending requests...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TAB 2: WORKER DIRECTORY -->
+  <div id="adminWorkersTab" class="tab-content hidden">
+    <div class="tab-header">
+      <h3>Worker List</h3>
+      <input type="text" id="workerSearchInput" placeholder="Search by Worker ID or Name..." oninput="filterWorkerList()">
+    </div>
+    <div class="table-responsive">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Worker ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Wallet Balance</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="adminWorkersList">
+          <tr><td colspan="5" class="text-center">Loading workers...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: ADD MONEY TO WORKER -->
+<div id="addMoneyModal" class="modal hidden">
+  <div class="modal-content">
+    <h3>Add Money to Wallet</h3>
+    <p id="addMoneyTargetWorker"></p>
+    <input type="number" id="addMoneyAmount" placeholder="Enter amount (Min ₹1)" min="1" step="0.01">
+    <input type="text" id="addMoneyNote" placeholder="Reason / Note (Optional)">
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal('addMoneyModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="submitAddMoney()">Add Funds</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: APPROVE WITHDRAWAL -->
+<div id="approveWithdrawalModal" class="modal hidden">
+  <div class="modal-content">
+    <h3>Approve Withdrawal</h3>
+    <p id="approveTargetDetails"></p>
+    <input type="text" id="approveRefCode" placeholder="Enter UTR / Payment Ref / Gift Card Code" required>
+    <input type="text" id="approveAdminNote" placeholder="Admin Note (Optional)">
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal('approveWithdrawalModal')">Cancel</button>
+      <button class="btn btn-success" onclick="submitApproveWithdrawal()">Confirm Approval</button>
+    </div>
+  </div>
+</div>
+  
 </body>
 </html>
