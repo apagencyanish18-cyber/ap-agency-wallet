@@ -227,11 +227,40 @@ async function openApp() {
   if (currentUser) {
     try {
       await loadProfile();
-      await loadWallet();
+
       $("authBox").classList.add("hidden");
+
+      // ADMIN ACCOUNT
+      if (currentProfile && currentProfile.role === "admin") {
+        $("app").classList.add("hidden");
+
+        if (typeof initAdminDashboard === "function") {
+          await initAdminDashboard();
+        } else {
+          $("authBox").classList.remove("hidden");
+          showMessage("loginMessage", "Admin Dashboard code is not loaded.", "error");
+        }
+
+        return;
+      }
+
+      // WORKER ACCOUNT
+      await loadWallet();
       $("app").classList.remove("hidden");
       showPage("homePage");
+
     } catch (e) {
+      console.error(e);
+      $("authBox").classList.remove("hidden");
+      $("app").classList.add("hidden");
+      showMessage(
+        "loginMessage",
+        "Could not load account: " + e.message,
+        "error"
+      );
+    }
+  }
+}
       console.error(e);
       $("authBox").classList.remove("hidden");
       $("app").classList.add("hidden");
