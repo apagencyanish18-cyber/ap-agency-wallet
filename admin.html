@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - AP Agency Wallet</title>
+  <!-- Supabase JS CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    * { box-sizing: border-box; font-family: Arial, sans-serif; }
+    body { background-color: #f4f6f9; margin: 0; padding: 20px; }
+    .container { max-width: 1000px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    h1, h2 { color: #333; }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px; }
+    .stat-card { background: #007bff; color: white; padding: 15px; border-radius: 6px; text-align: center; }
+    .stat-card h3 { margin: 0; font-size: 24px; }
+    .tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #ddd; padding-bottom: 10px; }
+    .tab-btn { padding: 10px 20px; border: none; background: #e0e0e0; cursor: pointer; border-radius: 4px; font-weight: bold; }
+    .tab-btn.active { background: #007bff; color: white; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    th, td { padding: 12px; border: 1px solid #ddd; text-align: left; }
+    th { background: #f8f9fa; }
+    .btn { padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; color: white; font-weight: bold; }
+    .btn-success { background-color: #28a745; }
+    .btn-danger { background-color: #dc3545; }
+    .btn-primary { background-color: #007bff; }
+    .hidden { display: none; }
+    .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; }
+    .modal-content { background: white; padding: 20px; border-radius: 8px; width: 350px; }
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; margin-bottom: 5px; }
+    .form-group input { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>AP Agency Admin Dashboard</h1>
+
+  <!-- Stats Header -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <p>Total Workers</p>
+      <h3 id="adminTotalWorkers">0</h3>
+    </div>
+    <div class="stat-card" style="background:#28a745;">
+      <p>Total User Balance</p>
+      <h3 id="adminTotalBalance">₹0.00</h3>
+    </div>
+    <div class="stat-card" style="background:#ffc107; color: #333;">
+      <p>Pending Withdrawals</p>
+      <h3 id="adminPendingWithdrawals">0</h3>
+    </div>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchAdminTab('withdrawals')">Withdrawal Requests</button>
+    <button class="tab-btn" onclick="switchAdminTab('workers')">Workers Directory (+ Add Money)</button>
+  </div>
+
+  <!-- Withdrawal Tab -->
+  <div id="adminWithdrawalsTab">
+    <h2>Pending Withdrawals</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Worker ID</th>
+          <th>Name</th>
+          <th>Amount</th>
+          <th>Method</th>
+          <th>Details</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="adminWithdrawalsList">
+        <tr><td colspan="7" style="text-align:center;">Loading...</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Workers Tab -->
+  <div id="adminWorkersTab" class="hidden">
+    <h2>Workers Directory</h2>
+    <input type="text" id="workerSearchInput" onkeyup="filterWorkerList()" placeholder="Search by Worker ID or Name..." style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px;">
+    <table>
+      <thead>
+        <tr>
+          <th>Worker ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Current Balance</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="adminWorkersList">
+        <tr><td colspan="5" style="text-align:center;">Loading...</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal: Add Money -->
+<div id="addMoneyModal" class="modal hidden">
+  <div class="modal-content">
+    <h3>Add Money to Wallet</h3>
+    <p id="addMoneyTargetWorker"></p>
+    <div class="form-group">
+      <label>Amount (₹)</label>
+      <input type="number" id="addMoneyAmount" placeholder="e.g. 500">
+    </div>
+    <div class="form-group">
+      <label>Note / Reason</label>
+      <input type="text" id="addMoneyNote" placeholder="e.g. Bonus / Task Earnings">
+    </div>
+    <button class="btn btn-primary" onclick="submitAddMoney()">Add Money</button>
+    <button class="btn btn-danger" onclick="closeModal('addMoneyModal')">Cancel</button>
+  </div>
+</div>
+
+<!-- Modal: Approve Withdrawal -->
+<div id="approveWithdrawalModal" class="modal hidden">
+  <div class="modal-content">
+    <h3>Approve Withdrawal</h3>
+    <p id="approveTargetDetails"></p>
+    <div class="form-group">
+      <label>Transaction Ref / UTR Code</label>
+      <input type="text" id="approveRefCode" placeholder="Enter Payment UTR/Ref Code">
+    </div>
+    <div class="form-group">
+      <label>Admin Note (Optional)</label>
+      <input type="text" id="approveAdminNote" placeholder="e.g. Paid via UPI">
+    </div>
+    <button class="btn btn-success" onclick="submitApproveWithdrawal()">Confirm Approval</button>
+    <button class="btn btn-danger" onclick="closeModal('approveWithdrawalModal')">Cancel</button>
+  </div>
+</div>
+
+<script>
+  // Configured Supabase Credentials
+  const SUPABASE_URL = "Https://ykswgkrmqsmdneobykri.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_iED-0Op0GP8e1msvL7ksdw_53rXjJ_H";
+  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  let adminWorkersData = [];
+  let selectedWorkerForMoney = null;
+  let selectedWithdrawalForApprove = null;
+
+  window.onload = function() {
+    loadAdminStats();
+    loadPendingWithdrawals();
+  };
+
+  async function loadAdminStats() {
+    const { count: workerCount } = await supabaseClient.from('profiles').select('*', { count: 'exact', head: true });
+    const { data: balanceData } = await supabaseClient.from('wallets').select('balance');
+    const totalBal = balanceData ? balanceData.reduce((acc, curr) => acc + (parseFloat(curr.balance) || 0), 0) : 0;
+    const { count: pendingCount } = await supabaseClient.from('withdrawals').select('*', { count: 'exact', head: true }).eq('status', 'pending');
+
+    document.getElementById('adminTotalWorkers').textContent = workerCount || 0;
+    document.getElementById('adminTotalBalance').textContent = '₹' + totalBal.toFixed(2);
+    document.getElementById('adminPendingWithdrawals').textContent = pendingCount || 0;
+  }
+
+  async function loadPendingWithdrawals() {
+    const tbody = document.getElementById('adminWithdrawalsList');
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">Loading...</td></tr>';
+
+    const { data, error } = await supabaseClient
+      .from('withdrawals')
+      .select('*, profiles(worker_id, full_name)')
+      .eq('status', 'pending')
+      .order('created_at', { ascending: false });
+
+    if (error || !data || data.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">No pending withdrawal requests.</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = data.map(w => `
+      <tr>
+        <td>${new Date(w.created_at).toLocaleDateString()}</td>
+        <td>${w.profiles?.worker_id || 'N/A'}</td>
+        <td>${w.profiles?.full_name || 'N/A'}</td>
+        <td>₹${parseFloat(w.amount).toFixed(2)}</td>
+        <td>${w.payment_method.toUpperCase()}</td>
+        <td><small>${w.payment_method === 'upi' ? 'UPI: ' + w.upi_id : 'Card: ' + w.gift_card_type}</small></td>
+        <td>
+          <button class="btn btn-success" onclick="openApproveModal('${w.id}', '${w.profiles?.full_name}', ${w.amount})">Approve</button>
+          <button class="btn btn-danger" onclick="rejectWithdrawal('${w.id}')">Reject</button>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  async function loadWorkerDirectory() {
+    const tbody = document.getElementById('adminWorkersList');
+    const { data, error } = await supabaseClient
+      .from('profiles')
+      .select('*, wallets(balance)')
+      .order('created_at', { ascending: false });
+      
+    if (error) return;
+    
+    adminWorkersData = data || [];
+    renderWorkerList(adminWorkersData);
+  }
+
+  function renderWorkerList(workers) {
+    const tbody = document.getElementById('adminWorkersList');
+    if (workers.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No workers found.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = workers.map(w => {
+      const bal = w.wallets ? (Array.isArray(w.wallets) ? w.wallets[0]?.balance : w.wallets.balance) : 0;
+      return `
+        <tr>
+          <td>${w.worker_id || 'N/A'}</td>
+          <td>${w.full_name || 'N/A'}</td>
+          <td>${w.email || 'N/A'}</td>
+          <td>₹${parseFloat(bal || 0).toFixed(2)}</td>
+          <td>
+            <button class="btn btn-primary" onclick="openAddMoneyModal('${w.id}', '${w.full_name || w.worker_id}')">+ Add Money</button>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  function filterWorkerList() {
+    const query = (document.getElementById('workerSearchInput').value || '').toLowerCase();
+    const filtered = adminWorkersData.filter(w => 
+      (w.worker_id && w.worker_id.toLowerCase().includes(query)) ||
+      (w.full_name && w.full_name.toLowerCase().includes(query))
+    );
+    renderWorkerList(filtered);
+  }
+
+  function switchAdminTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    if (tab === 'withdrawals') {
+      document.getElementById('adminWithdrawalsTab').classList.remove('hidden');
+      document.getElementById('adminWorkersTab').classList.add('hidden');
+      loadPendingWithdrawals();
+    } else {
+      document.getElementById('adminWithdrawalsTab').classList.add('hidden');
+      document.getElementById('adminWorkersTab').classList.remove('hidden');
+      loadWorkerDirectory();
+    }
+  }
+
+  function openAddMoneyModal(workerId, workerName) {
+    selectedWorkerForMoney = workerId;
+    document.getElementById('addMoneyTargetWorker').textContent = "Adding funds for: " + workerName;
+    document.getElementById('addMoneyModal').classList.remove('hidden');
+  }
+
+  function openApproveModal(withdrawalId, workerName, amount) {
+    selectedWithdrawalForApprove = withdrawalId;
+    document.getElementById('approveTargetDetails').textContent = `Approving ₹${amount} for ${workerName}`;
+    document.getElementById('approveWithdrawalModal').classList.remove('hidden');
+  }
+
+  function closeModal(modalId) {
+    document.getElementById(modalId).classList.add('hidden');
+  }
+
+  async function submitAddMoney() {
+    const amount = parseFloat(document.getElementById('addMoneyAmount').value);
+    const note = document.getElementById('addMoneyNote').value;
+    if (!amount || amount <= 0) return alert("Enter valid amount");
+
+    // Fetch current wallet balance
+    const { data: wallet } = await supabaseClient.from('wallets').select('balance').eq('user_id', selectedWorkerForMoney).single();
+    const newBalance = (wallet ? parseFloat(wallet.balance) : 0) + amount;
+
+    const { error } = await supabaseClient.from('wallets').update({ balance: newBalance, updated_at: new Date() }).eq('user_id', selectedWorkerForMoney);
+
+    if (error) {
+      alert("Error: " + error.message);
+    } else {
+      await supabaseClient.from('transactions').insert([{
+        user_id: selectedWorkerForMoney,
+        amount: amount,
+        type: 'credit',
+        description: note || 'Admin Credit'
+      }]);
+      alert("Money added successfully!");
+      closeModal('addMoneyModal');
+      loadAdminStats();
+      loadWorkerDirectory();
+    }
+  }
+
+  async function submitApproveWithdrawal() {
+    const refCode = document.getElementById('approveRefCode').value;
+    const note = document.getElementById('approveAdminNote').value;
+    if (!refCode) return alert("Please enter payment reference/code");
+
+    const { data, error } = await supabaseClient.rpc('process_withdrawal_admin', {
+      p_withdrawal_id: parseInt(selectedWithdrawalForApprove),
+      p_action: 'approved',
+      p_payment_reference: refCode,
+      p_admin_note: note || 'Approved'
+    });
+
+    if (error || (data && !data.success)) {
+      alert("Error: " + (error?.message || data?.message));
+    } else {
+      alert("Withdrawal approved!");
+      closeModal('approveWithdrawalModal');
+      loadAdminStats();
+      loadPendingWithdrawals();
+    }
+  }
+
+  async function rejectWithdrawal(withdrawalId) {
+    const reason = prompt("Enter rejection reason:");
+    if (!reason) return;
+
+    const { data, error } = await supabaseClient.rpc('process_withdrawal_admin', {
+      p_withdrawal_id: parseInt(withdrawalId),
+      p_action: 'rejected',
+      p_admin_note: reason
+    });
+
+    if (error || (data && !data.success)) {
+      alert("Error: " + (error?.message || data?.message));
+    } else {
+      alert("Withdrawal rejected!");
+      loadAdminStats();
+      loadPendingWithdrawals();
+    }
+  }
+</script>
+</body>
+      </html>
+  
