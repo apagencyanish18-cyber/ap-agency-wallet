@@ -19,8 +19,18 @@ button{cursor:pointer}
 .light .card,.light .header,.light .modal-box{background:#fff!important;color:#172033!important}
 .light input,.light select{background:#f8fafc!important;color:#172033!important;border-color:#d1d5db!important}
 .light .muted{color:#64748b!important}
+.light .status{border:1px solid rgba(15,23,42,.08)}
+.light .bottom-nav button{color:#64748b}
+.light .bottom-nav .active{color:#2563eb}
 .light .border-dark{border-color:#e5e7eb!important}
-.light .bottom-nav{background:#fff!important;border-color:#ddd!important}
+.light .bottom-nav{background:#fff!important;border-color:#e2e8f0!important;box-shadow:0 10px 35px rgba(15,23,42,.12)}
+.light .action-island,.light .profile-card{background:#fff!important;color:#172033!important;border-color:#e2e8f0!important}
+.light .action-item{background:#f8fafc!important;border-color:#e2e8f0!important;color:#172033!important}
+.light .action-item .muted{color:#64748b!important}
+.light .field-label{color:#475569!important}
+.light .input-wrap{background:#fff!important;border-color:#dbe2ea!important}
+.light .input-wrap input,.light .input-wrap select{background:transparent!important}
+
 
 .page{min-height:100vh}
 .card{background:#182338;border:1px solid #26344b}
@@ -71,11 +81,11 @@ object-fit:cover;background:#fff
 }
 
 .bottom-nav{
-position:fixed;bottom:0;left:50%;transform:translateX(-50%);
-width:min(100%,430px);height:68px;
-background:#101a2d;border-top:1px solid #26344b;
+position:fixed;bottom:14px;left:50%;transform:translateX(-50%);
+width:calc(100% - 28px);max-width:430px;height:68px;
+background:#101a2d;border:1px solid #26344b;border-radius:24px;
 display:flex;align-items:center;justify-content:space-around;
-z-index:50
+z-index:50;box-shadow:0 14px 35px rgba(0,0,0,.28);padding:6px
 }
 
 .bottom-nav button{
@@ -95,10 +105,76 @@ font-size:11px;font-weight:700
 .rejected{background:#7f1d1d;color:#fca5a5}
 
 .avatar{
-width:82px;height:82px;border-radius:50%;
-object-fit:cover;border:4px solid #7c3aed;
-background:#334155
+width:88px;height:88px;border-radius:50%;
+object-fit:cover;border:4px solid #e2e8f0;
+background:#e2e8f0
 }
+
+.field-label{
+display:block;font-size:12px;font-weight:800;
+color:#cbd5e1;margin:0 0 7px 2px
+}
+
+.input-wrap{
+background:#0f172a;border:1px solid #334155;
+border-radius:14px;padding:2px 12px;transition:.2s
+}
+
+.input-wrap:focus-within{
+border-color:#3b82f6;
+box-shadow:0 0 0 3px rgba(59,130,246,.12)
+}
+
+.input-wrap input,.input-wrap select{
+border:0!important;
+background:transparent!important;
+padding:12px 2px!important;
+border-radius:11px!important
+}
+
+.action-island{
+background:#182338;border:1px solid #26344b;
+border-radius:24px;padding:14px;
+box-shadow:0 12px 28px rgba(0,0,0,.12)
+}
+
+.action-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px
+}
+
+.action-item{
+background:#101a2d;border:1px solid #26344b;
+border-radius:18px;padding:14px;
+text-align:left;min-height:86px
+}
+
+.action-item:active{transform:scale(.98)}
+
+.profile-card{
+background:#182338;border:1px solid #26344b;
+border-radius:28px;padding:22px;
+box-shadow:0 15px 35px rgba(0,0,0,.14)
+}
+
+.profile-meta{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;margin-top:18px
+}
+
+.profile-meta-box{
+background:rgba(148,163,184,.08);
+border:1px solid rgba(148,163,184,.16);
+border-radius:16px;padding:12px
+}
+
+.history-box{
+max-height:70vh;
+overflow:auto
+}
+
 </style>
 </head>
 
@@ -158,17 +234,31 @@ id="loginForm"
 onsubmit="login(event)"
 class="space-y-4">
 
+<div>
+<label class="field-label">Email Address</label>
+
+<div class="input-wrap">
 <input
 id="loginEmail"
 type="email"
 required
-placeholder="Email address">
+placeholder="Enter your email">
+</div>
+</div>
 
+
+<div>
+<label class="field-label">Password</label>
+
+<div class="input-wrap">
 <input
 id="loginPassword"
 type="password"
 required
-placeholder="Password">
+placeholder="Enter your password">
+</div>
+</div>
+
 
 <button class="primary">
 Login
@@ -182,28 +272,56 @@ id="registerForm"
 onsubmit="registerUser(event)"
 class="hidden space-y-4">
 
+<div>
+<label class="field-label">Full Name</label>
+
+<div class="input-wrap">
 <input
 id="regName"
 required
-placeholder="Full Name">
+placeholder="Enter your full name">
+</div>
+</div>
 
+
+<div>
+<label class="field-label">Email Address</label>
+
+<div class="input-wrap">
 <input
 id="regEmail"
 type="email"
 required
-placeholder="Email address">
+placeholder="Enter your email">
+</div>
+</div>
 
+
+<div>
+<label class="field-label">Date of Birth</label>
+
+<div class="input-wrap">
 <input
 id="regDob"
 type="date"
 required>
+</div>
+</div>
 
+
+<div>
+<label class="field-label">Password</label>
+
+<div class="input-wrap">
 <input
 id="regPassword"
 type="password"
 minlength="6"
 required
-placeholder="Password">
+placeholder="Create a password">
+</div>
+</div>
+
 
 <button class="primary">
 Create Account
@@ -230,6 +348,7 @@ class="logo"
 onerror="this.style.display='none'">
 
 <div>
+
 <h1 class="font-extrabold text-xl">
 AP AGENCY
 </h1>
@@ -237,12 +356,11 @@ AP AGENCY
 <p class="muted text-xs">
 Do tasks, Earn rewards!
 </p>
-</div>
 
 </div>
 
+</div>
 
-<div class="flex gap-2">
 
 <button
 onclick="toggleTheme()"
@@ -252,17 +370,6 @@ title="Theme">
 <span id="themeIcon">☀</span>
 
 </button>
-
-<button
-onclick="openSettings()"
-class="icon-btn"
-title="Settings">
-
-⚙
-
-</button>
-
-</div>
 
 </header>
 
@@ -295,19 +402,186 @@ Available wallet balance
 </div>
 
 
-<!-- WITHDRAWAL -->
+<!-- ACTIONS -->
 
-<div class="card rounded-2xl p-5">
+<div class="action-island">
 
-<div class="flex justify-between items-center mb-4">
+<div class="flex items-center justify-between mb-3 px-1">
 
-<h2 class="text-xl font-bold">
+<div>
+
+<p class="text-xs muted uppercase font-bold tracking-wider">
+Quick Actions
+</p>
+
+<h2 class="text-lg font-extrabold mt-1">
+Actions
+</h2>
+
+</div>
+
+</div>
+
+
+<div class="action-grid">
+
+<button
+onclick="openWithdrawal()"
+class="action-item">
+
+<div class="text-2xl mb-2">
+↗
+</div>
+
+<p class="font-extrabold text-sm">
+Withdraw Fund
+</p>
+
+<p class="muted text-[11px] mt-1">
+Request a payout
+</p>
+
+</button>
+
+
+<button
+onclick="openWithdrawalHistory()"
+class="action-item">
+
+<div class="text-2xl mb-2">
+↔
+</div>
+
+<p class="font-extrabold text-sm">
+Withdrawal History
+</p>
+
+<p class="muted text-[11px] mt-1">
+View payout status
+</p>
+
+</button>
+
+
+<button
+onclick="openTransactionHistory()"
+class="action-item">
+
+<div class="text-2xl mb-2">
+↕
+</div>
+
+<p class="font-extrabold text-sm">
+Transaction History
+</p>
+
+<p class="muted text-[11px] mt-1">
+Credits & withdrawals
+</p>
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- BOTTOM NAV -->
+
+<nav class="bottom-nav">
+
+<button
+onclick="goHome()"
+class="active">
+
+<div class="text-xl">
+⌂
+</div>
+
+<div>
+Home
+</div>
+
+</button>
+
+
+<button
+onclick="openTelegramChannel()">
+
+<div class="text-xl">
+📢
+</div>
+
+<div>
+Telegram
+</div>
+
+</button>
+
+
+<button
+onclick="openSupport()">
+
+<div class="text-xl">
+💬
+</div>
+
+<div>
+Support
+</div>
+
+</button>
+
+
+<button
+onclick="openSettings()">
+
+<div class="text-xl">
+⚙
+</div>
+
+<div>
+Settings
+</div>
+
+</button>
+
+</nav>
+
+</section>
+
+
+<!-- WITHDRAWAL MODAL -->
+
+<div
+id="withdrawalModal"
+class="modal hidden">
+
+<div class="modal-box">
+
+<div class="flex justify-between items-center mb-5">
+
+<div>
+
+<h2 class="text-xl font-extrabold">
 Withdraw Fund
 </h2>
 
-<span class="text-xs muted">
-Min ₹10
-</span>
+<p class="text-xs muted mt-1">
+Minimum withdrawal ₹10
+</p>
+
+</div>
+
+<button
+onclick="closeWithdrawal()"
+class="icon-btn">
+
+✕
+
+</button>
 
 </div>
 
@@ -315,6 +589,15 @@ Min ₹10
 <form
 onsubmit="createWithdrawal(event)"
 class="space-y-4">
+
+
+<div>
+
+<label class="field-label">
+Withdrawal Amount
+</label>
+
+<div class="input-wrap">
 
 <input
 id="withdrawAmount"
@@ -324,6 +607,18 @@ step="1"
 required
 placeholder="Enter amount">
 
+</div>
+
+</div>
+
+
+<div>
+
+<label class="field-label">
+Payment Method
+</label>
+
+<div class="input-wrap">
 
 <select
 id="paymentMethod"
@@ -339,25 +634,63 @@ Gift Card
 
 </select>
 
-
-<div id="upiFields">
-
-<input
-id="upiId"
-placeholder="UPI ID e.g. name@upi"
-class="mb-3">
-
-<input
-id="withdrawEmail"
-type="email"
-placeholder="Email ID">
+</div>
 
 </div>
 
 
-<div id="giftFields" class="hidden">
+<div id="upiFields">
 
-<select id="giftCardType" class="mb-3">
+<div class="mb-3">
+
+<label class="field-label">
+UPI ID
+</label>
+
+<div class="input-wrap">
+
+<input
+id="upiId"
+placeholder="name@upi">
+
+</div>
+
+</div>
+
+
+<div>
+
+<label class="field-label">
+Email ID
+</label>
+
+<div class="input-wrap">
+
+<input
+id="withdrawEmail"
+type="email"
+placeholder="Enter email">
+
+</div>
+
+</div>
+
+</div>
+
+
+<div
+id="giftFields"
+class="hidden">
+
+<div class="mb-3">
+
+<label class="field-label">
+Gift Card
+</label>
+
+<div class="input-wrap">
+
+<select id="giftCardType">
 
 <option value="amazon">
 Amazon Gift Card
@@ -373,10 +706,27 @@ Google Play Gift Card
 
 </select>
 
+</div>
+
+</div>
+
+
+<div>
+
+<label class="field-label">
+Email ID
+</label>
+
+<div class="input-wrap">
+
 <input
 id="giftEmail"
 type="email"
-placeholder="Email ID">
+placeholder="Enter email">
+
+</div>
+
+</div>
 
 </div>
 
@@ -389,46 +739,100 @@ Request Withdrawal
 
 </div>
 
-
-<!-- WITHDRAWAL REQUESTS -->
-
-<div class="card rounded-2xl p-5">
-
-<h2 class="text-xl font-bold mb-4">
-Withdrawal Requests
-</h2>
-
-<div id="workerWithdrawals"
-class="space-y-3">
-
-</div>
-
 </div>
 
 
-<!-- TRANSACTIONS -->
+<!-- TRANSACTION HISTORY MODAL -->
 
-<div class="card rounded-2xl p-5">
+<div
+id="transactionHistoryModal"
+class="modal hidden">
 
-<h2 class="text-xl font-bold mb-4">
+<div class="modal-box">
+
+<div class="flex justify-between items-center mb-5">
+
+<div>
+
+<h2 class="text-xl font-extrabold">
 Transaction History
 </h2>
 
-<div id="transactions"
-class="space-y-3">
+<p class="text-xs muted mt-1">
+Money added and withdrawals
+</p>
 
+</div>
+
+<button
+onclick="closeTransactionHistory()"
+class="icon-btn">
+
+✕
+
+</button>
+
+</div>
+
+
+<div
+id="transactions"
+class="history-box space-y-3">
 </div>
 
 </div>
 
 </div>
 
-</section>
+
+<!-- WITHDRAWAL HISTORY MODAL -->
+
+<div
+id="withdrawalHistoryModal"
+class="modal hidden">
+
+<div class="modal-box">
+
+<div class="flex justify-between items-center mb-5">
+
+<div>
+
+<h2 class="text-xl font-extrabold">
+Withdrawal History
+</h2>
+
+<p class="text-xs muted mt-1">
+Your withdrawal requests and status
+</p>
+
+</div>
+
+<button
+onclick="closeWithdrawalHistory()"
+class="icon-btn">
+
+✕
+
+</button>
+
+</div>
+
+
+<div
+id="workerWithdrawals"
+class="history-box space-y-3">
+</div>
+
+</div>
+
+</div>
 
 
 <!-- ADMIN -->
 
-<section id="adminPage" class="hidden page pb-10">
+<section
+id="adminPage"
+class="hidden page pb-10">
 
 <header class="header p-4 flex justify-between items-center">
 
@@ -439,6 +843,7 @@ src="./file_00000000e37481fabb8b78aea4e71cd6.png"
 class="logo">
 
 <div>
+
 <h1 class="font-extrabold">
 AP AGENCY
 </h1>
@@ -446,6 +851,7 @@ AP AGENCY
 <p class="text-xs muted">
 ADMIN PANEL
 </p>
+
 </div>
 
 </div>
@@ -457,9 +863,12 @@ ADMIN PANEL
 onclick="toggleTheme()"
 class="icon-btn">
 
-<span id="adminThemeIcon">☀</span>
+<span id="adminThemeIcon">
+☀
+</span>
 
 </button>
+
 
 <button
 onclick="logout()"
@@ -525,6 +934,7 @@ Withdrawals
 
 </button>
 
+
 <button
 id="adminWorkerTab"
 onclick="adminTab('workers')"
@@ -542,7 +952,6 @@ Workers
 <div
 id="adminWithdrawalList"
 class="space-y-3">
-
 </div>
 
 </div>
@@ -561,7 +970,6 @@ class="mb-3">
 <div
 id="adminWorkerList"
 class="space-y-3">
-
 </div>
 
 </div>
@@ -569,9 +977,13 @@ class="space-y-3">
 </div>
 
 </section>
+
+
 <!-- SETTINGS POPUP -->
 
-<div id="settingsModal" class="modal hidden">
+<div
+id="settingsModal"
+class="modal hidden">
 
 <div class="modal-box">
 
@@ -594,13 +1006,14 @@ class="icon-btn">
 
 <button
 onclick="openProfile()"
-class="w-full flex items-center gap-4 p-4 rounded-xl bg-slate-800 mb-3 text-left">
+class="w-full flex items-center gap-4 p-4 rounded-xl card mb-3 text-left">
 
 <span class="text-2xl">
 👤
 </span>
 
 <div>
+
 <p class="font-bold">
 My Profile
 </p>
@@ -608,6 +1021,7 @@ My Profile
 <p class="text-xs muted">
 View and edit your profile
 </p>
+
 </div>
 
 </button>
@@ -622,6 +1036,7 @@ class="w-full flex items-center gap-4 p-4 rounded-xl bg-red-500/10 text-red-400 
 </span>
 
 <div>
+
 <p class="font-bold">
 Logout
 </p>
@@ -629,9 +1044,15 @@ Logout
 <p class="text-xs">
 Sign out of your account
 </p>
+
 </div>
 
 </button>
+
+</div>
+
+    </div>
+    </button>
 
 </div>
 
@@ -642,7 +1063,7 @@ Sign out of your account
 
 <section
 id="profilePage"
-class="hidden page pb-10">
+class="hidden page pb-24">
 
 <header class="header p-4 flex items-center gap-4">
 
@@ -654,33 +1075,44 @@ class="icon-btn">
 
 </button>
 
+<div>
+
 <h1 class="text-xl font-bold">
 My Profile
 </h1>
+
+<p class="text-xs muted">
+Account information
+</p>
+
+</div>
 
 </header>
 
 
 <div class="p-5">
 
-<div
-class="rounded-3xl p-6 text-center mb-5"
-style="background:linear-gradient(135deg,#3b0764,#581c87,#312e81)">
+<div class="profile-card">
 
-<div class="relative inline-block">
+
+<div class="flex items-start justify-between gap-4">
+
+<div class="relative">
 
 <img
 id="profileAvatar"
 class="avatar"
 src="./file_00000000e37481fabb8b78aea4e71cd6.png">
 
+
 <label
 for="avatarInput"
-class="absolute bottom-0 right-0 w-9 h-9 rounded-full bg-purple-600 flex items-center justify-center border-2 border-white cursor-pointer">
+class="absolute bottom-0 right-0 w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center border-2 border-white cursor-pointer">
 
 📷
 
 </label>
+
 
 <input
 id="avatarInput"
@@ -692,9 +1124,22 @@ onchange="uploadAvatar(event)">
 </div>
 
 
+<button
+onclick="editProfile()"
+class="px-4 py-2.5 rounded-xl bg-blue-600 text-white font-bold text-sm">
+
+✎ Edit
+
+</button>
+
+</div>
+
+
+<div class="mt-5">
+
 <h2
 id="profileNameTop"
-class="text-2xl font-bold mt-4">
+class="text-2xl font-extrabold">
 
 Worker
 
@@ -703,123 +1148,73 @@ Worker
 
 <p
 id="profileEmailTop"
-class="text-sm text-slate-300 mt-1">
+class="text-sm muted mt-1 break-all">
 
 email@example.com
 
 </p>
 
-
-<div class="mt-4 inline-block px-5 py-2 rounded-full bg-white/10">
-
-<span class="text-sm">
-DOB:
-</span>
-
-<b id="profileDobTop">
-Not set
-</b>
-
-</div>
-
 </div>
 
 
-<!-- NAME -->
+<div class="profile-meta">
 
-<div class="card rounded-2xl p-5 mb-4">
 
-<div class="flex justify-between items-center">
+<div class="profile-meta-box">
 
-<div>
-
-<p class="text-xs muted uppercase">
-Full Name
+<p class="text-[10px] muted uppercase font-bold">
+Date of Birth
 </p>
 
 <p
-id="profileName"
-class="text-lg font-bold mt-1">
+id="profileDobTop"
+class="font-bold mt-1">
 
-Worker
+Not set
 
 </p>
 
 </div>
 
 
-<button
-onclick="editProfile()"
-class="px-4 py-3 rounded-xl bg-purple-500/10 text-purple-400 font-bold">
+<div class="profile-meta-box">
 
-✎ Edit
-
-</button>
-
-</div>
-
-</div>
-
-
-<!-- WALLET ID -->
-
-<div class="card rounded-2xl p-5 mb-4">
-
-<p class="text-xs muted uppercase">
+<p class="text-[10px] muted uppercase font-bold">
 Wallet / Worker ID
 </p>
 
 <p
 id="profileWorkerId"
-class="text-xl font-bold text-blue-400 mt-2 font-mono">
+class="font-bold text-blue-400 mt-1 font-mono">
 
 AP000000
 
 </p>
 
-<span class="inline-block mt-2 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-bold">
+</div>
 
-ACTIVE
+</div>
 
+
+<div class="mt-4 flex items-center justify-between rounded-2xl px-4 py-3 bg-emerald-500/10 border border-emerald-500/20">
+
+<div>
+
+<p class="text-xs muted">
+Account Status
+</p>
+
+<p class="font-bold text-emerald-400">
+Active
+</p>
+
+</div>
+
+<span class="text-emerald-400">
+●
 </span>
 
 </div>
-
-
-<!-- EMAIL -->
-
-<div class="card rounded-2xl p-5 mb-4">
-
-<p class="text-xs muted uppercase">
-Email Address
-</p>
-
-<p
-id="profileEmail"
-class="font-bold mt-2 break-all">
-
--
-
-</p>
-
-</div>
-
-
-<!-- DOB -->
-
-<div class="card rounded-2xl p-5">
-
-<p class="text-xs muted uppercase">
-Date of Birth
-</p>
-
-<p
-id="profileDob"
-class="font-bold mt-2">
-
--
-
-</p>
 
 </div>
 
@@ -856,6 +1251,7 @@ class="icon-btn">
 <form
 onsubmit="saveProfile(event)"
 class="space-y-4">
+
 
 <input
 id="editName"
@@ -973,9 +1369,6 @@ return;
 $("profileNameTop").textContent =
 currentProfile.full_name || "Worker";
 
-$("profileName").textContent =
-currentProfile.full_name || "Worker";
-
 
 $("profileWorkerId").textContent =
 currentProfile.worker_id || "AP000000";
@@ -984,18 +1377,12 @@ currentProfile.worker_id || "AP000000";
 $("profileEmailTop").textContent =
 currentUser.email || "-";
 
-$("profileEmail").textContent =
-currentUser.email || "-";
-
 
 const dob =
 currentProfile.date_of_birth;
 
 
 $("profileDobTop").textContent =
-dob || "Not set";
-
-$("profileDob").textContent =
 dob || "Not set";
 
 
@@ -1084,8 +1471,6 @@ currentProfile.date_of_birth = dob;
 closeEditProfile();
 
 loadProfilePage();
-
-$("workerName").textContent = name;
 
 toast(
 "Profile updated successfully.",
@@ -1217,26 +1602,27 @@ toast(
 }
 
 
-applyTheme();
+</script>
 
-    </script>
-    <script>
+<script>
 
 const SUPABASE_URL =
-    "https://ykswgkrmqsmdneobykri.supabase.co";
+"https://ykswgkrmqsmdneobykri.supabase.co";
+
 
 const SUPABASE_KEY =
-    "sb_publishable_iED-0Op0GP8e1msvL7ksdw_53rXjJ_H";
+"sb_publishable_iED-0Op0GP8e1msvL7ksdw_53rXjJ_H";
+
 
 const db =
-    supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-    );
+supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
 
 
 const $ = id =>
-    document.getElementById(id);
+document.getElementById(id);
 
 
 let currentUser = null;
@@ -1249,1433 +1635,1699 @@ let selectedWithdrawal = null;
 
 function toast(message, type = "info") {
 
-    const box = document.createElement("div");
+const box =
+document.createElement("div");
 
-    box.style.cssText =
-        "background:" +
-        (type === "error"
-            ? "#dc2626"
-            : type === "success"
-            ? "#059669"
-            : "#2563eb") +
-        ";color:white;padding:12px 16px;" +
-        "border-radius:12px;margin-bottom:8px;" +
-        "font-size:14px;font-weight:bold";
 
-    box.textContent = message;
+box.style.cssText =
+"background:" +
+(type === "error"
+? "#dc2626"
+: type === "success"
+? "#059669"
+: "#2563eb") +
+";color:white;padding:12px 16px;" +
+"border-radius:12px;margin-bottom:8px;" +
+"font-size:14px;font-weight:bold";
 
-    $("toast").appendChild(box);
 
-    setTimeout(() => {
-        box.remove();
-    }, 3500);
+box.textContent =
+message;
+
+
+$("toast").appendChild(box);
+
+
+setTimeout(() => {
+box.remove();
+},3500);
+
 }
 
 
 function money(value) {
 
-    return "₹" +
-        Number(value || 0).toLocaleString(
-            "en-IN",
-            {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            }
-        );
+return "₹" +
+Number(value || 0).toLocaleString(
+"en-IN",
+{
+minimumFractionDigits:2,
+maximumFractionDigits:2
+}
+);
 
 }
 
 
 function showPage(id) {
 
-    $("authPage").classList.add("hidden");
-    $("workerPage").classList.add("hidden");
-    $("adminPage").classList.add("hidden");
-    $("profilePage").classList.add("hidden");
+$("authPage").classList.add("hidden");
+$("workerPage").classList.add("hidden");
+$("adminPage").classList.add("hidden");
+$("profilePage").classList.add("hidden");
 
-    $(id).classList.remove("hidden");
+$(id).classList.remove("hidden");
+
+
+if (id === "workerPage") {
+
+$("settingsModal").classList.add("hidden");
+$("withdrawalModal").classList.add("hidden");
+$("transactionHistoryModal").classList.add("hidden");
+$("withdrawalHistoryModal").classList.add("hidden");
+
+}
 
 }
 
 
 function showAuthTab(type) {
 
-    const login =
-        type === "login";
+const login =
+type === "login";
 
-    $("loginForm").classList.toggle(
-        "hidden",
-        !login
-    );
 
-    $("registerForm").classList.toggle(
-        "hidden",
-        login
-    );
+$("loginForm").classList.toggle(
+"hidden",
+!login
+);
 
-    $("loginTab").className =
-        login
-        ? "flex-1 py-3 rounded-xl bg-blue-600 font-bold"
-        : "flex-1 py-3 rounded-xl muted";
 
-    $("registerTab").className =
-        !login
-        ? "flex-1 py-3 rounded-xl bg-blue-600 font-bold"
-        : "flex-1 py-3 rounded-xl muted";
+$("registerForm").classList.toggle(
+"hidden",
+login
+);
+
+
+$("loginTab").className =
+login
+? "flex-1 py-3 rounded-xl bg-blue-600 font-bold"
+: "flex-1 py-3 rounded-xl muted";
+
+
+$("registerTab").className =
+!login
+? "flex-1 py-3 rounded-xl bg-blue-600 font-bold"
+: "flex-1 py-3 rounded-xl muted";
 
 }
 
 
 async function login(event) {
 
-    event.preventDefault();
-
-    try {
-
-        const { data, error } =
-            await db.auth.signInWithPassword({
-
-                email:
-                    $("loginEmail")
-                        .value
-                        .trim(),
-
-                password:
-                    $("loginPassword").value
-
-            });
+event.preventDefault();
 
 
-        if (error)
-            throw error;
+try {
+
+const { data,error } =
+await db.auth.signInWithPassword({
+
+email:
+$("loginEmail")
+.value
+.trim(),
+
+password:
+$("loginPassword").value
+
+});
 
 
-        await openApp(data.user);
+if (error)
+throw error;
 
 
-    } catch (error) {
+await openApp(data.user);
 
-        console.error(error);
 
-        toast(
-            error.message,
-            "error"
-        );
+} catch (error) {
 
-    }
+console.error(error);
+
+toast(
+error.message,
+"error"
+);
+
+}
 
 }
 
 
 async function registerUser(event) {
 
-    event.preventDefault();
-
-    try {
-
-        const { data, error } =
-            await db.auth.signUp({
-
-                email:
-                    $("regEmail")
-                        .value
-                        .trim(),
-
-                password:
-                    $("regPassword").value,
-
-                options: {
-
-                    data: {
-
-                        full_name:
-                            $("regName")
-                                .value
-                                .trim(),
-
-                        date_of_birth:
-                            $("regDob").value
-
-                    }
-
-                }
-
-            });
+event.preventDefault();
 
 
-        if (error)
-            throw error;
+try {
+
+const { data,error } =
+await db.auth.signUp({
+
+email:
+$("regEmail")
+.value
+.trim(),
+
+password:
+$("regPassword").value,
+
+options: {
+
+data: {
+
+full_name:
+$("regName")
+.value
+.trim(),
+
+date_of_birth:
+$("regDob").value
+
+}
+
+}
+
+});
 
 
-        if (data.session) {
-
-            await openApp(data.user);
-
-        } else {
-
-            toast(
-                "Account created. Check your email.",
-                "success"
-            );
-
-            showAuthTab("login");
-
-            $("loginEmail").value =
-                $("regEmail").value.trim();
-
-        }
+if (error)
+throw error;
 
 
-    } catch (error) {
+if (data.session) {
 
-        console.error(error);
+await openApp(data.user);
 
-        toast(
-            error.message,
-            "error"
-        );
+} else {
 
-    }
+toast(
+"Account created. Check your email.",
+"success"
+);
+
+showAuthTab("login");
+
+$("loginEmail").value =
+$("regEmail").value.trim();
+
+}
+
+
+} catch (error) {
+
+console.error(error);
+
+toast(
+error.message,
+"error"
+);
+   }
 
 }
 
 
 async function openApp(user) {
 
-    currentUser = user;
+currentUser = user;
 
 
-    const { data, error } =
-        await db
-            .from("profiles")
-            .select(`
-                id,
-                full_name,
-                date_of_birth,
-                role,
-                is_active,
-                worker_id,
-                avatar_url,
-                email
-            `)
-            .eq("id", user.id)
-            .single();
+const { data,error } =
+await db
+.from("profiles")
+.select(`
+id,
+full_name,
+date_of_birth,
+role,
+is_active,
+worker_id,
+avatar_url,
+email
+`)
+.eq("id",user.id)
+.single();
 
 
-    if (error)
-        throw error;
+if (error)
+throw error;
 
 
-    if (data.is_active === false) {
+if (data.is_active === false) {
 
-        throw new Error(
-            "Your account is inactive."
-        );
+throw new Error(
+"Your account is inactive."
+);
 
-    }
-
-
-    currentProfile = data;
+}
 
 
-    if (data.role === "admin") {
+currentProfile = data;
 
-        showPage("adminPage");
 
-        await loadAdmin();
+if (data.role === "admin") {
 
-    } else {
+showPage("adminPage");
 
-        showPage("workerPage");
+await loadAdmin();
 
-        await loadWorker();
+} else {
 
-    }
+showPage("workerPage");
+
+await loadWorker();
+
+}
 
 }
 
 
 async function restoreSession() {
 
-    try {
+try {
 
-        const { data, error } =
-            await db.auth.getSession();
-
-
-        if (error)
-            throw error;
+const { data,error } =
+await db.auth.getSession();
 
 
-        if (data.session) {
-
-            await openApp(
-                data.session.user
-            );
-
-        } else {
-
-            showPage("authPage");
-
-        }
+if (error)
+throw error;
 
 
-    } catch (error) {
+if (data.session) {
 
-        console.error(error);
+await openApp(
+data.session.user
+);
 
-        showPage("authPage");
+} else {
 
-    }
+showPage("authPage");
+
+}
+
+
+} catch (error) {
+
+console.error(error);
+
+showPage("authPage");
+
+}
 
 }
 
 
 async function logout() {
 
-    await db.auth.signOut();
+await db.auth.signOut();
 
-    currentUser = null;
-    currentProfile = null;
+currentUser = null;
+currentProfile = null;
 
-    showPage("authPage");
+showPage("authPage");
 
-    $("loginPassword").value = "";
+$("loginPassword").value = "";
 
-    toast(
-        "Logged out successfully.",
-        "success"
-    );
+toast(
+"Logged out successfully.",
+"success"
+);
+
+}
+
+
+function openWithdrawal() {
+
+$("withdrawalModal")
+.classList.remove("hidden");
+
+changePaymentMethod();
+
+}
+
+
+function closeWithdrawal() {
+
+$("withdrawalModal")
+.classList.add("hidden");
+
+}
+
+
+function openTransactionHistory() {
+
+$("transactionHistoryModal")
+.classList.remove("hidden");
+
+loadWorkerTransactions();
+
+}
+
+
+function closeTransactionHistory() {
+
+$("transactionHistoryModal")
+.classList.add("hidden");
+
+}
+
+
+function openWithdrawalHistory() {
+
+$("withdrawalHistoryModal")
+.classList.remove("hidden");
+
+loadWorkerWithdrawals();
+
+}
+
+
+function closeWithdrawalHistory() {
+
+$("withdrawalHistoryModal")
+.classList.add("hidden");
+
+}
+
+
+function goHome() {
+
+closeSettings();
+closeWithdrawal();
+closeTransactionHistory();
+closeWithdrawalHistory();
+
+$("profilePage")
+.classList.add("hidden");
+
+$("workerPage")
+.classList.remove("hidden");
+
+}
+
+
+function openTelegramChannel() {
+
+window.open(
+"https://t.me/apagencyofficial",
+"_blank"
+);
+
+}
+
+
+function openSupport() {
+
+window.open(
+"https://t.me/APAgencyAdmin2",
+"_blank"
+);
 
 }
 
 
 async function loadWorker() {
 
-    $("workerBalance").textContent =
-        "₹0.00";
+$("workerBalance").textContent =
+"₹0.00";
 
 
-    const { data: wallet, error } =
-        await db
-            .from("wallets")
-            .select("balance")
-            .eq(
-                "user_id",
-                currentUser.id
-            )
-            .single();
+const { data: wallet,error } =
+await db
+.from("wallets")
+.select("balance")
+.eq(
+"user_id",
+currentUser.id
+)
+.single();
 
 
-    if (!error && wallet) {
+if (!error && wallet) {
 
-        $("workerBalance").textContent =
-            money(wallet.balance);
+$("workerBalance").textContent =
+money(wallet.balance);
 
-    }
+}
 
 
-    await loadWorkerTransactions();
+await loadWorkerTransactions();
 
-    await loadWorkerWithdrawals();
+await loadWorkerWithdrawals();
 
 }
 
 
 async function loadWorkerTransactions() {
 
-    const { data, error } =
-        await db
-            .from("transactions")
-            .select(`
-                id,
-                type,
-                amount,
-                description,
-                balance_after,
-                created_at
-            `)
-            .eq(
-                "user_id",
-                currentUser.id
-            )
-            .order(
-                "created_at",
-                { ascending: false }
-            )
-            .limit(50);
+const { data,error } =
+await db
+.from("transactions")
+.select(`
+id,
+type,
+amount,
+description,
+balance_after,
+created_at
+`)
+.eq(
+"user_id",
+currentUser.id
+)
+.order(
+"created_at",
+{ascending:false}
+)
+.limit(50);
 
 
-    if (error) {
+if (error) {
 
-        console.error(error);
+console.error(error);
 
-        $("transactions").innerHTML =
-            `<p class="muted text-sm">
-                Unable to load transactions.
-            </p>`;
+$("transactions").innerHTML =
+`<p class="muted text-sm">
+Unable to load transactions.
+</p>`;
 
-        return;
+return;
 
-    }
-
-
-    if (!data || !data.length) {
-
-        $("transactions").innerHTML =
-            `<p class="muted text-sm">
-                No transactions yet.
-            </p>`;
-
-        return;
-
-    }
+}
 
 
-    $("transactions").innerHTML =
-        data.map(item => {
+if (!data || !data.length) {
 
-            const credit =
-                item.type === "credit";
+$("transactions").innerHTML =
+`<p class="muted text-sm">
+No transactions yet.
+</p>`;
+
+return;
+
+}
 
 
-            return `
-                <div class="card rounded-xl p-4 flex justify-between">
+$("transactions").innerHTML =
+data.map(item => {
 
-                    <div>
+const credit =
+item.type === "credit";
 
-                        <p class="font-bold text-sm">
-                            ${item.description || item.type}
-                        </p>
 
-                        <p class="muted text-[10px] mt-1">
-                            ${new Date(
-                                item.created_at
-                            ).toLocaleString("en-IN")}
-                        </p>
+return `
+<div class="card rounded-xl p-4 flex justify-between">
 
-                    </div>
+<div>
 
-                    <p class="${
-                        credit
-                        ? "green"
-                        : "red"
-                    } font-bold">
+<p class="font-bold text-sm">
+${item.description || item.type}
+</p>
 
-                        ${credit ? "+" : "-"}
-                        ${money(item.amount)}
+<p class="muted text-[10px] mt-1">
+${new Date(
+item.created_at
+).toLocaleString("en-IN")}
+</p>
 
-                    </p>
+</div>
 
-                </div>
-            `;
+<p class="${
+credit
+? "green"
+: "red"
+} font-bold">
 
-        }).join("");
+${credit ? "+" : "-"}
+${money(item.amount)}
+
+</p>
+
+</div>
+`;
+
+}).join("");
 
 }
 
 
 async function loadWorkerWithdrawals() {
 
-    const { data, error } =
-        await db
-            .from("withdrawals")
-            .select(`
-                id,
-                amount,
-                status,
-                payment_method,
-                gift_card_type,
-                upi_id,
-                email,
-                payment_reference,
-                admin_note,
-                created_at,
-                processed_at
-            `)
-            .eq(
-                "user_id",
-                currentUser.id
-            )
-            .order(
-                "created_at",
-                { ascending: false }
-            )
-            .limit(30);
+const { data,error } =
+await db
+.from("withdrawals")
+.select(`
+id,
+amount,
+status,
+payment_method,
+gift_card_type,
+upi_id,
+email,
+payment_reference,
+admin_note,
+created_at,
+processed_at
+`)
+.eq(
+"user_id",
+currentUser.id
+)
+.order(
+"created_at",
+{ascending:false}
+)
+.limit(30);
 
 
-    if (error) {
+if (error) {
 
-        console.error(error);
+console.error(error);
 
-        $("workerWithdrawals").innerHTML =
-            `<p class="muted text-sm">
-                Unable to load withdrawal requests.
-            </p>`;
+$("workerWithdrawals").innerHTML =
+`<p class="muted text-sm">
+Unable to load withdrawal requests.
+</p>`;
 
-        return;
+return;
 
-    }
-
-
-    if (!data || !data.length) {
-
-        $("workerWithdrawals").innerHTML =
-            `<p class="muted text-sm">
-                No withdrawal requests yet.
-            </p>`;
-
-        return;
-
-    }
+}
 
 
-    $("workerWithdrawals").innerHTML =
-        data.map(item => {
+if (!data || !data.length) {
 
-            const status =
-                item.status || "pending";
+$("workerWithdrawals").innerHTML =
+`<p class="muted text-sm">
+No withdrawal requests yet.
+</p>`;
 
+return;
 
-            const statusClass =
-                status === "approved"
-                ? "approved"
-                : status === "rejected"
-                ? "rejected"
-                : "pending";
+}
 
 
-            const statusText =
-                status === "approved"
-                ? "PAID / APPROVED"
-                : status === "rejected"
-                ? "REJECTED"
-                : "PENDING";
+$("workerWithdrawals").innerHTML =
+data.map(item => {
+
+const status =
+item.status || "pending";
 
 
-            return `
-                <div class="card rounded-xl p-4">
-
-                    <div class="flex justify-between">
-
-                        <div>
-
-                            <p class="font-bold">
-                                ${money(item.amount)}
-                            </p>
-
-                            <p class="muted text-xs mt-1">
-                                ${
-                                    item.payment_method === "upi"
-                                    ? "UPI"
-                                    : "Gift Card"
-                                }
-                            </p>
-
-                        </div>
-
-                        <span class="status ${statusClass}">
-                            ${statusText}
-                        </span>
-
-                    </div>
+const statusClass =
+status === "approved"
+? "approved"
+: status === "rejected"
+? "rejected"
+: "pending";
 
 
-                    <div class="muted text-xs mt-3">
-
-                        ${
-                            item.payment_method === "upi"
-                            ? `
-                                <p>
-                                    UPI:
-                                    ${item.upi_id || "-"}
-                                </p>
-                              `
-                            : `
-                                <p>
-                                    Gift Card:
-                                    ${item.gift_card_type || "-"}
-                                </p>
-                              `
-                        }
-
-                        <p>
-                            Email:
-                            ${item.email || "-"}
-                        </p>
-
-                        <p class="mt-1">
-                            Requested:
-                            ${new Date(
-                                item.created_at
-                            ).toLocaleString("en-IN")}
-                        </p>
-
-                        ${
-                            item.processed_at
-                            ? `
-                                <p>
-                                    Processed:
-                                    ${new Date(
-                                        item.processed_at
-                                    ).toLocaleString("en-IN")}
-                                </p>
-                              `
-                            : ""
-                        }
-
-                    </div>
+const statusText =
+status === "approved"
+? "PAID / APPROVED"
+: status === "rejected"
+? "REJECTED"
+: "PENDING";
 
 
-                    ${
-                        item.payment_reference
-                        ? `
-                            <div class="mt-3 p-3 rounded-xl bg-emerald-500/10">
+return `
+<div class="card rounded-xl p-4">
 
-                                <p class="text-xs green">
-                                    Payment Reference
-                                </p>
+<div class="flex justify-between">
 
-                                <p class="font-bold break-all">
-                                    ${item.payment_reference}
-                                </p>
+<div>
 
-                            </div>
-                          `
-                        : ""
-                    }
+<p class="font-bold">
+${money(item.amount)}
+</p>
+
+<p class="muted text-xs mt-1">
+
+${
+item.payment_method === "upi"
+? "UPI"
+: "Gift Card"
+}
+
+</p>
+
+</div>
 
 
-                    ${
-                        item.admin_note
-                        ? `
-                            <div class="mt-2 text-xs muted">
-                                Note: ${item.admin_note}
-                            </div>
-                          `
-                        : ""
-                    }
+<span class="status ${statusClass}">
+${statusText}
+</span>
 
-                </div>
-            `;
+</div>
 
-        }).join("");
+
+<div class="muted text-xs mt-3">
+
+${
+item.payment_method === "upi"
+? `
+<p>
+UPI:
+${item.upi_id || "-"}
+</p>
+`
+: `
+<p>
+Gift Card:
+${item.gift_card_type || "-"}
+</p>
+`
+}
+
+
+<p>
+Email:
+${item.email || "-"}
+</p>
+
+
+<p class="mt-1">
+Requested:
+${new Date(
+item.created_at
+).toLocaleString("en-IN")}
+</p>
+
+
+${
+item.processed_at
+? `
+<p>
+Processed:
+${new Date(
+item.processed_at
+).toLocaleString("en-IN")}
+</p>
+`
+: ""
+}
+
+</div>
+
+
+${
+item.payment_reference
+? `
+<div class="mt-3 p-3 rounded-xl bg-emerald-500/10">
+
+<p class="text-xs green">
+Payment Reference
+</p>
+
+<p class="font-bold break-all">
+${item.payment_reference}
+</p>
+
+</div>
+`
+: ""
+}
+
+
+${
+item.admin_note
+? `
+<div class="mt-2 text-xs muted">
+Note: ${item.admin_note}
+</div>
+`
+: ""
+}
+
+</div>
+`;
+
+}).join("");
 
 }
 
 
 function changePaymentMethod() {
 
-    const upi =
-        $("paymentMethod").value === "upi";
+const upi =
+$("paymentMethod").value === "upi";
 
 
-    $("upiFields").classList.toggle(
-        "hidden",
-        !upi
-    );
+$("upiFields").classList.toggle(
+"hidden",
+!upi
+);
 
 
-    $("giftFields").classList.toggle(
-        "hidden",
-        upi
-    );
+$("giftFields").classList.toggle(
+"hidden",
+upi
+);
 
 }
 
 
 async function createWithdrawal(event) {
 
-    event.preventDefault();
+event.preventDefault();
 
 
-    const amount =
-        Number(
-            $("withdrawAmount").value
-        );
+const amount =
+Number(
+$("withdrawAmount").value
+);
 
 
-    const method =
-        $("paymentMethod").value;
+const method =
+$("paymentMethod").value;
 
 
-    const email =
-        method === "upi"
-        ? $("withdrawEmail").value.trim()
-        : $("giftEmail").value.trim();
+const email =
+method === "upi"
+? $("withdrawEmail").value.trim()
+: $("giftEmail").value.trim();
 
 
-    const upi =
-        $("upiId").value.trim();
+const upi =
+$("upiId").value.trim();
 
 
-    const gift =
-        $("giftCardType").value;
+const gift =
+$("giftCardType").value;
 
 
-    if (amount < 10) {
+if (amount < 10) {
 
-        toast(
-            "Minimum withdrawal is ₹10.",
-            "error"
-        );
+toast(
+"Minimum withdrawal is ₹10.",
+"error"
+);
 
-        return;
-
-    }
-
-
-    if (!email) {
-
-        toast(
-            "Email ID is required.",
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    if (
-        method === "upi" &&
-        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-    ) {
-
-        toast(
-            "Enter a valid email ID.",
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    if (
-        method === "upi" &&
-        !/^[^\s@]+@[^\s@]+$/.test(upi)
-    ) {
-
-        toast(
-            "Enter a valid UPI ID.",
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    try {
-
-        const { error } =
-            await db.rpc(
-                "create_withdrawal",
-                {
-                    p_amount: amount,
-
-                    p_payment_method:
-                        method,
-
-                    p_gift_card_type:
-                        method === "gift_card"
-                        ? gift
-                        : null,
-
-                    p_upi_id:
-                        method === "upi"
-                        ? upi
-                        : null,
-
-                    p_email:
-                        email
-                }
-            );
-
-
-        if (error)
-            throw error;
-
-
-        $("withdrawAmount").value = "";
-        $("upiId").value = "";
-        $("withdrawEmail").value = "";
-        $("giftEmail").value = "";
-
-
-        toast(
-            "Withdrawal request submitted.",
-            "success"
-        );
-
-
-        await loadWorker();
-
-
-    } catch (error) {
-
-        console.error(error);
-
-        toast(
-            error.message,
-            "error"
-        );
-
-    }
+return;
 
 }
-     async function loadAdmin() {
 
-    await loadAdminWorkers();
-    await loadAdminWithdrawals();
+
+if (!email) {
+
+toast(
+"Email ID is required.",
+"error"
+);
+
+return;
+
+}
+
+
+if (
+method === "upi" &&
+!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+) {
+
+toast(
+"Enter a valid email ID.",
+"error"
+);
+
+return;
+
+}
+
+
+if (
+method === "upi" &&
+!/^[^\s@]+@[^\s@]+$/.test(upi)
+) {
+
+toast(
+"Enter a valid UPI ID.",
+"error"
+);
+
+return;
+
+}
+
+
+try {
+
+const { error } =
+await db.rpc(
+"create_withdrawal",
+{
+p_amount:
+amount,
+
+p_payment_method:
+method,
+
+p_gift_card_type:
+method === "gift_card"
+? gift
+: null,
+
+p_upi_id:
+method === "upi"
+? upi
+: null,
+
+p_email:
+email
+}
+);
+
+
+if (error)
+throw error;
+
+
+$("withdrawAmount").value = "";
+$("upiId").value = "";
+$("withdrawEmail").value = "";
+$("giftEmail").value = "";
+
+
+toast(
+"Withdrawal request submitted.",
+"success"
+);
+
+
+closeWithdrawal();
+
+await loadWorker();
+
+
+} catch (error) {
+
+console.error(error);
+
+toast(
+error.message,
+"error"
+);
+
+}
+
+}
+
+
+async function loadAdmin() {
+
+await loadAdminWorkers();
+
+await loadAdminWithdrawals();
 
 }
 
 
 async function loadAdminWorkers() {
 
-    const { data, error } =
-        await db
-            .from("profiles")
-            .select(`
-                id,
-                full_name,
-                email,
-                worker_id,
-                is_active
-            `)
-            .eq("role", "worker")
-            .order("full_name");
+const { data,error } =
+await db
+.from("profiles")
+.select(`
+id,
+full_name,
+email,
+worker_id,
+is_active
+`)
+.eq("role","worker")
+.order("full_name");
 
 
-    if (error) {
+if (error) {
 
-        console.error(error);
+console.error(error);
 
-        toast(
-            "Unable to load workers.",
-            "error"
-        );
+toast(
+"Unable to load workers.",
+"error"
+);
 
-        return;
+return;
 
+}
+
+
+const ids =
+(data || []).map(
+worker => worker.id
+);
+
+
+let walletData = [];
+
+
+if (ids.length) {
+
+const result =
+await db
+.from("wallets")
+.select(
+"user_id,balance"
+)
+.in(
+"user_id",
+ids
+);
+
+
+walletData =
+result.data || [];
     }
 
 
-    const ids =
-        (data || []).map(
-            worker => worker.id
-        );
+const balances =
+Object.fromEntries(
+walletData.map(wallet => [
+wallet.user_id,
+wallet.balance
+])
+);
 
 
-    let walletData = [];
+workers =
+(data || []).map(worker => ({
+...worker,
+balance:
+balances[worker.id] || 0
+}));
 
 
-    if (ids.length) {
-
-        const result =
-            await db
-                .from("wallets")
-                .select(
-                    "user_id,balance"
-                )
-                .in(
-                    "user_id",
-                    ids
-                );
+$("totalWorkers").textContent =
+workers.length;
 
 
-        walletData =
-            result.data || [];
-
-    }
-
-
-    const balances =
-        Object.fromEntries(
-            walletData.map(wallet => [
-                wallet.user_id,
-                wallet.balance
-            ])
-        );
-
-
-    workers =
-        (data || []).map(worker => ({
-            ...worker,
-            balance:
-                balances[worker.id] || 0
-        }));
-
-
-    $("totalWorkers").textContent =
-        workers.length;
-
-
-    renderWorkers();
+renderWorkers();
 
 }
 
 
 function renderWorkers() {
 
-    const query =
-        (
-            $("workerSearch").value ||
-            ""
-        ).toLowerCase().trim();
+const query =
+(
+$("workerSearch").value ||
+""
+).toLowerCase().trim();
 
 
-    const list =
-        workers.filter(worker =>
+const list =
+workers.filter(worker =>
 
-            (worker.worker_id || "")
-                .toLowerCase()
-                .includes(query)
+(worker.worker_id || "")
+.toLowerCase()
+.includes(query)
 
-            ||
+||
 
-            (worker.full_name || "")
-                .toLowerCase()
-                .includes(query)
+(worker.full_name || "")
+.toLowerCase()
+.includes(query)
 
-            ||
+||
 
-            (worker.email || "")
-                .toLowerCase()
-                .includes(query)
+(worker.email || "")
+.toLowerCase()
+.includes(query)
 
-        );
-
-
-    if (!list.length) {
-
-        $("adminWorkerList").innerHTML =
-            `<p class="muted text-center p-5">
-                No workers found.
-            </p>`;
-
-        return;
-
-    }
+);
 
 
-    $("adminWorkerList").innerHTML =
-        list.map(worker => `
+if (!list.length) {
 
-            <div class="card rounded-2xl p-4">
+$("adminWorkerList").innerHTML =
+`<p class="muted text-center p-5">
+No workers found.
+</p>`;
 
-                <div class="flex justify-between gap-3">
+return;
 
-                    <div>
-
-                        <p class="font-bold">
-                            ${worker.full_name || "Worker"}
-                        </p>
-
-                        <p class="blue text-xs font-mono mt-1">
-                            ${worker.worker_id || ""}
-                        </p>
-
-                        <p class="muted text-xs mt-1 break-all">
-                            ${worker.email || ""}
-                        </p>
-
-                    </div>
+}
 
 
-                    <div class="text-right">
+$("adminWorkerList").innerHTML =
+list.map(worker => `
 
-                        <p class="green font-bold">
-                            ${money(worker.balance)}
-                        </p>
+<div class="card rounded-2xl p-4">
 
-                        <button
-                            onclick="addMoneyPrompt('${worker.id}')"
-                            class="mt-2 px-3 py-2 rounded-lg bg-blue-600 text-xs font-bold">
+<div class="flex justify-between gap-3">
 
-                            + Add Money
+<div>
 
-                        </button>
+<p class="font-bold">
+${worker.full_name || "Worker"}
+</p>
 
-                    </div>
+<p class="blue text-xs font-mono mt-1">
+${worker.worker_id || ""}
+</p>
 
-                </div>
+<p class="muted text-xs mt-1 break-all">
+${worker.email || ""}
+</p>
 
-            </div>
+</div>
 
-        `).join("");
+
+<div class="text-right">
+
+<p class="green font-bold">
+${money(worker.balance)}
+</p>
+
+
+<button
+onclick="addMoneyPrompt('${worker.id}')"
+class="mt-2 px-3 py-2 rounded-lg bg-blue-600 text-xs font-bold">
+
++ Add Money
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+`).join("");
 
 }
 
 
 async function addMoneyPrompt(workerId) {
 
-    selectedWorker =
-        workers.find(
-            worker =>
-                worker.id === workerId
-        );
+selectedWorker =
+workers.find(
+worker =>
+worker.id === workerId
+);
 
 
-    if (!selectedWorker)
-        return;
+if (!selectedWorker)
+return;
 
 
-    const amountText =
-        prompt(
-            `Add money to ${selectedWorker.full_name}
+const amountText =
+prompt(
+`Add money to ${selectedWorker.full_name}
 Worker ID: ${selectedWorker.worker_id}
 
 Minimum amount: ₹1`
-        );
+);
 
 
-    if (amountText === null)
-        return;
+if (amountText === null)
+return;
 
 
-    const amount =
-        Number(amountText);
+const amount =
+Number(amountText);
 
 
-    if (!amount || amount < 1) {
+if (!amount || amount < 1) {
 
-        toast(
-            "Minimum add-money amount is ₹1.",
-            "error"
-        );
+toast(
+"Minimum add-money amount is ₹1.",
+"error"
+);
 
-        return;
+return;
 
-    }
-
-
-    const description =
-        prompt(
-            "Transaction description:",
-            "Admin credit"
-        ) || "Admin credit";
+}
 
 
-    try {
-
-        const { error } =
-            await db.rpc(
-                "admin_add_money",
-                {
-                    p_user_id:
-                        selectedWorker.id,
-
-                    p_amount:
-                        amount,
-
-                    p_description:
-                        description
-                }
-            );
+const description =
+prompt(
+"Transaction description:",
+"Admin credit"
+) || "Admin credit";
 
 
-        if (error)
-            throw error;
+try {
+
+const { error } =
+await db.rpc(
+"admin_add_money",
+{
+p_user_id:
+selectedWorker.id,
+
+p_amount:
+amount,
+
+p_description:
+description
+}
+);
 
 
-        toast(
-            `${money(amount)} added successfully.`,
-            "success"
-        );
+if (error)
+throw error;
 
 
-        selectedWorker = null;
+toast(
+`${money(amount)} added successfully.`,
+"success"
+);
 
-        await loadAdmin();
 
-    } catch (error) {
+selectedWorker = null;
 
-        console.error(error);
+await loadAdmin();
 
-        toast(
-            error.message,
-            "error"
-        );
 
-    }
+} catch (error) {
+
+console.error(error);
+
+toast(
+error.message,
+"error"
+);
+
+}
 
 }
 
 
 async function loadAdminWithdrawals() {
 
-    const { data, error } =
-        await db
-            .from("withdrawals")
-            .select(`
-                id,
-                user_id,
-                amount,
-                status,
-                payment_method,
-                gift_card_type,
-                upi_id,
-                email,
-                payment_reference,
-                admin_note,
-                created_at,
-                processed_at,
-                profiles(
-                    full_name,
-                    worker_id,
-                    email
-                )
-            `)
-            .eq(
-                "status",
-                "pending"
-            )
-            .order(
-                "created_at",
-                { ascending: false }
-            );
+const { data,error } =
+await db
+.from("withdrawals")
+.select(`
+id,
+user_id,
+amount,
+status,
+payment_method,
+gift_card_type,
+upi_id,
+email,
+payment_reference,
+admin_note,
+created_at,
+processed_at,
+profiles(
+full_name,
+worker_id,
+email
+)
+`)
+.eq(
+"status",
+"pending"
+)
+.order(
+"created_at",
+{ascending:false}
+);
 
 
-    if (error) {
+if (error) {
 
-        console.error(error);
+console.error(error);
 
-        toast(
-            "Unable to load withdrawals.",
-            "error"
-        );
+toast(
+"Unable to load withdrawals.",
+"error"
+);
 
-        return;
+return;
 
-    }
-
-
-    withdrawals =
-        data || [];
+}
 
 
-    $("pendingCount").textContent =
-        withdrawals.length;
+withdrawals =
+data || [];
 
 
-    if (!withdrawals.length) {
-
-        $("adminWithdrawalList").innerHTML =
-            `<p class="muted text-center p-5">
-                No pending withdrawals.
-            </p>`;
-
-        return;
-
-    }
+$("pendingCount").textContent =
+withdrawals.length;
 
 
-    $("adminWithdrawalList").innerHTML =
-        withdrawals.map(item => `
+if (!withdrawals.length) {
 
-            <div class="card rounded-2xl p-4">
+$("adminWithdrawalList").innerHTML =
+`<p class="muted text-center p-5">
+No pending withdrawals.
+</p>`;
 
-                <div class="flex justify-between">
+return;
 
-                    <div>
-
-                        <p class="font-bold">
-                            ${item.profiles?.full_name || "Worker"}
-                        </p>
-
-                        <p class="blue text-xs font-mono">
-                            ${item.profiles?.worker_id || ""}
-                        </p>
-
-                    </div>
-
-                    <p class="text-yellow-400 font-bold">
-                        ${money(item.amount)}
-                    </p>
-
-                </div>
+}
 
 
-                <div class="muted text-xs mt-4 space-y-1">
+$("adminWithdrawalList").innerHTML =
+withdrawals.map(item => `
 
-                    <p>
-                        Method:
-                        <b class="text-white">
-                            ${
-                                item.payment_method === "upi"
-                                ? "UPI"
-                                : "Gift Card"
-                            }
-                        </b>
-                    </p>
+<div class="card rounded-2xl p-4">
 
+<div class="flex justify-between">
 
-                    ${
-                        item.payment_method === "upi"
-                        ? `
-                            <p>
-                                UPI ID:
-                                <b class="text-white">
-                                    ${item.upi_id || "-"}
-                                </b>
-                            </p>
-                        `
-                        : `
-                            <p>
-                                Gift Card:
-                                <b class="text-white">
-                                    ${item.gift_card_type || "-"}
-                                </b>
-                            </p>
-                        `
-                    }
+<div>
+
+<p class="font-bold">
+${item.profiles?.full_name || "Worker"}
+</p>
+
+<p class="blue text-xs font-mono">
+${item.profiles?.worker_id || ""}
+</p>
+
+</div>
+
+<p class="text-yellow-400 font-bold">
+${money(item.amount)}
+</p>
+
+</div>
 
 
-                    <p>
-                        Email:
-                        <b class="text-white">
-                            ${
-                                item.email ||
-                                item.profiles?.email ||
-                                "-"
-                            }
-                        </b>
-                    </p>
+<div class="muted text-xs mt-4 space-y-1">
+
+<p>
+
+Method:
+
+<b class="text-white">
+
+${
+item.payment_method === "upi"
+? "UPI"
+: "Gift Card"
+}
+
+</b>
+
+</p>
 
 
-                    <p>
-                        Requested:
-                        ${new Date(
-                            item.created_at
-                        ).toLocaleString("en-IN")}
-                    </p>
+${
+item.payment_method === "upi"
+? `
+<p>
 
-                </div>
+UPI ID:
+
+<b class="text-white">
+${item.upi_id || "-"}
+</b>
+
+</p>
+`
+: `
+<p>
+
+Gift Card:
+
+<b class="text-white">
+${item.gift_card_type || "-"}
+</b>
+
+</p>
+`
+}
 
 
-                <button
-                    onclick="approvePrompt('${item.id}')"
-                    class="primary mt-4">
+<p>
 
-                    Approve / Mark Paid
+Email:
 
-                </button>
+<b class="text-white">
 
-            </div>
+${
+item.email ||
+item.profiles?.email ||
+"-"
+}
 
-        `).join("");
+</b>
+
+</p>
+
+
+<p>
+
+Requested:
+
+${new Date(
+item.created_at
+).toLocaleString("en-IN")}
+
+</p>
+
+</div>
+
+
+<div class="grid grid-cols-2 gap-2 mt-4">
+
+
+<button
+onclick="approvePrompt('${item.id}')"
+class="primary">
+
+Approve / Mark Paid
+
+</button>
+
+
+<button
+onclick="rejectPrompt('${item.id}')"
+class="secondary text-red-400">
+
+Reject
+
+</button>
+
+
+</div>
+
+</div>
+
+`).join("");
 
 }
 
 
 function adminTab(type) {
 
-    const withdrawalsTab =
-        type === "withdrawals";
+const withdrawalsTab =
+type === "withdrawals";
 
 
-    $("adminWithdrawalsView")
-        .classList.toggle(
-            "hidden",
-            !withdrawalsTab
-        );
+$("adminWithdrawalsView")
+.classList.toggle(
+"hidden",
+!withdrawalsTab
+);
 
 
-    $("adminWorkersView")
-        .classList.toggle(
-            "hidden",
-            withdrawalsTab
-        );
+$("adminWorkersView")
+.classList.toggle(
+"hidden",
+withdrawalsTab
+);
 
 
-    $("adminWithdrawalTab").className =
-        withdrawalsTab
-        ? "pb-3 text-blue-400 font-bold border-b-2 border-blue-500"
-        : "pb-3 muted font-bold";
+$("adminWithdrawalTab").className =
+withdrawalsTab
+? "pb-3 text-blue-400 font-bold border-b-2 border-blue-500"
+: "pb-3 muted font-bold";
 
 
-    $("adminWorkerTab").className =
-        !withdrawalsTab
-        ? "pb-3 text-blue-400 font-bold border-b-2 border-blue-500"
-        : "pb-3 muted font-bold";
+$("adminWorkerTab").className =
+!withdrawalsTab
+? "pb-3 text-blue-400 font-bold border-b-2 border-blue-500"
+: "pb-3 muted font-bold";
 
 }
 
 
 function approvePrompt(withdrawalId) {
 
-    selectedWithdrawal =
-        withdrawals.find(
-            item =>
-                String(item.id) ===
-                String(withdrawalId)
-        );
+selectedWithdrawal =
+withdrawals.find(
+item =>
+String(item.id) ===
+String(withdrawalId)
+);
 
 
-    if (!selectedWithdrawal)
-        return;
+if (!selectedWithdrawal)
+return;
 
 
-    const item =
-        selectedWithdrawal;
+const item =
+selectedWithdrawal;
 
 
-    let details =
-        `Worker: ${item.profiles?.full_name || "Worker"}
+let details =
+`Worker: ${item.profiles?.full_name || "Worker"}
 
 Worker ID: ${item.profiles?.worker_id || ""}
 
 Amount: ${money(item.amount)}
 
 Method: ${
-    item.payment_method === "upi"
-    ? "UPI"
-    : "Gift Card"
+item.payment_method === "upi"
+? "UPI"
+: "Gift Card"
 }
 
 `;
 
 
-    if (item.payment_method === "upi") {
+if (item.payment_method === "upi") {
 
-        details +=
-            `UPI ID: ${item.upi_id || "-"}
-
-`;
-
-    } else {
-
-        details +=
-            `Gift Card: ${item.gift_card_type || "-"}
+details +=
+`UPI ID: ${item.upi_id || "-"}
 
 `;
 
-    }
+} else {
+
+details +=
+`Gift Card: ${item.gift_card_type || "-"}
+
+`;
+
+}
 
 
-    details +=
-        `Email: ${
-            item.email ||
-            item.profiles?.email ||
-            "-"
-        }`;
+details +=
+`Email: ${
+item.email ||
+item.profiles?.email ||
+"-"
+}`;
 
 
-    const reference =
-        prompt(
-            details +
-            `
+const reference =
+prompt(
+details +
+`
 
 Enter UTR / Gift Card Code:`
-        );
+);
 
 
-    if (reference === null)
-        return;
+if (reference === null)
+return;
 
 
-    if (!reference.trim()) {
+if (!reference.trim()) {
 
-        toast(
-            "UTR / Gift Card Code is required.",
-            "error"
-        );
+toast(
+"UTR / Gift Card Code is required.",
+"error"
+);
 
-        return;
+return;
 
-    }
-
-
-    const note =
-        prompt(
-            "Admin note (optional):",
-            ""
-        );
+}
 
 
-    approveWithdrawal(
-        reference.trim(),
-        note ? note.trim() : null
-    );
+const note =
+prompt(
+"Admin note (optional):",
+""
+);
+
+
+approveWithdrawal(
+reference.trim(),
+note ? note.trim() : null
+);
 
 }
 
 
 async function approveWithdrawal(
-    reference,
-    note
+reference,
+note
 ) {
 
-    if (!selectedWithdrawal)
-        return;
+if (!selectedWithdrawal)
+return;
 
 
-    try {
+try {
 
-        const { error } =
-            await db.rpc(
-                "admin_approve_withdrawal",
-                {
-                    p_withdrawal_id:
-                        Number(
-                            selectedWithdrawal.id
-                        ),
+const { error } =
+await db.rpc(
+"admin_approve_withdrawal",
+{
+p_withdrawal_id:
+Number(
+selectedWithdrawal.id
+),
 
-                    p_payment_reference:
-                        reference,
+p_payment_reference:
+reference,
 
-                    p_admin_note:
-                        note
-                }
-            );
-
-
-        if (error)
-            throw error;
+p_admin_note:
+note
+}
+);
 
 
-        toast(
-            "Withdrawal approved successfully.",
-            "success"
-        );
+if (error)
+throw error;
 
 
-        selectedWithdrawal = null;
+toast(
+"Withdrawal approved successfully.",
+"success"
+);
 
 
-        await loadAdmin();
+selectedWithdrawal = null;
 
-    } catch (error) {
 
-        console.error(error);
+await loadAdmin();
 
-        toast(
-            error.message,
-            "error"
-        );
 
-    }
+} catch (error) {
+
+console.error(error);
+
+toast(
+error.message,
+"error"
+);
+
+}
+
+}
+
+
+function rejectPrompt(withdrawalId) {
+
+selectedWithdrawal =
+withdrawals.find(
+item =>
+String(item.id) ===
+String(withdrawalId)
+);
+
+
+if (!selectedWithdrawal)
+return;
+
+
+const item =
+selectedWithdrawal;
+
+
+const reason =
+prompt(
+`Reject withdrawal for ${
+item.profiles?.full_name || "Worker"
+}\n\nAmount: ${money(item.amount)}\n\nEnter rejection reason:`,
+""
+);
+
+
+if (reason === null)
+return;
+
+
+if (!reason.trim()) {
+
+toast(
+"Rejection reason is required.",
+"error"
+);
+
+return;
+
+}
+
+
+rejectWithdrawal(
+reason.trim()
+);
+
+}
+
+
+async function rejectWithdrawal(reason) {
+
+if (!selectedWithdrawal)
+return;
+
+
+try {
+
+const { error } =
+await db.rpc(
+"admin_reject_withdrawal",
+{
+p_withdrawal_id:
+Number(
+selectedWithdrawal.id
+),
+
+p_admin_note:
+reason
+}
+);
+
+
+if (error)
+throw error;
+
+
+toast(
+"Withdrawal rejected and amount refunded.",
+"success"
+);
+
+
+selectedWithdrawal = null;
+
+
+await loadAdmin();
+
+
+} catch (error) {
+
+console.error(error);
+
+toast(
+error.message,
+"error"
+);
+
+}
 
 }
 
 
 db.auth.onAuthStateChange(
-    (event, session) => {
+(event,session) => {
 
-        if (event === "SIGNED_OUT") {
+if (event === "SIGNED_OUT") {
 
-            currentUser = null;
-            currentProfile = null;
+currentUser = null;
+currentProfile = null;
 
-            showPage("authPage");
+showPage("authPage");
 
-        }
+}
 
-    }
+}
 );
+
+
+applyTheme();
 
 
 restoreSession();
@@ -2683,4 +3335,4 @@ restoreSession();
 </script>
 
 </body>
-</html>   
+</html>
