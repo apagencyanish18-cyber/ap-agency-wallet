@@ -1,509 +1,1250 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AP Agency Wallet</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-    body { font-family: 'Plus Jakarta Sans', sans-serif; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AP Agency Wallet</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#020617;color:white}
+.hidden{display:none!important}
+input,select,button{font:inherit}
+</style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen">
 
-  <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+<body>
 
-  <div id="app" class="max-w-md mx-auto min-h-screen bg-slate-900 border-x border-slate-800 shadow-2xl relative pb-20">
+<div id="toast" class="fixed top-4 right-4 z-50"></div>
 
-    <!-- Auth Screen -->
-    <div id="auth-screen" class="p-6 flex flex-col min-h-screen justify-center">
-      <div class="text-center mb-8">
-        <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-blue-500/30">
-          <i class="fa-solid fa-wallet text-3xl text-white"></i>
-        </div>
-        <h1 class="text-2xl font-bold tracking-tight text-white">AP Agency Wallet</h1>
-        <p class="text-sm text-slate-400 mt-1">Sign in to manage your worker or admin wallet</p>
-      </div>
+<main class="max-w-md mx-auto min-h-screen bg-slate-900">
 
-      <div class="bg-slate-800/80 p-1 rounded-xl flex mb-6 border border-slate-700/50">
-        <button id="tab-login" type="button" onclick="switchAuthTab('login')" class="flex-1 py-2 text-sm font-semibold rounded-lg bg-blue-600 text-white transition-all">Log In</button>
-        <button id="tab-register" type="button" onclick="switchAuthTab('register')" class="flex-1 py-2 text-sm font-semibold rounded-lg text-slate-400 hover:text-white transition-all">Register</button>
-      </div>
+<!-- LOGIN / REGISTER -->
 
-      <!-- Login Form -->
-      <form id="login-form" onsubmit="handleLogin(event)" class="space-y-4">
-        <div>
-          <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Email Address</label>
-          <div class="relative">
-            <i class="fa-solid fa-envelope absolute left-4 top-3.5 text-slate-500 text-sm"></i>
-            <input type="email" id="login-email" required placeholder="name@domain.com" class="w-full bg-slate-800 border border-slate-700/80 rounded-xl py-3 pl-11 pr-4 text-sm focus:outline-none focus:border-blue-500 transition-colors text-white">
-          </div>
-        </div>
-        <div>
-          <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Password</label>
-          <div class="relative">
-            <i class="fa-solid fa-lock absolute left-4 top-3.5 text-slate-500 text-sm"></i>
-            <input type="password" id="login-password" required placeholder="••••••••" class="w-full bg-slate-800 border border-slate-700/80 rounded-xl py-3 pl-11 pr-4 text-sm focus:outline-none focus:border-blue-500 transition-colors text-white">
-          </div>
-        </div>
-        <button type="submit" id="btn-login" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3.5 rounded-xl shadow-lg shadow-blue-600/30 transition-all flex items-center justify-center gap-2 cursor-pointer">
-          <span>Log In</span>
-          <i class="fa-solid fa-arrow-right text-xs"></i>
-        </button>
-      </form>
+<section id="auth" class="min-h-screen p-6 flex flex-col justify-center">
 
-      <!-- Register Form -->
-      <form id="register-form" onsubmit="handleRegister(event)" class="space-y-4 hidden">
-        <div>
-          <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Full Name</label>
-          <div class="relative">
-            <i class="fa-solid fa-user absolute left-4 top-3.5 text-slate-500 text-sm"></i>
-            <input type="text" id="reg-name" required placeholder="John Doe" class="w-full bg-slate-800 border border-slate-700/80 rounded-xl py-3 pl-11 pr-4 text-sm focus:outline-none focus:border-blue-500 transition-colors text-white">
-          </div>
-        </div>
-        <div>
-          <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Email Address</label>
-          <div class="relative">
-            <i class="fa-solid fa-envelope absolute left-4 top-3.5 text-slate-500 text-sm"></i>
-            <input type="email" id="reg-email" required placeholder="name@domain.com" class="w-full bg-slate-800 border border-slate-700/80 rounded-xl py-3 pl-11 pr-4 text-sm focus:outline-none focus:border-blue-500 transition-colors text-white">
-          </div>
-        </div>
-        <div>
-          <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Password</label>
-          <div class="relative">
-            <i class="fa-solid fa-lock absolute left-4 top-3.5 text-slate-500 text-sm"></i>
-            <input type="password" id="reg-password" required minlength="6" placeholder="At least 6 characters" class="w-full bg-slate-800 border border-slate-700/80 rounded-xl py-3 pl-11 pr-4 text-sm focus:outline-none focus:border-blue-500 transition-colors text-white">
-          </div>
-        </div>
-        <button type="submit" id="btn-register" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3.5 rounded-xl shadow-lg shadow-blue-600/30 transition-all flex items-center justify-center gap-2 cursor-pointer">
-          <span>Create Account</span>
-          <i class="fa-solid fa-user-plus text-xs"></i>
-        </button>
-      </form>
+    <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold">AP Agency</h1>
+        <p class="text-slate-400 mt-2">Worker Wallet</p>
     </div>
 
-    <!-- Worker Dashboard -->
-    <div id="worker-dashboard" class="hidden">
-      <header class="p-5 flex items-center justify-between border-b border-slate-800/80 bg-slate-900/50 backdrop-blur sticky top-0 z-30">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 bg-blue-600/20 border border-blue-500/30 rounded-xl flex items-center justify-center text-blue-400 font-bold">AP</div>
-          <div>
-            <h2 class="text-sm font-bold text-white" id="user-name-display">Loading...</h2>
-            <p class="text-xs text-blue-400 font-medium font-mono" id="worker-id-display">AP000000</p>
-          </div>
-        </div>
-        <button type="button" onclick="handleLogout()" class="p-2 text-slate-400 hover:text-red-400 transition-colors rounded-lg hover:bg-slate-800">
-          <i class="fa-solid fa-right-from-bracket"></i>
+    <div class="flex bg-slate-800 rounded-xl p-1 mb-6">
+        <button id="loginTab"
+            onclick="showTab('login')"
+            class="flex-1 py-3 rounded-lg bg-blue-600 font-bold">
+            Login
         </button>
-      </header>
 
-      <div class="p-5 space-y-6">
-        <div class="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl p-6 text-white shadow-xl shadow-blue-600/20 relative overflow-hidden">
-          <p class="text-xs font-semibold text-blue-200 uppercase tracking-wider mb-1">Available Balance</p>
-          <div class="text-3xl font-extrabold tracking-tight" id="worker-balance">₹0.00</div>
-          <div class="mt-4 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-blue-100">
-            <span>Minimum Withdrawal: ₹10</span>
-            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white/10 rounded-full text-[11px] backdrop-blur"><i class="fa-solid fa-shield-check"></i> Verified</span>
-          </div>
-        </div>
-
-        <div class="bg-slate-800/50 border border-slate-800 rounded-2xl p-5 space-y-4">
-          <h3 class="text-sm font-bold text-white flex items-center gap-2">
-            <i class="fa-solid fa-money-bill-transfer text-blue-400"></i> Withdraw Funds
-          </h3>
-          <form id="withdrawal-form" onsubmit="handleWorkerWithdrawal(event)" class="space-y-4">
-            <div>
-              <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Amount (₹)</label>
-              <input type="number" id="withdraw-amount" min="10" step="1" required placeholder="Min. ₹10" class="w-full bg-slate-900 border border-slate-700/80 rounded-xl py-3 px-4 text-sm text-white focus:outline-none focus:border-blue-500">
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Payment Method</label>
-              <select id="withdraw-method" onchange="toggleWithdrawMethodFields()" class="w-full bg-slate-900 border border-slate-700/80 rounded-xl py-3 px-4 text-sm text-white focus:outline-none focus:border-blue-500">
-                <option value="upi">UPI Transfer</option>
-                <option value="gift_card">Gift Card</option>
-              </select>
-            </div>
-            <div id="upi-field-group">
-              <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">UPI ID</label>
-              <input type="text" id="withdraw-upi-id" placeholder="example@upi" class="w-full bg-slate-900 border border-slate-700/80 rounded-xl py-3 px-4 text-sm text-white focus:outline-none focus:border-blue-500">
-            </div>
-            <div id="gift-card-field-group" class="hidden">
-              <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Select Gift Card</label>
-              <select id="withdraw-gift-card-type" class="w-full bg-slate-900 border border-slate-700/80 rounded-xl py-3 px-4 text-sm text-white focus:outline-none focus:border-blue-500">
-                <option value="amazon">Amazon Gift Card</option>
-                <option value="flipkart">Flipkart Gift Card</option>
-                <option value="google_play">Google Play Redeem Code</option>
-              </select>
-            </div>
-            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 rounded-xl transition-all shadow-lg shadow-blue-600/20 cursor-pointer">
-              Request Withdrawal
-            </button>
-          </form>
-        </div>
-
-        <div class="space-y-3">
-          <h3 class="text-sm font-bold text-white flex items-center gap-2">
-            <i class="fa-solid fa-clock-rotate-left text-blue-400"></i> Recent Activity
-          </h3>
-          <div id="worker-transactions-list" class="space-y-2">
-            <div class="text-center py-8 text-slate-500 text-xs">Loading activity...</div>
-          </div>
-        </div>
-      </div>
+        <button id="registerTab"
+            onclick="showTab('register')"
+            class="flex-1 py-3 rounded-lg text-slate-400">
+            Register
+        </button>
     </div>
 
-    <!-- Admin Dashboard -->
-    <div id="admin-dashboard" class="hidden">
-      <header class="p-5 flex items-center justify-between border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-30">
-        <div>
-          <span class="text-[10px] font-extrabold uppercase tracking-widest text-blue-400 bg-blue-950 px-2 py-0.5 rounded border border-blue-800/50">Control Panel</span>
-          <h2 class="text-base font-bold text-white mt-0.5">Admin Dashboard</h2>
-        </div>
-        <button type="button" onclick="handleLogout()" class="px-3 py-1.5 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer">
-          <i class="fa-solid fa-right-from-bracket"></i>
-          <span>Logout</span>
-        </button>
-      </header>
+    <form id="loginForm" onsubmit="login(event)" class="space-y-4">
 
-      <div class="p-5 space-y-6">
+        <input id="loginEmail"
+            type="email"
+            required
+            placeholder="Email address"
+            class="w-full p-3.5 rounded-xl bg-slate-800 border border-slate-700">
+
+        <input id="loginPassword"
+            type="password"
+            required
+            placeholder="Password"
+            class="w-full p-3.5 rounded-xl bg-slate-800 border border-slate-700">
+
+        <button class="w-full p-3.5 rounded-xl bg-blue-600 font-bold">
+            Login
+        </button>
+
+    </form>
+
+    <form id="registerForm"
+        onsubmit="register(event)"
+        class="hidden space-y-4">
+
+        <input id="regName"
+            required
+            placeholder="Full Name"
+            class="w-full p-3.5 rounded-xl bg-slate-800 border border-slate-700">
+
+        <input id="regEmail"
+            type="email"
+            required
+            placeholder="Email address"
+            class="w-full p-3.5 rounded-xl bg-slate-800 border border-slate-700">
+
+        <input id="regDob"
+            type="date"
+            required
+            class="w-full p-3.5 rounded-xl bg-slate-800 border border-slate-700">
+
+        <input id="regPassword"
+            type="password"
+            minlength="6"
+            required
+            placeholder="Password"
+            class="w-full p-3.5 rounded-xl bg-slate-800 border border-slate-700">
+
+        <button class="w-full p-3.5 rounded-xl bg-blue-600 font-bold">
+            Create Account
+        </button>
+
+    </form>
+
+</section>
+
+
+<!-- WORKER DASHBOARD -->
+
+<section id="workerPage" class="hidden">
+
+    <header class="p-5 border-b border-slate-800 flex justify-between items-center">
+
+        <div>
+            <h2 id="workerName" class="font-bold text-lg">Worker</h2>
+            <p id="workerId" class="text-xs text-blue-400 font-mono">
+                AP000000
+            </p>
+        </div>
+
+        <button onclick="logout()"
+            class="text-red-400 font-bold">
+            Logout
+        </button>
+
+    </header>
+
+
+    <div class="p-5 space-y-5">
+
+        <div class="rounded-2xl p-6 bg-blue-600">
+            <p class="text-sm text-blue-100">
+                Available Balance
+            </p>
+
+            <h1 id="workerBalance"
+                class="text-4xl font-bold mt-2">
+                ₹0.00
+            </h1>
+
+            <p class="text-xs mt-4 text-blue-100">
+                Minimum withdrawal: ₹10
+            </p>
+        </div>
+
+
+        <!-- WITHDRAW -->
+
+        <div class="bg-slate-800 rounded-2xl p-5">
+
+            <h2 class="font-bold text-lg mb-4">
+                Withdraw Funds
+            </h2>
+
+            <form onsubmit="createWithdrawal(event)"
+                class="space-y-4">
+
+                <input id="withdrawAmount"
+                    type="number"
+                    min="10"
+                    required
+                    placeholder="Amount"
+                    class="w-full p-3.5 rounded-xl bg-slate-900 border border-slate-700">
+
+                <select id="paymentMethod"
+                    onchange="changePaymentMethod()"
+                    class="w-full p-3.5 rounded-xl bg-slate-900 border border-slate-700">
+
+                    <option value="upi">UPI</option>
+                    <option value="gift_card">Gift Card</option>
+
+                </select>
+
+
+                <div id="upiSection">
+
+                    <input id="upiId"
+                        placeholder="UPI ID e.g. name@upi"
+                        class="w-full p-3.5 rounded-xl bg-slate-900 border border-slate-700">
+
+                </div>
+
+
+                <div id="giftCardSection" class="hidden">
+
+                    <select id="giftCardType"
+                        class="w-full p-3.5 rounded-xl bg-slate-900 border border-slate-700">
+
+                        <option value="amazon">Amazon</option>
+                        <option value="flipkart">Flipkart</option>
+                        <option value="google_play">Google Play</option>
+
+                    </select>
+
+                </div>
+
+
+                <button class="w-full p-3.5 rounded-xl bg-blue-600 font-bold">
+                    Request Withdrawal
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- TRANSACTIONS -->
+
+        <div>
+            <h2 class="font-bold text-lg mb-3">
+                Transaction History
+            </h2>
+
+            <div id="transactions" class="space-y-2"></div>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ADMIN DASHBOARD -->
+
+<section id="adminPage" class="hidden">
+
+    <header class="p-5 border-b border-slate-800 flex justify-between items-center">
+
+        <div>
+            <p class="text-xs text-blue-400">CONTROL PANEL</p>
+            <h2 class="font-bold text-lg">Admin Dashboard</h2>
+        </div>
+
+        <button onclick="logout()"
+            class="text-red-400 font-bold">
+            Logout
+        </button>
+
+    </header>
+
+
+    <div class="p-5 space-y-5">
+
         <div class="grid grid-cols-2 gap-3">
-          <div class="bg-slate-800/50 border border-slate-800 p-4 rounded-xl">
-            <p class="text-xs text-slate-400">Total Workers</p>
-            <p class="text-xl font-bold text-white mt-1" id="admin-total-workers">0</p>
-          </div>
-          <div class="bg-slate-800/50 border border-slate-800 p-4 rounded-xl">
-            <p class="text-xs text-slate-400">Pending Withdrawals</p>
-            <p class="text-xl font-bold text-amber-400 mt-1" id="admin-pending-count">0</p>
-          </div>
+
+            <div class="bg-slate-800 rounded-xl p-4">
+                <p class="text-xs text-slate-400">Total Workers</p>
+                <h2 id="totalWorkers" class="text-2xl font-bold">0</h2>
+            </div>
+
+            <div class="bg-slate-800 rounded-xl p-4">
+                <p class="text-xs text-slate-400">Pending Withdrawals</p>
+                <h2 id="pendingWithdrawals" class="text-2xl font-bold text-yellow-400">0</h2>
+            </div>
+
         </div>
 
-        <div class="flex border-b border-slate-800 gap-4">
-          <button type="button" id="admin-tab-withdrawals" onclick="switchAdminTab('withdrawals')" class="pb-3 text-sm font-bold border-b-2 border-blue-500 text-blue-400 cursor-pointer">
-            Pending Withdrawals
-          </button>
-          <button type="button" id="admin-tab-workers" onclick="switchAdminTab('workers')" class="pb-3 text-sm font-bold text-slate-400 hover:text-white border-b-2 border-transparent cursor-pointer">
-            Worker Directory
-          </button>
+
+        <div class="flex gap-5 border-b border-slate-800">
+
+            <button id="withdrawTab"
+                onclick="adminTab('withdrawals')"
+                class="pb-3 text-blue-400 font-bold border-b-2 border-blue-500">
+                Withdrawals
+            </button>
+
+            <button id="workerTab"
+                onclick="adminTab('workers')"
+                class="pb-3 text-slate-400 font-bold">
+                Workers
+            </button>
+
         </div>
 
-        <div id="admin-view-withdrawals" class="space-y-3">
-          <div id="admin-withdrawals-list" class="space-y-3">
-            <div class="text-center py-8 text-slate-500 text-xs">Loading requests...</div>
-          </div>
+
+        <div id="withdrawalsView">
+            <div id="withdrawalList" class="space-y-3"></div>
         </div>
 
-        <div id="admin-view-workers" class="space-y-4 hidden">
-          <div class="relative">
-            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-500 text-sm"></i>
-            <input type="text" id="admin-search-worker" oninput="renderWorkerDirectory()" placeholder="Search worker ID, name, email..." class="w-full bg-slate-800 border border-slate-700 rounded-xl py-2.5 pl-10 pr-4 text-xs text-white focus:outline-none focus:border-blue-500">
-          </div>
-          <div id="admin-workers-list" class="space-y-3">
-            <div class="text-center py-8 text-slate-500 text-xs">Loading directory...</div>
-          </div>
+
+        <div id="workersView" class="hidden">
+
+            <input id="workerSearch"
+                oninput="renderWorkers()"
+                placeholder="Search Worker ID or Name"
+                class="w-full p-3 rounded-xl bg-slate-800 border border-slate-700 mb-3">
+
+            <div id="workerList" class="space-y-3"></div>
+
         </div>
-      </div>
+
     </div>
 
-  </div>
+</section>
 
-  <!-- Add Money Modal -->
-  <div id="modal-add-money" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-sm p-6 space-y-4 shadow-2xl">
-      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-        <h3 class="text-base font-bold text-white">Add Funds to Worker</h3>
-        <button type="button" onclick="closeAddMoneyModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <div>
-        <p class="text-xs text-slate-400">Target Worker</p>
-        <p class="text-sm font-bold text-blue-400 font-mono" id="modal-worker-id">AP000000</p>
-        <p class="text-xs text-white font-medium" id="modal-worker-name">Name</p>
-      </div>
-      <form onsubmit="handleAdminAddMoneySubmit(event)" class="space-y-3">
-        <div>
-          <label class="block text-xs font-semibold text-slate-400 mb-1">Amount (₹)</label>
-          <input type="number" id="add-money-amount" min="1" step="1" required placeholder="Min ₹1" class="w-full bg-slate-800 border border-slate-700 rounded-xl py-2.5 px-3 text-sm text-white focus:outline-none focus:border-blue-500">
-        </div>
-        <div>
-          <label class="block text-xs font-semibold text-slate-400 mb-1">Description</label>
-          <input type="text" id="add-money-desc" required placeholder="e.g. Daily Bonus" class="w-full bg-slate-800 border border-slate-700 rounded-xl py-2.5 px-3 text-sm text-white focus:outline-none focus:border-blue-500">
-        </div>
-        <div class="flex gap-2 pt-2">
-          <button type="button" onclick="closeAddMoneyModal()" class="flex-1 bg-slate-800 text-slate-300 font-semibold py-2.5 rounded-xl text-xs">Cancel</button>
-          <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2.5 rounded-xl text-xs">Add Money</button>
-        </div>
-      </form>
-    </div>
-  </div>
+</main>
+<script>
 
-  <script>
-    let memoryDB = JSON.parse(localStorage.getItem('ap_wallet_db')) || {
-      users: [
-        { id: 'admin-1', email: 'admin@ap.com', password: 'admin', name: 'Admin User', role: 'admin', worker_id: 'APADMIN1' },
-        { id: 'worker-1', email: 'worker@ap.com', password: '123', name: 'Sample Worker', role: 'worker', worker_id: 'AP100001' }
-      ],
-      wallets: {
-        'worker-1': { balance: 500.00 }
-      },
-      transactions: [
-        { id: 1, user_id: 'worker-1', amount: 500.00, type: 'credit', description: 'Welcome Bonus', created_at: new Date().toISOString() }
-      ],
-      withdrawals: []
-    };
+const SUPABASE_URL = "https://ykswgkrmqsmdneobykri.supabase.co";
+const SUPABASE_KEY = "sb_publishable_iED-0Op0GP8e1msvL7ksdw_53rXjJ_H";
 
-    function saveDB() {
-      localStorage.setItem('ap_wallet_db', JSON.stringify(memoryDB));
-    }
+const db = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
 
-    let currentUser = JSON.parse(localStorage.getItem('ap_current_user')) || null;
-    let selectedWorkerForAddMoney = null;
+let currentUser = null;
+let currentProfile = null;
+let workers = [];
+let withdrawals = [];
+let selectedWorker = null;
+let selectedWithdrawal = null;
 
-    function showToast(message, type = 'info') {
-      const container = document.getElementById('toast-container');
-      const toast = document.createElement('div');
-      const bg = type === 'error' ? 'bg-red-600' : type === 'success' ? 'bg-emerald-600' : 'bg-blue-600';
-      toast.className = `${bg} text-white text-xs font-semibold px-4 py-3 rounded-xl shadow-xl transition-all duration-300 pointer-events-auto flex items-center gap-2`;
-      toast.innerHTML = `<i class="fa-solid ${type === 'error' ? 'fa-circle-exclamation' : type === 'success' ? 'fa-circle-check' : 'fa-circle-info'}"></i><span>${message}</span>`;
-      container.appendChild(toast);
-      setTimeout(() => toast.remove(), 3500);
-    }
 
-    function switchAuthTab(tab) {
-      document.getElementById('login-form').classList.toggle('hidden', tab !== 'login');
-      document.getElementById('register-form').classList.toggle('hidden', tab === 'login');
-      document.getElementById('tab-login').className = tab === 'login' ? "flex-1 py-2 text-sm font-semibold rounded-lg bg-blue-600 text-white" : "flex-1 py-2 text-sm font-semibold rounded-lg text-slate-400";
-      document.getElementById('tab-register').className = tab !== 'login' ? "flex-1 py-2 text-sm font-semibold rounded-lg bg-blue-600 text-white" : "flex-1 py-2 text-sm font-semibold rounded-lg text-slate-400";
-    }
+const $ = id => document.getElementById(id);
 
-    function toggleWithdrawMethodFields() {
-      const isUpi = document.getElementById('withdraw-method').value === 'upi';
-      document.getElementById('upi-field-group').classList.toggle('hidden', !isUpi);
-      document.getElementById('gift-card-field-group').classList.toggle('hidden', isUpi);
-    }
 
-    function showScreen(id) {
-      ['auth-screen', 'worker-dashboard', 'admin-dashboard'].forEach(s => document.getElementById(s).classList.add('hidden'));
-      document.getElementById(id).classList.remove('hidden');
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-      if (currentUser) {
-        routeUser(currentUser);
-      } else {
-        showScreen('auth-screen');
-      }
+function money(amount) {
+    return "₹" + Number(amount || 0).toLocaleString("en-IN", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
     });
+}
 
-    function handleLogin(e) {
-      e.preventDefault();
-      const email = document.getElementById('login-email').value.trim();
-      const password = document.getElementById('login-password').value;
 
-      const user = memoryDB.users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
-      
-      if (!user) {
-        return showToast('Invalid email or password! (Try demo: worker@ap.com / 123)', 'error');
-      }
+function toast(message, type = "info") {
 
-      currentUser = user;
-      localStorage.setItem('ap_current_user', JSON.stringify(user));
-      showToast('Login successful!', 'success');
-      routeUser(user);
+    const box = document.createElement("div");
+
+    box.className =
+        "m-2 px-4 py-3 rounded-xl text-sm font-bold " +
+        (type === "error"
+            ? "bg-red-600"
+            : type === "success"
+            ? "bg-emerald-600"
+            : "bg-blue-600");
+
+    box.textContent = message;
+
+    $("toast").appendChild(box);
+
+    setTimeout(() => box.remove(), 3500);
+}
+
+
+function showPage(page) {
+
+    $("auth").classList.add("hidden");
+    $("workerPage").classList.add("hidden");
+    $("adminPage").classList.add("hidden");
+
+    $(page).classList.remove("hidden");
+}
+
+
+function showTab(type) {
+
+    $("loginForm").classList.toggle(
+        "hidden",
+        type !== "login"
+    );
+
+    $("registerForm").classList.toggle(
+        "hidden",
+        type !== "register"
+    );
+
+    $("loginTab").className =
+        type === "login"
+        ? "flex-1 py-3 rounded-lg bg-blue-600 font-bold"
+        : "flex-1 py-3 rounded-lg text-slate-400";
+
+    $("registerTab").className =
+        type === "register"
+        ? "flex-1 py-3 rounded-lg bg-blue-600 font-bold"
+        : "flex-1 py-3 rounded-lg text-slate-400";
+}
+
+
+async function login(event) {
+
+    event.preventDefault();
+
+    try {
+
+        const { data, error } =
+            await db.auth.signInWithPassword({
+                email: $("loginEmail").value.trim(),
+                password: $("loginPassword").value
+            });
+
+        if (error) throw error;
+
+        await openApp(data.user);
+
+    } catch (error) {
+
+        console.error(error);
+        toast(error.message, "error");
+
+    }
+}
+
+
+async function register(event) {
+
+    event.preventDefault();
+
+    try {
+
+        const { data, error } =
+            await db.auth.signUp({
+                email: $("regEmail").value.trim(),
+                password: $("regPassword").value,
+                options: {
+                    data: {
+                        full_name: $("regName").value.trim(),
+                        date_of_birth: $("regDob").value
+                    }
+                }
+            });
+
+        if (error) throw error;
+
+        if (data.session) {
+
+            await openApp(data.user);
+
+        } else {
+
+            toast(
+                "Account created. Check your email if confirmation is enabled.",
+                "success"
+            );
+
+            showTab("login");
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+        toast(error.message, "error");
+
+    }
+}
+
+
+async function openApp(user) {
+
+    currentUser = user;
+
+    const { data, error } =
+        await db
+            .from("profiles")
+            .select(`
+                id,
+                full_name,
+                date_of_birth,
+                role,
+                is_active,
+                worker_id
+            `)
+            .eq("id", user.id)
+            .single();
+
+    if (error) throw error;
+
+    if (data.is_active === false) {
+        throw new Error("Your account is inactive.");
     }
 
-    function handleRegister(e) {
-      e.preventDefault();
-      const name = document.getElementById('reg-name').value.trim();
-      const email = document.getElementById('reg-email').value.trim();
-      const password = document.getElementById('reg-password').value;
+    currentProfile = data;
 
-      if (memoryDB.users.some(u => u.email.toLowerCase() === email.toLowerCase())) {
-        return showToast('Email already registered!', 'error');
-      }
+    if (data.role === "admin") {
 
-      const userId = 'user-' + Date.now();
-      const workerId = 'AP' + Math.floor(100000 + Math.random() * 900000);
+        showPage("adminPage");
+        await loadAdmin();
 
-      const newUser = { id: userId, email, password, name, role: 'worker', worker_id: workerId };
-      memoryDB.users.push(newUser);
-      memoryDB.wallets[userId] = { balance: 0.00 };
-      saveDB();
+    } else {
 
-      showToast('Registration successful! Please log in.', 'success');
-      switchAuthTab('login');
-      document.getElementById('login-email').value = email;
+        showPage("workerPage");
+        await loadWorker();
+
+    }
+}
+
+
+async function restoreSession() {
+
+    try {
+
+        const { data, error } =
+            await db.auth.getSession();
+
+        if (error) throw error;
+
+        if (data.session) {
+
+            await openApp(data.session.user);
+
+        } else {
+
+            showPage("auth");
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+        showPage("auth");
+
+    }
+}
+
+
+async function logout() {
+
+    await db.auth.signOut();
+
+    currentUser = null;
+    currentProfile = null;
+
+    showPage("auth");
+
+    $("loginPassword").value = "";
+
+    toast("Logged out successfully", "success");
+}
+
+
+async function loadWorker() {
+
+    $("workerName").textContent =
+        currentProfile.full_name || "Worker";
+
+    $("workerId").textContent =
+        currentProfile.worker_id || "AP000000";
+
+
+    const { data: wallet, error } =
+        await db
+            .from("wallets")
+            .select("balance")
+            .eq("user_id", currentUser.id)
+            .single();
+
+    if (error) {
+
+        console.error(error);
+
+        $("workerBalance").textContent = "₹0.00";
+
+    } else {
+
+        $("workerBalance").textContent =
+            money(wallet.balance);
+
     }
 
-    function routeUser(user) {
-      if (user.role === 'admin') {
-        showScreen('admin-dashboard');
-        loadAdminData();
-      } else {
-        showScreen('worker-dashboard');
-        document.getElementById('user-name-display').textContent = user.name || 'Worker';
-        document.getElementById('worker-id-display').textContent = user.worker_id
-        tContent = user.worker_id || 'AP000000';
-        loadWorkerData();
-      }
+
+    const { data: transactions, error: txError } =
+        await db
+            .from("transactions")
+            .select(`
+                id,
+                type,
+                amount,
+                description,
+                balance_after,
+                created_at
+            `)
+            .eq("user_id", currentUser.id)
+            .order("created_at", {
+                ascending: false
+            })
+            .limit(50);
+
+
+    if (txError) {
+
+        console.error(txError);
+
+        $("transactions").innerHTML =
+            '<p class="text-sm text-slate-500">Unable to load transactions.</p>';
+
+        return;
+
     }
 
-    function loadWorkerData() {
-      const wallet = memoryDB.wallets[currentUser.id] || { balance: 0.00 };
-      document.getElementById('worker-balance').textContent = `₹${parseFloat(wallet.balance).toFixed(2)}`;
 
-      const txs = memoryDB.transactions.filter(t => t.user_id === currentUser.id).reverse();
-      const listEl = document.getElementById('worker-transactions-list');
-      
-      listEl.innerHTML = txs.length ? txs.map(tx => `
-        <div class="bg-slate-800/40 border border-slate-800 p-3 rounded-xl flex justify-between items-center text-xs">
-          <div><p class="font-bold text-white">${tx.description || tx.type}</p><p class="text-[10px] text-slate-500">${new Date(tx.created_at).toLocaleDateString()}</p></div>
-          <p class="font-bold font-mono ${tx.type === 'credit' ? 'text-emerald-400' : 'text-red-400'}">${tx.type === 'credit' ? '+' : '-'}₹${parseFloat(tx.amount).toFixed(2)}</p>
-        </div>`).join('') : `<div class="text-center py-6 text-slate-500 text-xs">No transactions yet</div>`;
+    if (!transactions || transactions.length === 0) {
+
+        $("transactions").innerHTML =
+            '<p class="text-sm text-slate-500">No transactions yet.</p>';
+
+        return;
+
     }
 
-    function handleWorkerWithdrawal(e) {
-      e.preventDefault();
-      const amount = parseFloat(document.getElementById('withdraw-amount').value);
-      const method = document.getElementById('withdraw-method').value;
-      const upiId = document.getElementById('withdraw-upi-id').value.trim();
-      const gcType = document.getElementById('withdraw-gift-card-type').value;
 
-      const wallet = memoryDB.wallets[currentUser.id] || { balance: 0 };
-      if (amount < 10) return showToast('Minimum withdrawal is ₹10', 'error');
-      if (amount > wallet.balance) return showToast('Insufficient balance', 'error');
+    $("transactions").innerHTML =
+        transactions.map(tx => {
 
-      memoryDB.withdrawals.push({
-        id: Date.now(),
-        user_id: currentUser.id,
-        amount,
-        payment_method: method,
-        upi_id: method === 'upi' ? upiId : null,
-        gift_card_type: method === 'gift_card' ? gcType : null,
-        status: 'pending',
-        created_at: new Date().toISOString()
-      });
+            const credit = tx.type === "credit";
 
-      saveDB();
-      showToast('Withdrawal request submitted!', 'success');
-      document.getElementById('withdrawal-form').reset();
-      loadWorkerData();
+            return `
+                <div class="p-3 rounded-xl bg-slate-800 border border-slate-700 flex justify-between">
+                    <div>
+                        <p class="text-sm font-bold">
+                            ${tx.description || tx.type}
+                        </p>
+
+                        <p class="text-[10px] text-slate-500">
+                            ${new Date(tx.created_at).toLocaleString("en-IN")}
+                        </p>
+                    </div>
+
+                    <p class="${credit ? "text-emerald-400" : "text-red-400"} font-bold">
+                        ${credit ? "+" : "-"}${money(tx.amount)}
+                    </p>
+                </div>
+            `;
+
+        }).join("");
+
+}
+
+
+function changePaymentMethod() {
+
+    const isUpi =
+        $("paymentMethod").value === "upi";
+
+    $("upiSection").classList.toggle(
+        "hidden",
+        !isUpi
+    );
+
+    $("giftCardSection").classList.toggle(
+        "hidden",
+        isUpi
+    );
+}
+
+
+async function createWithdrawal(event) {
+
+    event.preventDefault();
+
+    const amount =
+        Number($("withdrawAmount").value);
+
+    const method =
+        $("paymentMethod").value;
+
+    const upi =
+        $("upiId").value.trim();
+
+    const gift =
+        $("giftCardType").value;
+
+
+    if (amount < 10) {
+
+        toast(
+            "Minimum withdrawal amount is ₹10",
+            "error"
+        );
+
+        return;
     }
 
-    function switchAdminTab(tab) {
-      document.getElementById('admin-view-withdrawals').classList.toggle('hidden', tab !== 'withdrawals');
-      document.getElementById('admin-view-workers').classList.toggle('hidden', tab === 'withdrawals');
-      document.getElementById('admin-tab-withdrawals').className = tab === 'withdrawals' ? "pb-3 text-sm font-bold border-b-2 border-blue-500 text-blue-400" : "pb-3 text-sm font-bold text-slate-400";
-      document.getElementById('admin-tab-workers').className = tab !== 'withdrawals' ? "pb-3 text-sm font-bold border-b-2 border-blue-500 text-blue-400" : "pb-3 text-sm font-bold text-slate-400";
+
+    if (
+        method === "upi" &&
+        !/^[^\s@]+@[^\s@]+$/.test(upi)
+    ) {
+
+        toast(
+            "Please enter a valid UPI ID",
+            "error"
+        );
+
+        return;
     }
 
-    function loadAdminData() {
-      const workers = memoryDB.users.filter(u => u.role === 'worker');
-      document.getElementById('admin-total-workers').textContent = workers.length;
-      renderWorkerDirectory();
 
-      const pending = memoryDB.withdrawals.filter(w => w.status === 'pending');
-      document.getElementById('admin-pending-count').textContent = pending.length;
+    try {
 
-      const listEl = document.getElementById('admin-withdrawals-list');
-      listEl.innerHTML = pending.length ? pending.map(w => {
-        const u = memoryDB.users.find(x => x.id === w.user_id) || {};
-        return `
-        <div class="bg-slate-800/40 border border-slate-800 p-4 rounded-xl space-y-2 text-xs">
-          <div class="flex justify-between font-bold border-b border-slate-700/50 pb-2">
-            <div><p class="text-white">${u.name || 'Worker'}</p><p class="text-blue-400 font-mono">${u.worker_id || ''}</p></div>
-            <p class="text-amber-400 text-sm font-mono">₹${parseFloat(w.amount).toFixed(2)}</p>
-          </div>
-          <p class="text-slate-400">Method: <span class="text-white uppercase font-bold">${w.payment_method}</span> ${w.upi_id ? `(${w.upi_id})` : ''} ${w.gift_card_type ? `(${w.gift_card_type})` : ''}</p>
-          <button type="button" onclick="handleApproveWithdrawal(${w.id})" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 rounded-lg cursor-pointer">Approve Withdrawal</button>
-        </div>`;
-      }).join('') : `<div class="text-center py-8 text-slate-500 text-xs">No pending requests</div>`;
+        const { error } =
+            await db.rpc(
+                "create_withdrawal",
+                {
+                    p_amount: amount,
+                    p_payment_method: method,
+                    p_gift_card_type:
+                        method === "gift_card"
+                            ? gift
+                            : null,
+                    p_upi_id:
+                        method === "upi"
+                            ? upi
+                            : null
+                }
+            );
+
+        if (error) throw error;
+
+
+        $("withdrawAmount").value = "";
+        $("upiId").value = "";
+
+        toast(
+            "Withdrawal request submitted successfully.",
+            "success"
+        );
+
+        await loadWorker();
+
+    } catch (error) {
+
+        console.error(error);
+        toast(error.message, "error");
+
+    }
+}
+
+
+async function loadAdmin() {
+
+    await loadWorkers();
+    await loadWithdrawals();
+
+}
+
+
+async function loadWorkers() {
+
+    const { data, error } =
+        await db
+            .from("profiles")
+            .select(`
+                id,
+                full_name,
+                email,
+                worker_id,
+                is_active
+            `)
+            .eq("role", "worker")
+            .order("full_name");
+
+
+    if (error) {
+
+        console.error(error);
+        toast("Unable to load workers.", "error");
+
+        return;
     }
 
-    function renderWorkerDirectory() {
-      const query = (document.getElementById('admin-search-worker')?.value || '').toLowerCase();
-      const workers = memoryDB.users.filter(u => u.role === 'worker' && (
-        (u.worker_id && u.worker_id.toLowerCase().includes(query)) ||
-        (u.name && u.name.toLowerCase().includes(query)) ||
-        (u.email && u.email.toLowerCase().includes(query))
-      ));
 
-      const listEl = document.getElementById('admin-workers-list');
-      listEl.innerHTML = workers.length ? workers.map(w => `
-        <div class="bg-slate-800/40 border border-slate-800 p-3.5 rounded-xl flex justify-between items-center text-xs">
-          <div><p class="font-bold text-white">${w.name || 'Worker'}</p><p class="text-blue-400 font-mono">${w.worker_id || 'AP000000'}</p><p class="text-slate-500">${w.email}</p></div>
-          <div class="text-right">
-            <p class="font-bold text-emerald-400 font-mono">₹${parseFloat(memoryDB.wallets[w.id]?.balance || 0).toFixed(2)}</p>
-            <button type="button" onclick="openAddMoneyModal('${w.id}', '${w.worker_id}', '${w.name}')" class="mt-1 px-2.5 py-1 bg-blue-600 text-white rounded-lg font-bold text-[10px] cursor-pointer">+ Add Money</button>
-          </div>
-        </div>`).join('') : `<div class="text-center py-6 text-slate-500 text-xs">No matching workers</div>`;
+    const ids =
+        (data || []).map(worker => worker.id);
+
+    let walletData = [];
+
+
+    if (ids.length) {
+
+        const result =
+            await db
+                .from("wallets")
+                .select("user_id,balance")
+                .in("user_id", ids);
+
+        walletData =
+            result.data || [];
+
     }
 
-    function openAddMoneyModal(id, workerId, name) {
-      selectedWorkerForAddMoney = id;
-      document.getElementById('modal-worker-id').textContent = workerId;
-      document.getElementById('modal-worker-name').textContent = name;
-      document.getElementById('modal-add-money').classList.remove('hidden');
+
+    const balanceMap =
+        Object.fromEntries(
+            walletData.map(wallet => [
+                wallet.user_id,
+                wallet.balance
+            ])
+        );
+
+
+    workers =
+        (data || []).map(worker => ({
+            ...worker,
+            balance:
+                balanceMap[worker.id] || 0
+        }));
+
+
+    $("totalWorkers").textContent =
+        workers.length;
+
+    renderWorkers();
+
+}
+
+
+function renderWorkers() {
+
+    const search =
+        ($("workerSearch").value || "")
+            .toLowerCase()
+            .trim();
+
+
+    const list =
+        workers.filter(worker =>
+            (worker.worker_id || "")
+                .toLowerCase()
+                .includes(search)
+            ||
+            (worker.full_name || "")
+                .toLowerCase()
+                .includes(search)
+        );
+
+
+    if (!list.length) {
+
+        $("workerList").innerHTML =
+            '<p class="text-sm text-slate-500 text-center p-5">No workers found.</p>';
+
+        return;
     }
 
-    function closeAddMoneyModal() {
-      selectedWorkerForAddMoney = null;
-      document.getElementById('modal-add-money').classList.add('hidden');
+
+    $("workerList").innerHTML =
+        list.map(worker => `
+
+            <div class="p-4 rounded-xl bg-slate-800 border border-slate-700">
+
+                <div class="flex justify-between gap-3">
+
+                    <div>
+
+                        <p class="font-bold">
+                            ${worker.full_name || "Worker"}
+                        </p>
+
+                        <p class="text-xs text-blue-400 font-mono">
+                            ${worker.worker_id || ""}
+                        </p>
+
+                        <p class="text-xs text-slate-500">
+                            ${worker.email || ""}
+                        </p>
+
+                    </div>
+
+                    <div class="text-right">
+
+                        <p class="font-bold text-emerald-400">
+                            ${money(worker.balance)}
+                        </p>
+
+                        <button
+                            onclick="openAddMoney('${worker.id}')"
+                            class="mt-2 px-3 py-2 rounded-lg bg-blue-600 text-xs font-bold">
+                            + Add Money
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        `).join("");
+
+}
+
+
+async function loadWithdrawals() {
+
+    const { data, error } =
+        await db
+            .from("withdrawals")
+            .select(`
+                id,
+                user_id,
+                amount,
+                status,
+                payment_method,
+                gift_card_type,
+                upi_id,
+                payment_reference,
+                admin_note,
+                created_at,
+                profiles(
+                    full_name,
+                    worker_id,
+                    email
+                )
+            `)
+            .eq("status", "pending")
+            .order("created_at", {
+                ascending: false
+            });
+
+
+    if (error) {
+
+        console.error(error);
+        toast("Unable to load withdrawals.", "error");
+
+        return;
     }
 
-    function handleAdminAddMoneySubmit(e) {
-      e.preventDefault();
-      const amount = parseFloat(document.getElementById('add-money-amount').value);
-      const desc = document.getElementById('add-money-desc').value.trim();
 
-      if (!memoryDB.wallets[selectedWorkerForAddMoney]) {
-        memoryDB.wallets[selectedWorkerForAddMoney] = { balance: 0 };
-      }
+    withdrawals = data || [];
 
-      memoryDB.wallets[selectedWorkerForAddMoney].balance += amount;
-      memoryDB.transactions.push({
-        id: Date.now(),
-        user_id: selectedWorkerForAddMoney,
-        amount,
-        type: 'credit',
-        description: desc,
-        created_at: new Date().toISOString()
-      });
+    $("pendingWithdrawals").textContent =
+        withdrawals.length;
 
-      saveDB();
-      showToast('Money added successfully!', 'success');
-      closeAddMoneyModal();
-      loadAdminData();
+
+    if (!withdrawals.length) {
+
+        $("withdrawalList").innerHTML =
+            '<p class="text-sm text-slate-500 text-center p-5">No pending withdrawals.</p>';
+
+        return;
     }
 
-    function handleApproveWithdrawal(id) {
-      const ref = prompt("Enter UTR / Payment Ref:");
-      if (!ref) return;
 
-      const w = memoryDB.withdrawals.find(x => x.id === id);
-      if (w) {
-        w.status = 'approved';
-        memoryDB.wallets[w.user_id].balance -= w.amount;
-        memoryDB.transactions.push({
-          id: Date.now(),
-          user_id: w.user_id,
-          amount: w.amount,
-          type: 'debit',
-          description: `Withdrawal Approved (Ref: ${ref})`,
-          created_at: new Date().toISOString()
-        });
-        saveDB();
-        showToast('Approved!', 'success');
-        loadAdminData();
-      }
+    $("withdrawalList").innerHTML =
+        withdrawals.map(item => `
+
+            <div class="p-4 rounded-xl bg-slate-800 border border-slate-700">
+
+                <div class="flex justify-between">
+
+                    <div>
+
+                        <p class="font-bold">
+                            ${item.profiles?.full_name || "Worker"}
+                        </p>
+
+                        <p class="text-xs text-blue-400 font-mono">
+                            ${item.profiles?.worker_id || ""}
+                        </p>
+
+                    </div>
+
+                    <p class="font-bold text-yellow-400">
+                        ${money(item.amount)}
+                    </p>
+
+                </div>
+
+                <div class="mt-3 text-xs text-slate-400 space-y-1">
+
+                    <p>
+                        Method:
+                        <b class="text-white">
+                            ${item.payment_method === "upi"
+                                ? "UPI"
+                                : "Gift Card"}
+                        </b>
+                    </p>
+
+                    ${
+                        item.payment_method === "upi"
+                        ? `
+                            <p>
+                                UPI ID:
+                                <b class="text-white">
+                                    ${item.upi_id || ""}
+                                </b>
+                            </p>
+                        `
+                        : `
+                            <p>
+                                Gift Card:
+                                <b class="text-white">
+                                    ${item.gift_card_type || ""}
+                                </b>
+                            </p>
+                        `
+                    }
+
+                    <p>
+                        ${new Date(item.created_at).toLocaleString("en-IN")}
+                    </p>
+
+                </div>
+
+                <button
+                    onclick="openApprove('${item.id}')"
+                    class="w-full mt-4 p-3 rounded-xl bg-emerald-600 font-bold">
+                    Approve / Mark Paid
+                </button>
+
+            </div>
+
+        `).join("");
+
+}
+
+
+function adminTab(type) {
+
+    const withdrawals =
+        type === "withdrawals";
+
+
+    $("withdrawalsView").classList.toggle(
+        "hidden",
+        !withdrawals
+    );
+
+    $("workersView").classList.toggle(
+        "hidden",
+        withdrawals
+    );
+
+
+    $("withdrawTab").className =
+        withdrawals
+        ? "pb-3 text-blue-400 font-bold border-b-2 border-blue-500"
+        : "pb-3 text-slate-400 font-bold";
+
+
+    $("workerTab").className =
+        !withdrawals
+        ? "pb-3 text-blue-400 font-bold border-b-2 border-blue-500"
+        : "pb-3 text-slate-400";
+}
+  function openAddMoney(workerId) {
+
+    selectedWorker =
+        workers.find(worker => worker.id === workerId);
+
+    if (!selectedWorker) return;
+
+    const amount = prompt(
+        `Add money to ${selectedWorker.full_name} (${selectedWorker.worker_id})\n\nEnter amount:`
+    );
+
+    if (amount === null) return;
+
+    const value = Number(amount);
+
+    if (!value || value < 1) {
+
+        toast(
+            "Minimum add-money amount is ₹1.",
+            "error"
+        );
+
+        return;
     }
 
-    function handleLogout() {
-      currentUser = null;
-      localStorage.removeItem('ap_current_user');
-      showScreen('auth-screen');
-      showToast('Logged out', 'info');
+    addMoneyToWorker(value);
+}
+
+
+async function addMoneyToWorker(amount) {
+
+    if (!selectedWorker) return;
+
+    const description =
+        prompt(
+            "Enter transaction description:",
+            "Admin credit"
+        ) || "Admin credit";
+
+
+    try {
+
+        const { error } =
+            await db.rpc(
+                "admin_add_money",
+                {
+                    p_user_id: selectedWorker.id,
+                    p_amount: amount,
+                    p_description: description
+                }
+            );
+
+
+        if (error) throw error;
+
+
+        toast(
+            `${money(amount)} added successfully.`,
+            "success"
+        );
+
+
+        selectedWorker = null;
+
+        await loadAdmin();
+
+    } catch (error) {
+
+        console.error(error);
+
+        toast(
+            error.message,
+            "error"
+        );
+
     }
-  </script>
+}
+
+
+function openApprove(withdrawalId) {
+
+    selectedWithdrawal =
+        withdrawals.find(
+            item => String(item.id) === String(withdrawalId)
+        );
+
+
+    if (!selectedWithdrawal) return;
+
+
+    const item = selectedWithdrawal;
+
+
+    let details =
+        `Worker: ${item.profiles?.full_name || "Worker"}\n` +
+        `Worker ID: ${item.profiles?.worker_id || ""}\n` +
+        `Amount: ${money(item.amount)}\n`;
+
+
+    if (item.payment_method === "upi") {
+
+        details +=
+            `UPI ID: ${item.upi_id || ""}\n`;
+
+    } else {
+
+        details +=
+            `Gift Card: ${item.gift_card_type || ""}\n`;
+
+    }
+
+
+    const reference =
+        prompt(
+            details +
+            "\nEnter UTR / Gift Card Code:"
+        );
+
+
+    if (reference === null) return;
+
+
+    if (!reference.trim()) {
+
+        toast(
+            "Payment reference is required.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    const note =
+        prompt(
+            "Admin note (optional):",
+            ""
+        );
+
+
+    approveWithdrawal(
+        reference.trim(),
+        note ? note.trim() : null
+    );
+}
+
+
+async function approveWithdrawal(reference, note) {
+
+    if (!selectedWithdrawal) return;
+
+
+    try {
+
+        const { error } =
+            await db.rpc(
+                "admin_approve_withdrawal",
+                {
+                    p_withdrawal_id:
+                        Number(selectedWithdrawal.id),
+
+                    p_payment_reference:
+                        reference,
+
+                    p_admin_note:
+                        note
+                }
+            );
+
+
+        if (error) throw error;
+
+
+        toast(
+            "Withdrawal approved successfully.",
+            "success"
+        );
+
+
+        selectedWithdrawal = null;
+
+        await loadAdmin();
+
+    } catch (error) {
+
+        console.error(error);
+
+        toast(
+            error.message,
+            "error"
+        );
+
+    }
+}
+
+
+db.auth.onAuthStateChange(
+    async (event, session) => {
+
+        if (event === "SIGNED_OUT") {
+
+            currentUser = null;
+            currentProfile = null;
+
+            showPage("auth");
+
+        }
+
+    }
+);
+
+
+restoreSession();
+
+</script>
+
 </body>
 </html>
