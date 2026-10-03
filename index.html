@@ -72,13 +72,6 @@
           </div>
         </div>
         <div>
-          <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Date of Birth</label>
-          <div class="relative">
-            <i class="fa-solid fa-calendar absolute left-4 top-3.5 text-slate-500 text-sm"></i>
-            <input type="date" id="reg-dob" required class="w-full bg-slate-800 border border-slate-700/80 rounded-xl py-3 pl-11 pr-4 text-sm focus:outline-none focus:border-blue-500 transition-colors text-slate-200">
-          </div>
-        </div>
-        <div>
           <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Password</label>
           <div class="relative">
             <i class="fa-solid fa-lock absolute left-4 top-3.5 text-slate-500 text-sm"></i>
@@ -96,7 +89,7 @@
     <div id="worker-dashboard" class="hidden">
       <header class="p-5 flex items-center justify-between border-b border-slate-800/80 bg-slate-900/50 backdrop-blur sticky top-0 z-30">
         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 bg-blue-600/20 border border-blue-500/30 rounded-xl flex items-center justify-center text-blue-400 font-bold" id="user-avatar">AP</div>
+          <div class="w-10 h-10 bg-blue-600/20 border border-blue-500/30 rounded-xl flex items-center justify-center text-blue-400 font-bold">AP</div>
           <div>
             <h2 class="text-sm font-bold text-white" id="user-name-display">Loading...</h2>
             <p class="text-xs text-blue-400 font-medium font-mono" id="worker-id-display">AP000000</p>
@@ -145,7 +138,7 @@
                 <option value="google_play">Google Play Redeem Code</option>
               </select>
             </div>
-            <button type="submit" id="btn-submit-withdraw" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 rounded-xl transition-all shadow-lg shadow-blue-600/20 cursor-pointer">
+            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 rounded-xl transition-all shadow-lg shadow-blue-600/20 cursor-pointer">
               Request Withdrawal
             </button>
           </form>
@@ -246,7 +239,6 @@
   </div>
 
   <script>
-    // System Local Memory Storage (Guarantees App Never Freezes)
     let memoryDB = JSON.parse(localStorage.getItem('ap_wallet_db')) || {
       users: [
         { id: 'admin-1', email: 'admin@ap.com', password: 'admin', name: 'Admin User', role: 'admin', worker_id: 'APADMIN1' },
@@ -351,6 +343,7 @@
       } else {
         showScreen('worker-dashboard');
         document.getElementById('user-name-display').textContent = user.name || 'Worker';
+  tContent = user.name || 'Worker';
         document.getElementById('worker-id-display').textContent = user.worker_id || 'AP000000';
         loadWorkerData();
       }
