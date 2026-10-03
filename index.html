@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AP WALLET</title>
+  <title>AP Agency Wallet</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
     body { font-family: 'Plus Jakarta Sans', sans-serif; }
@@ -14,13 +14,11 @@
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen">
 
-  <!-- Toast Notification Container -->
   <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
-  <!-- Main Container -->
   <div id="app" class="max-w-md mx-auto min-h-screen bg-slate-900 border-x border-slate-800 shadow-2xl relative pb-20">
 
-    <!-- Screen 1: Auth (Login / Register) -->
+    <!-- Auth Screen -->
     <div id="auth-screen" class="p-6 flex flex-col min-h-screen justify-center">
       <div class="text-center mb-8">
         <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-blue-500/30">
@@ -30,13 +28,11 @@
         <p class="text-sm text-slate-400 mt-1">Sign in to manage your worker or admin wallet</p>
       </div>
 
-      <!-- Toggle Login / Register -->
       <div class="bg-slate-800/80 p-1 rounded-xl flex mb-6 border border-slate-700/50">
         <button id="tab-login" onclick="switchAuthTab('login')" class="flex-1 py-2 text-sm font-semibold rounded-lg bg-blue-600 text-white transition-all">Log In</button>
         <button id="tab-register" onclick="switchAuthTab('register')" class="flex-1 py-2 text-sm font-semibold rounded-lg text-slate-400 hover:text-white transition-all">Register</button>
       </div>
 
-      <!-- Login Form -->
       <form id="login-form" onsubmit="handleLogin(event)" class="space-y-4">
         <div>
           <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Email Address</label>
@@ -58,7 +54,6 @@
         </button>
       </form>
 
-      <!-- Register Form -->
       <form id="register-form" onsubmit="handleRegister(event)" class="space-y-4 hidden">
         <div>
           <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Full Name</label>
@@ -95,14 +90,11 @@
       </form>
     </div>
 
-    <!-- Screen 2: Worker Dashboard -->
+    <!-- Worker Dashboard -->
     <div id="worker-dashboard" class="hidden">
-      <!-- Top Bar -->
       <header class="p-5 flex items-center justify-between border-b border-slate-800/80 bg-slate-900/50 backdrop-blur sticky top-0 z-30">
         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 bg-blue-600/20 border border-blue-500/30 rounded-xl flex items-center justify-center text-blue-400 font-bold" id="user-avatar">
-            AP
-          </div>
+          <div class="w-10 h-10 bg-blue-600/20 border border-blue-500/30 rounded-xl flex items-center justify-center text-blue-400 font-bold" id="user-avatar">AP</div>
           <div>
             <h2 class="text-sm font-bold text-white" id="user-name-display">Loading...</h2>
             <p class="text-xs text-blue-400 font-medium font-mono" id="worker-id-display">AP000000</p>
@@ -114,9 +106,7 @@
       </header>
 
       <div class="p-5 space-y-6">
-        <!-- Balance Card -->
         <div class="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl p-6 text-white shadow-xl shadow-blue-600/20 relative overflow-hidden">
-          <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
           <p class="text-xs font-semibold text-blue-200 uppercase tracking-wider mb-1">Available Balance</p>
           <div class="text-3xl font-extrabold tracking-tight" id="worker-balance">₹0.00</div>
           <div class="mt-4 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-blue-100">
@@ -125,18 +115,15 @@
           </div>
         </div>
 
-        <!-- Section: Withdraw Funds -->
         <div class="bg-slate-800/50 border border-slate-800 rounded-2xl p-5 space-y-4">
           <h3 class="text-sm font-bold text-white flex items-center gap-2">
             <i class="fa-solid fa-money-bill-transfer text-blue-400"></i> Withdraw Funds
           </h3>
-
           <form id="withdrawal-form" onsubmit="handleWorkerWithdrawal(event)" class="space-y-4">
             <div>
               <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Amount (₹)</label>
               <input type="number" id="withdraw-amount" min="10" step="1" required placeholder="Min. ₹10" class="w-full bg-slate-900 border border-slate-700/80 rounded-xl py-3 px-4 text-sm text-white focus:outline-none focus:border-blue-500">
             </div>
-
             <div>
               <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Payment Method</label>
               <select id="withdraw-method" onchange="toggleWithdrawMethodFields()" class="w-full bg-slate-900 border border-slate-700/80 rounded-xl py-3 px-4 text-sm text-white focus:outline-none focus:border-blue-500">
@@ -144,14 +131,10 @@
                 <option value="gift_card">Gift Card</option>
               </select>
             </div>
-
-            <!-- UPI Field -->
             <div id="upi-field-group">
               <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">UPI ID</label>
               <input type="text" id="withdraw-upi-id" placeholder="example@upi" class="w-full bg-slate-900 border border-slate-700/80 rounded-xl py-3 px-4 text-sm text-white focus:outline-none focus:border-blue-500">
             </div>
-
-            <!-- Gift Card Field -->
             <div id="gift-card-field-group" class="hidden">
               <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Select Gift Card</label>
               <select id="withdraw-gift-card-type" class="w-full bg-slate-900 border border-slate-700/80 rounded-xl py-3 px-4 text-sm text-white focus:outline-none focus:border-blue-500">
@@ -160,14 +143,12 @@
                 <option value="google_play">Google Play Redeem Code</option>
               </select>
             </div>
-
             <button type="submit" id="btn-submit-withdraw" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 rounded-xl transition-all shadow-lg shadow-blue-600/20">
               Request Withdrawal
             </button>
           </form>
         </div>
 
-        <!-- Transaction History -->
         <div class="space-y-3">
           <h3 class="text-sm font-bold text-white flex items-center gap-2">
             <i class="fa-solid fa-clock-rotate-left text-blue-400"></i> Recent Activity
@@ -179,10 +160,9 @@
       </div>
     </div>
 
-    <!-- Screen 3: Admin Dashboard -->
+    <!-- Admin Dashboard -->
     <div id="admin-dashboard" class="hidden">
-      <!-- Admin Top Bar -->
-      <header class="p-5 flex items-center justify-between border-b border-slate-800 bg-slate-900 sticky top-0 z-30">
+      <header class="p-5 flex items-center justify-between border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-30">
         <div>
           <span class="text-[10px] font-extrabold uppercase tracking-widest text-blue-400 bg-blue-950 px-2 py-0.5 rounded border border-blue-800/50">Control Panel</span>
           <h2 class="text-base font-bold text-white mt-0.5">Admin Dashboard</h2>
@@ -194,10 +174,9 @@
       </header>
 
       <div class="p-5 space-y-6">
-        <!-- Stats Row -->
         <div class="grid grid-cols-2 gap-3">
           <div class="bg-slate-800/50 border border-slate-800 p-4 rounded-xl">
-            <p class="text-xs text-slate-400">Total Registered Workers</p>
+            <p class="text-xs text-slate-400">Total Workers</p>
             <p class="text-xl font-bold text-white mt-1" id="admin-total-workers">0</p>
           </div>
           <div class="bg-slate-800/50 border border-slate-800 p-4 rounded-xl">
@@ -206,28 +185,25 @@
           </div>
         </div>
 
-        <!-- Admin Navigation Tabs -->
         <div class="flex border-b border-slate-800 gap-4">
           <button id="admin-tab-withdrawals" onclick="switchAdminTab('withdrawals')" class="pb-3 text-sm font-bold border-b-2 border-blue-500 text-blue-400">
-            Withdrawal Requests
+            Pending Withdrawals
           </button>
           <button id="admin-tab-workers" onclick="switchAdminTab('workers')" class="pb-3 text-sm font-bold text-slate-400 hover:text-white border-b-2 border-transparent">
             Worker Directory
           </button>
         </div>
 
-        <!-- Tab 1: Pending Withdrawals -->
         <div id="admin-view-withdrawals" class="space-y-3">
           <div id="admin-withdrawals-list" class="space-y-3">
             <div class="text-center py-8 text-slate-500 text-xs">Loading requests...</div>
           </div>
         </div>
 
-        <!-- Tab 2: Worker Directory -->
         <div id="admin-view-workers" class="space-y-4 hidden">
           <div class="relative">
             <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-500 text-sm"></i>
-            <input type="text" id="admin-search-worker" oninput="renderWorkerDirectory()" placeholder="Search by ID, name, or email..." class="w-full bg-slate-800 border border-slate-700 rounded-xl py-2.5 pl-10 pr-4 text-xs text-white focus:outline-none focus:border-blue-500">
+            <input type="text" id="admin-search-worker" oninput="renderWorkerDirectory()" placeholder="Search worker ID, name, email..." class="w-full bg-slate-800 border border-slate-700 rounded-xl py-2.5 pl-10 pr-4 text-xs text-white focus:outline-none focus:border-blue-500">
           </div>
           <div id="admin-workers-list" class="space-y-3">
             <div class="text-center py-8 text-slate-500 text-xs">Loading directory...</div>
@@ -238,7 +214,6 @@
 
   </div>
 
-  <!-- Add Money Modal (Admin) -->
   <div id="modal-add-money" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-sm p-6 space-y-4 shadow-2xl">
       <div class="flex items-center justify-between border-b border-slate-800 pb-3">
@@ -256,83 +231,50 @@
           <input type="number" id="add-money-amount" min="1" step="1" required placeholder="Min ₹1" class="w-full bg-slate-800 border border-slate-700 rounded-xl py-2.5 px-3 text-sm text-white focus:outline-none focus:border-blue-500">
         </div>
         <div>
-          <label class="block text-xs font-semibold text-slate-400 mb-1">Description / Note</label>
-          <input type="text" id="add-money-desc" required placeholder="e.g. Task Reward" class="w-full bg-slate-800 border border-slate-700 rounded-xl py-2.5 px-3 text-sm text-white focus:outline-none focus:border-blue-500">
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Description</label>
+          <input type="text" id="add-money-desc" required placeholder="e.g. Daily Bonus" class="w-full bg-slate-800 border border-slate-700 rounded-xl py-2.5 px-3 text-sm text-white focus:outline-none focus:border-blue-500">
         </div>
         <div class="flex gap-2 pt-2">
-          <button type="button" onclick="closeAddMoneyModal()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold py-2.5 rounded-xl text-xs">Cancel</button>
-          <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2.5 rounded-xl text-xs">Confirm Add</button>
+          <button type="button" onclick="closeAddMoneyModal()" class="flex-1 bg-slate-800 text-slate-300 font-semibold py-2.5 rounded-xl text-xs">Cancel</button>
+          <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2.5 rounded-xl text-xs">Add Money</button>
         </div>
       </form>
     </div>
   </div>
-    <!-- JavaScript Integration -->
-  <script>
-    // SUPABASE INITIALIZATION
+    <script>
     const SUPABASE_URL = "https://ykswgkrmqsmdneobykri.supabase.co";
     const SUPABASE_KEY = "sb_publishable_iED-0Op0GP8e1msvL7ksdw_53rXjJ_H";
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // Global App State
     let currentUser = null;
     let currentProfile = null;
     let currentWallet = null;
     let allWorkers = [];
     let selectedWorkerForAddMoney = null;
 
-    // Toast Utility
     function showToast(message, type = 'info') {
       const container = document.getElementById('toast-container');
       const toast = document.createElement('div');
       const bg = type === 'error' ? 'bg-red-600' : type === 'success' ? 'bg-emerald-600' : 'bg-blue-600';
-      toast.className = `${bg} text-white text-xs font-semibold px-4 py-3 rounded-xl shadow-xl transition-all duration-300 transform translate-y-2 opacity-0 pointer-events-auto flex items-center gap-2`;
+      toast.className = `${bg} text-white text-xs font-semibold px-4 py-3 rounded-xl shadow-xl transition-all duration-300 pointer-events-auto flex items-center gap-2`;
       toast.innerHTML = `<i class="fa-solid ${type === 'error' ? 'fa-circle-exclamation' : type === 'success' ? 'fa-circle-check' : 'fa-circle-info'}"></i><span>${message}</span>`;
       container.appendChild(toast);
-      setTimeout(() => {
-        toast.classList.remove('translate-y-2', 'opacity-0');
-      }, 10);
-      setTimeout(() => {
-        toast.classList.add('opacity-0');
-        setTimeout(() => toast.remove(), 300);
-      }, 3500);
+      setTimeout(() => toast.remove(), 3500);
     }
 
-    // Auth Tab Switcher
     function switchAuthTab(tab) {
-      const loginForm = document.getElementById('login-form');
-      const regForm = document.getElementById('register-form');
-      const tabLogin = document.getElementById('tab-login');
-      const tabReg = document.getElementById('tab-register');
-
-      if (tab === 'login') {
-        loginForm.classList.remove('hidden');
-        regForm.classList.add('hidden');
-        tabLogin.className = "flex-1 py-2 text-sm font-semibold rounded-lg bg-blue-600 text-white transition-all";
-        tabReg.className = "flex-1 py-2 text-sm font-semibold rounded-lg text-slate-400 hover:text-white transition-all";
-      } else {
-        loginForm.classList.add('hidden');
-        regForm.classList.remove('hidden');
-        tabReg.className = "flex-1 py-2 text-sm font-semibold rounded-lg bg-blue-600 text-white transition-all";
-        tabLogin.className = "flex-1 py-2 text-sm font-semibold rounded-lg text-slate-400 hover:text-white transition-all";
-      }
+      document.getElementById('login-form').classList.toggle('hidden', tab !== 'login');
+      document.getElementById('register-form').classList.toggle('hidden', tab === 'login');
+      document.getElementById('tab-login').className = tab === 'login' ? "flex-1 py-2 text-sm font-semibold rounded-lg bg-blue-600 text-white" : "flex-1 py-2 text-sm font-semibold rounded-lg text-slate-400";
+      document.getElementById('tab-register').className = tab !== 'login' ? "flex-1 py-2 text-sm font-semibold rounded-lg bg-blue-600 text-white" : "flex-1 py-2 text-sm font-semibold rounded-lg text-slate-400";
     }
 
-    // Toggle Withdrawal Method Options
     function toggleWithdrawMethodFields() {
-      const method = document.getElementById('withdraw-method').value;
-      const upiGroup = document.getElementById('upi-field-group');
-      const gcGroup = document.getElementById('gift-card-field-group');
-
-      if (method === 'upi') {
-        upiGroup.classList.remove('hidden');
-        gcGroup.classList.add('hidden');
-      } else {
-        upiGroup.classList.add('hidden');
-        gcGroup.classList.remove('hidden');
-      }
+      const isUpi = document.getElementById('withdraw-method').value === 'upi';
+      document.getElementById('upi-field-group').classList.toggle('hidden', !isUpi);
+      document.getElementById('gift-card-field-group').classList.toggle('hidden', isUpi);
     }
 
-    // App Initialization
     window.addEventListener('DOMContentLoaded', async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (session) {
@@ -343,126 +285,70 @@
       }
     });
 
-    function showScreen(screenId) {
-      document.getElementById('auth-screen').classList.add('hidden');
-      document.getElementById('worker-dashboard').classList.add('hidden');
-      document.getElementById('admin-dashboard').classList.add('hidden');
-      document.getElementById(screenId).classList.remove('hidden');
+    function showScreen(id) {
+      ['auth-screen', 'worker-dashboard', 'admin-dashboard'].forEach(s => document.getElementById(s).classList.add('hidden'));
+      document.getElementById(id).classList.remove('hidden');
     }
 
-    // User Login
     async function handleLogin(e) {
       e.preventDefault();
       const email = document.getElementById('login-email').value.trim();
       const password = document.getElementById('login-password').value;
-      const btn = document.getElementById('btn-login');
-
-      btn.disabled = true;
-      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Authenticating...`;
-
       try {
         const { data, error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
         currentUser = data.user;
         await loadUserProfileAndRoute();
-        showToast('Logged in successfully', 'success');
       } catch (err) {
-        showToast(err.message || 'Login failed', 'error');
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = `<span>Log In</span><i class="fa-solid fa-arrow-right text-xs"></i>`;
+        showToast(err.message, 'error');
       }
     }
 
-    // User Registration
     async function handleRegister(e) {
       e.preventDefault();
       const name = document.getElementById('reg-name').value.trim();
       const email = document.getElementById('reg-email').value.trim();
       const dob = document.getElementById('reg-dob').value;
       const password = document.getElementById('reg-password').value;
-      const btn = document.getElementById('btn-register');
-
-      btn.disabled = true;
-      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Creating Account...`;
-
       try {
-        const { data, error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            data: { full_name: name, date_of_birth: dob }
-          }
-        });
+        const { error } = await supabase.auth.signUp({ email, password, options: { data: { full_name: name, date_of_birth: dob } } });
         if (error) throw error;
-        showToast('Registration successful! Please log in.', 'success');
+        showToast('Registered successfully! Please log in.', 'success');
         switchAuthTab('login');
       } catch (err) {
-        showToast(err.message || 'Registration failed', 'error');
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = `<span>Create Account</span><i class="fa-solid fa-user-plus text-xs"></i>`;
+        showToast(err.message, 'error');
       }
     }
 
-    // Load Profile & Route Role
     async function loadUserProfileAndRoute() {
-      try {
-        const { data: profile, error } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', currentUser.id)
-          .single();
-
-        if (error) throw error;
-        currentProfile = profile;
-
-        if (profile.role === 'admin') {
-          showScreen('admin-dashboard');
-          await loadAdminData();
-        } else {
-          showScreen('worker-dashboard');
-          document.getElementById('user-name-display').textContent = profile.full_name || 'Worker';
-          document.getElementById('worker-id-display').textContent = profile.worker_id || 'AP000000';
-          document.getElementById('user-avatar').textContent = (profile.full_name || 'AP').substring(0, 2).toUpperCase();
-          await loadWorkerWalletAndData();
-        }
-      } catch (err) {
-        showToast('Error loading profile details', 'error');
-        handleLogout();
+      const { data: profile } = await supabase.from('profiles').select('*').eq('id', currentUser.id).single();
+      currentProfile = profile;
+      if (profile?.role === 'admin') {
+        showScreen('admin-dashboard');
+        await loadAdminData();
+      } else {
+        showScreen('worker-dashboard');
+        document.getElementById('user-name-display').textContent = profile?.full_name || 'Worker';
+        document.getElementById('worker-id-display').textContent = profile?.worker_id || 'AP000000';
+        await loadWorkerWalletAndData();
       }
     }
 
-    // Worker Wallet & Data
     async function loadWorkerWalletAndData() {
       const { data: wallet } = await supabase.from('wallets').select('*').eq('user_id', currentUser.id).single();
       if (wallet) {
         currentWallet = wallet;
         document.getElementById('worker-balance').textContent = `₹${parseFloat(wallet.balance).toFixed(2)}`;
       }
-
       const { data: txs } = await supabase.from('transactions').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false });
       const listEl = document.getElementById('worker-transactions-list');
-
-      if (!txs || txs.length === 0) {
-        listEl.innerHTML = `<div class="text-center py-6 text-slate-500 text-xs">No transaction history found</div>`;
-        return;
-      }
-
-      listEl.innerHTML = txs.map(tx => `
-        <div class="bg-slate-800/40 border border-slate-800 p-3 rounded-xl flex items-center justify-between">
-          <div>
-            <p class="text-xs font-semibold text-white">${tx.description || tx.type}</p>
-            <p class="text-[10px] text-slate-500">${new Date(tx.created_at).toLocaleDateString()}</p>
-          </div>
-          <p class="text-xs font-bold ${tx.type === 'credit' ? 'text-emerald-400' : 'text-red-400'} font-mono">
-            ${tx.type === 'credit' ? '+' : '-'}₹${parseFloat(tx.amount).toFixed(2)}
-          </p>
-        </div>
-      `).join('');
+      listEl.innerHTML = (txs && txs.length) ? txs.map(tx => `
+        <div class="bg-slate-800/40 border border-slate-800 p-3 rounded-xl flex justify-between items-center text-xs">
+          <div><p class="font-bold text-white">${tx.description || tx.type}</p><p class="text-[10px] text-slate-500">${new Date(tx.created_at).toLocaleDateString()}</p></div>
+          <p class="font-bold font-mono ${tx.type === 'credit' ? 'text-emerald-400' : 'text-red-400'}">${tx.type === 'credit' ? '+' : '-'}₹${parseFloat(tx.amount).toFixed(2)}</p>
+        </div>`).join('') : `<div class="text-center py-6 text-slate-500 text-xs">No transactions yet</div>`;
     }
 
-    // Submit Worker Withdrawal
     async function handleWorkerWithdrawal(e) {
       e.preventDefault();
       const amount = parseFloat(document.getElementById('withdraw-amount').value);
@@ -470,146 +356,70 @@
       const upiId = document.getElementById('withdraw-upi-id').value.trim();
       const gcType = document.getElementById('withdraw-gift-card-type').value;
 
-      if (amount < 10) {
-        showToast('Minimum withdrawal amount is ₹10', 'error');
-        return;
-      }
-
-      if (currentWallet && amount > currentWallet.balance) {
-        showToast('Insufficient wallet balance', 'error');
-        return;
-      }
-
-      if (method === 'upi' && !upiId) {
-        showToast('Please enter a valid UPI ID', 'error');
-        return;
-      }
-
-      const btn = document.getElementById('btn-submit-withdraw');
-      btn.disabled = true;
-      btn.textContent = 'Processing...';
+      if (amount < 10) return showToast('Minimum withdrawal is ₹10', 'error');
+      if (currentWallet && amount > currentWallet.balance) return showToast('Insufficient balance', 'error');
 
       try {
-        const { data, error } = await supabase.rpc('create_withdrawal', {
+        const { error } = await supabase.rpc('create_withdrawal', {
           p_amount: amount,
           p_payment_method: method,
           p_gift_card_type: method === 'gift_card' ? gcType : null,
           p_upi_id: method === 'upi' ? upiId : null
         });
-
         if (error) throw error;
-
-        showToast('Withdrawal request submitted successfully!', 'success');
+        showToast('Withdrawal requested!', 'success');
         document.getElementById('withdrawal-form').reset();
-        toggleWithdrawMethodFields();
         await loadWorkerWalletAndData();
       } catch (err) {
-        showToast(err.message || 'Withdrawal failed', 'error');
-      } finally {
-        btn.disabled = false;
-        btn.textContent = 'Request Withdrawal';
+        showToast(err.message, 'error');
       }
     }
 
-    // Admin Panel Switcher
     function switchAdminTab(tab) {
-      const vWithdrawals = document.getElementById('admin-view-withdrawals');
-      const vWorkers = document.getElementById('admin-view-workers');
-      const tabWithdrawals = document.getElementById('admin-tab-withdrawals');
-      const tabWorkers = document.getElementById('admin-tab-workers');
-
-      if (tab === 'withdrawals') {
-        vWithdrawals.classList.remove('hidden');
-        vWorkers.classList.add('hidden');
-        tabWithdrawals.className = "pb-3 text-sm font-bold border-b-2 border-blue-500 text-blue-400";
-        tabWorkers.className = "pb-3 text-sm font-bold text-slate-400 hover:text-white border-b-2 border-transparent";
-      } else {
-        vWithdrawals.classList.add('hidden');
-        vWorkers.classList.remove('hidden');
-        tabWorkers.className = "pb-3 text-sm font-bold border-b-2 border-blue-500 text-blue-400";
-        tabWithdrawals.className = "pb-3 text-sm font-bold text-slate-400 hover:text-white border-b-2 border-transparent";
-      }
+      document.getElementById('admin-view-withdrawals').classList.toggle('hidden', tab !== 'withdrawals');
+      document.getElementById('admin-view-workers').classList.toggle('hidden', tab === 'withdrawals');
+      document.getElementById('admin-tab-withdrawals').className = tab === 'withdrawals' ? "pb-3 text-sm font-bold border-b-2 border-blue-500 text-blue-400" : "pb-3 text-sm font-bold text-slate-400";
+      document.getElementById('admin-tab-workers').className = tab !== 'withdrawals' ? "pb-3 text-sm font-bold border-b-2 border-blue-500 text-blue-400" : "pb-3 text-sm font-bold text-slate-400";
     }
 
-    // Load Admin Data
     async function loadAdminData() {
-      // Workers List
       const { data: workers } = await supabase.from('profiles').select('*, wallets(balance)').eq('role', 'worker');
       allWorkers = workers || [];
       document.getElementById('admin-total-workers').textContent = allWorkers.length;
       renderWorkerDirectory();
 
-      // Pending Withdrawals
-      const { data: withdrawals } = await supabase.from('withdrawals').select('*, profiles(worker_id, full_name, email)').eq('status', 'pending').order('created_at', { ascending: false });
-      const pendingList = withdrawals || [];
-      document.getElementById('admin-pending-count').textContent = pendingList.length;
+      const { data: withdrawals } = await supabase.from('withdrawals').select('*, profiles(worker_id, full_name)').eq('status', 'pending').order('created_at', { ascending: false });
+      const pending = withdrawals || [];
+      document.getElementById('admin-pending-count').textContent = pending.length;
 
       const listEl = document.getElementById('admin-withdrawals-list');
-      if (pendingList.length === 0) {
-        listEl.innerHTML = `<div class="text-center py-8 text-slate-500 text-xs">No pending withdrawal requests</div>`;
-        return;
-      }
-
-      listEl.innerHTML = pendingList.map(w => `
-        <div class="bg-slate-800/40 border border-slate-800 p-4 rounded-xl space-y-3">
-          <div class="flex items-center justify-between border-b border-slate-700/50 pb-2">
-            <div>
-              <p class="text-xs font-bold text-white">${w.profiles?.full_name || 'Worker'}</p>
-              <p class="text-[10px] text-blue-400 font-mono">${w.profiles?.worker_id || ''}</p>
-            </div>
-            <p class="text-base font-bold text-amber-400 font-mono">₹${parseFloat(w.amount).toFixed(2)}</p>
+      listEl.innerHTML = pending.length ? pending.map(w => `
+        <div class="bg-slate-800/40 border border-slate-800 p-4 rounded-xl space-y-2 text-xs">
+          <div class="flex justify-between font-bold border-b border-slate-700/50 pb-2">
+            <div><p class="text-white">${w.profiles?.full_name || 'Worker'}</p><p class="text-blue-400 font-mono">${w.profiles?.worker_id || ''}</p></div>
+            <p class="text-amber-400 text-sm font-mono">₹${parseFloat(w.amount).toFixed(2)}</p>
           </div>
-          <div class="text-xs text-slate-400 space-y-1">
-            <p><span class="text-slate-500">Method:</span> <span class="text-white uppercase font-semibold">${w.payment_method}</span></p>
-            ${w.upi_id ? `<p><span class="text-slate-500">UPI ID:</span> <span class="text-white font-mono">${w.upi_id}</span></p>` : ''}
-            ${w.gift_card_type ? `<p><span class="text-slate-500">Type:</span> <span class="text-white uppercase">${w.gift_card_type}</span></p>` : ''}
-          </div>
-          <div class="flex gap-2 pt-1">
-            <button onclick="handleApproveWithdrawal(${w.id})" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold py-2 rounded-lg transition-colors">Approve</button>
-          </div>
-        </div>
-      `).join('');
+          <p class="text-slate-400">Method: <span class="text-white uppercase font-bold">${w.payment_method}</span> ${w.upi_id ? `(${w.upi_id})` : ''} ${w.gift_card_type ? `(${w.gift_card_type})` : ''}</p>
+          <button onclick="handleApproveWithdrawal(${w.id})" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 rounded-lg">Approve Withdrawal</button>
+        </div>`).join('') : `<div class="text-center py-8 text-slate-500 text-xs">No pending requests</div>`;
     }
 
-    // Render Worker Directory with Search
     function renderWorkerDirectory() {
       const query = document.getElementById('admin-search-worker').value.toLowerCase();
+      const filtered = allWorkers.filter(w => (w.worker_id && w.worker_id.toLowerCase().includes(query)) || (w.full_name && w.full_name.toLowerCase().includes(query)) || (w.email && w.email.toLowerCase().includes(query)));
       const listEl = document.getElementById('admin-workers-list');
-
-      const filtered = allWorkers.filter(w => 
-        (w.worker_id && w.worker_id.toLowerCase().includes(query)) ||
-        (w.full_name && w.full_name.toLowerCase().includes(query)) ||
-        (w.email && w.email.toLowerCase().includes(query))
-      );
-
-      if (filtered.length === 0) {
-        listEl.innerHTML = `<div class="text-center py-6 text-slate-500 text-xs">No matching workers found</div>`;
-        return;
-      }
-
-      listEl.innerHTML = filtered.map(w => {
-        const bal = w.wallets?.[0]?.balance ?? 0;
-        return `
-          <div class="bg-slate-800/40 border border-slate-800 p-3.5 rounded-xl flex items-center justify-between">
-            <div>
-              <p class="text-xs font-bold text-white">${w.full_name || 'Worker'}</p>
-              <p class="text-[10px] text-blue-400 font-mono">${w.worker_id || 'AP000000'}</p>
-              <p class="text-[10px] text-slate-500">${w.email}</p>
-            </div>
-            <div class="text-right">
-              <p class="text-xs font-bold text-emerald-400 font-mono">₹${parseFloat(bal).toFixed(2)}</p>
-              <button onclick="openAddMoneyModal('${w.id}', '${w.worker_id}', '${w.full_name || 'Worker'}')" class="mt-1.5 px-2.5 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-[10px] font-bold transition-all">
-                + Add Money
-              </button>
-            </div>
+      listEl.innerHTML = filtered.length ? filtered.map(w => `
+        <div class="bg-slate-800/40 border border-slate-800 p-3.5 rounded-xl flex justify-between items-center text-xs">
+          <div><p class="font-bold text-white">${w.full_name || 'Worker'}</p><p class="text-blue-400 font-mono">${w.worker_id || 'AP000000'}</p><p class="text-slate-500">${w.email}</p></div>
+          <div class="text-right">
+            <p class="font-bold text-emerald-400 font-mono">₹${parseFloat(w.wallets?.[0]?.balance || 0).toFixed(2)}</p>
+            <button onclick="openAddMoneyModal('${w.id}', '${w.worker_id}', '${w.full_name || 'Worker'}')" class="mt-1 px-2.5 py-1 bg-blue-600 text-white rounded-lg font-bold text-[10px]">+ Add Money</button>
           </div>
-        `;
-      }).join('');
+        </div>`).join('') : `<div class="text-center py-6 text-slate-500 text-xs">No matching workers</div>`;
     }
 
-    // Modal Add Money Actions
-    function openAddMoneyModal(userId, workerId, name) {
-      selectedWorkerForAddMoney = userId;
+    function openAddMoneyModal(id, workerId, name) {
+      selectedWorkerForAddMoney = id;
       document.getElementById('modal-worker-id').textContent = workerId;
       document.getElementById('modal-worker-name').textContent = name;
       document.getElementById('modal-add-money').classList.remove('hidden');
@@ -624,60 +434,36 @@
       e.preventDefault();
       const amount = parseFloat(document.getElementById('add-money-amount').value);
       const desc = document.getElementById('add-money-desc').value.trim();
-
-      if (amount < 1) {
-        showToast('Minimum add amount is ₹1', 'error');
-        return;
-      }
-
       try {
-        const { data, error } = await supabase.rpc('admin_add_money', {
-          p_user_id: selectedWorkerForAddMoney,
-          p_amount: amount,
-          p_description: desc
-        });
-
+        const { error } = await supabase.rpc('admin_add_money', { p_user_id: selectedWorkerForAddMoney, p_amount: amount, p_description: desc });
         if (error) throw error;
-
         showToast('Money added successfully!', 'success');
         closeAddMoneyModal();
         await loadAdminData();
       } catch (err) {
-        showToast(err.message || 'Failed to add money', 'error');
+        showToast(err.message, 'error');
       }
     }
 
-    // Approve Withdrawal Action
-    async function handleApproveWithdrawal(withdrawalId) {
-      const ref = prompt("Enter Payment UTR / Reference Code:");
-      if (ref === null) return;
-
+    async function handleApproveWithdrawal(id) {
+      const ref = prompt("Enter UTR / Payment Ref:");
+      if (!ref) return;
       try {
-        const { data, error } = await supabase.rpc('admin_approve_withdrawal', {
-          p_withdrawal_id: withdrawalId,
-          p_payment_reference: ref,
-          p_admin_note: 'Approved by Admin'
-        });
-
+        const { error } = await supabase.rpc('admin_approve_withdrawal', { p_withdrawal_id: id, p_payment_reference: ref, p_admin_note: 'Approved' });
         if (error) throw error;
-
-        showToast('Withdrawal request approved!', 'success');
+        showToast('Approved!', 'success');
         await loadAdminData();
       } catch (err) {
-        showToast(err.message || 'Approval failed', 'error');
+        showToast(err.message, 'error');
       }
     }
 
-    // Sign Out / Logout
     async function handleLogout() {
       await supabase.auth.signOut();
       currentUser = null;
-      currentProfile = null;
-      currentWallet = null;
       showScreen('auth-screen');
-      showToast('Logged out successfully', 'info');
+      showToast('Logged out', 'info');
     }
   </script>
 </body>
-  </html>
-  
+</html>
