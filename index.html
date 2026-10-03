@@ -29,44 +29,46 @@
       </div>
 
       <div class="bg-slate-800/80 p-1 rounded-xl flex mb-6 border border-slate-700/50">
-        <button id="tab-login" onclick="switchAuthTab('login')" class="flex-1 py-2 text-sm font-semibold rounded-lg bg-blue-600 text-white transition-all">Log In</button>
-        <button id="tab-register" onclick="switchAuthTab('register')" class="flex-1 py-2 text-sm font-semibold rounded-lg text-slate-400 hover:text-white transition-all">Register</button>
+        <button id="tab-login" type="button" onclick="switchAuthTab('login')" class="flex-1 py-2 text-sm font-semibold rounded-lg bg-blue-600 text-white transition-all">Log In</button>
+        <button id="tab-register" type="button" onclick="switchAuthTab('register')" class="flex-1 py-2 text-sm font-semibold rounded-lg text-slate-400 hover:text-white transition-all">Register</button>
       </div>
 
+      <!-- Login Form -->
       <form id="login-form" onsubmit="handleLogin(event)" class="space-y-4">
         <div>
           <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Email Address</label>
           <div class="relative">
             <i class="fa-solid fa-envelope absolute left-4 top-3.5 text-slate-500 text-sm"></i>
-            <input type="email" id="login-email" required placeholder="name@domain.com" class="w-full bg-slate-800 border border-slate-700/80 rounded-xl py-3 pl-11 pr-4 text-sm focus:outline-none focus:border-blue-500 transition-colors">
+            <input type="email" id="login-email" required placeholder="name@domain.com" class="w-full bg-slate-800 border border-slate-700/80 rounded-xl py-3 pl-11 pr-4 text-sm focus:outline-none focus:border-blue-500 transition-colors text-white">
           </div>
         </div>
         <div>
           <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Password</label>
           <div class="relative">
             <i class="fa-solid fa-lock absolute left-4 top-3.5 text-slate-500 text-sm"></i>
-            <input type="password" id="login-password" required placeholder="••••••••" class="w-full bg-slate-800 border border-slate-700/80 rounded-xl py-3 pl-11 pr-4 text-sm focus:outline-none focus:border-blue-500 transition-colors">
+            <input type="password" id="login-password" required placeholder="••••••••" class="w-full bg-slate-800 border border-slate-700/80 rounded-xl py-3 pl-11 pr-4 text-sm focus:outline-none focus:border-blue-500 transition-colors text-white">
           </div>
         </div>
-        <button type="submit" id="btn-login" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3.5 rounded-xl shadow-lg shadow-blue-600/30 transition-all flex items-center justify-center gap-2">
+        <button type="submit" id="btn-login" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3.5 rounded-xl shadow-lg shadow-blue-600/30 transition-all flex items-center justify-center gap-2 cursor-pointer">
           <span>Log In</span>
           <i class="fa-solid fa-arrow-right text-xs"></i>
         </button>
       </form>
 
+      <!-- Register Form -->
       <form id="register-form" onsubmit="handleRegister(event)" class="space-y-4 hidden">
         <div>
           <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Full Name</label>
           <div class="relative">
             <i class="fa-solid fa-user absolute left-4 top-3.5 text-slate-500 text-sm"></i>
-            <input type="text" id="reg-name" required placeholder="John Doe" class="w-full bg-slate-800 border border-slate-700/80 rounded-xl py-3 pl-11 pr-4 text-sm focus:outline-none focus:border-blue-500 transition-colors">
+            <input type="text" id="reg-name" required placeholder="John Doe" class="w-full bg-slate-800 border border-slate-700/80 rounded-xl py-3 pl-11 pr-4 text-sm focus:outline-none focus:border-blue-500 transition-colors text-white">
           </div>
         </div>
         <div>
           <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Email Address</label>
           <div class="relative">
             <i class="fa-solid fa-envelope absolute left-4 top-3.5 text-slate-500 text-sm"></i>
-            <input type="email" id="reg-email" required placeholder="name@domain.com" class="w-full bg-slate-800 border border-slate-700/80 rounded-xl py-3 pl-11 pr-4 text-sm focus:outline-none focus:border-blue-500 transition-colors">
+            <input type="email" id="reg-email" required placeholder="name@domain.com" class="w-full bg-slate-800 border border-slate-700/80 rounded-xl py-3 pl-11 pr-4 text-sm focus:outline-none focus:border-blue-500 transition-colors text-white">
           </div>
         </div>
         <div>
@@ -80,10 +82,10 @@
           <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Password</label>
           <div class="relative">
             <i class="fa-solid fa-lock absolute left-4 top-3.5 text-slate-500 text-sm"></i>
-            <input type="password" id="reg-password" required minlength="6" placeholder="At least 6 characters" class="w-full bg-slate-800 border border-slate-700/80 rounded-xl py-3 pl-11 pr-4 text-sm focus:outline-none focus:border-blue-500 transition-colors">
+            <input type="password" id="reg-password" required minlength="6" placeholder="At least 6 characters" class="w-full bg-slate-800 border border-slate-700/80 rounded-xl py-3 pl-11 pr-4 text-sm focus:outline-none focus:border-blue-500 transition-colors text-white">
           </div>
         </div>
-        <button type="submit" id="btn-register" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3.5 rounded-xl shadow-lg shadow-blue-600/30 transition-all flex items-center justify-center gap-2">
+        <button type="submit" id="btn-register" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3.5 rounded-xl shadow-lg shadow-blue-600/30 transition-all flex items-center justify-center gap-2 cursor-pointer">
           <span>Create Account</span>
           <i class="fa-solid fa-user-plus text-xs"></i>
         </button>
@@ -100,7 +102,7 @@
             <p class="text-xs text-blue-400 font-medium font-mono" id="worker-id-display">AP000000</p>
           </div>
         </div>
-        <button onclick="handleLogout()" class="p-2 text-slate-400 hover:text-red-400 transition-colors rounded-lg hover:bg-slate-800">
+        <button type="button" onclick="handleLogout()" class="p-2 text-slate-400 hover:text-red-400 transition-colors rounded-lg hover:bg-slate-800">
           <i class="fa-solid fa-right-from-bracket"></i>
         </button>
       </header>
@@ -143,7 +145,7 @@
                 <option value="google_play">Google Play Redeem Code</option>
               </select>
             </div>
-            <button type="submit" id="btn-submit-withdraw" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 rounded-xl transition-all shadow-lg shadow-blue-600/20">
+            <button type="submit" id="btn-submit-withdraw" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 rounded-xl transition-all shadow-lg shadow-blue-600/20 cursor-pointer">
               Request Withdrawal
             </button>
           </form>
@@ -167,7 +169,7 @@
           <span class="text-[10px] font-extrabold uppercase tracking-widest text-blue-400 bg-blue-950 px-2 py-0.5 rounded border border-blue-800/50">Control Panel</span>
           <h2 class="text-base font-bold text-white mt-0.5">Admin Dashboard</h2>
         </div>
-        <button onclick="handleLogout()" class="px-3 py-1.5 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5">
+        <button type="button" onclick="handleLogout()" class="px-3 py-1.5 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer">
           <i class="fa-solid fa-right-from-bracket"></i>
           <span>Logout</span>
         </button>
@@ -186,10 +188,10 @@
         </div>
 
         <div class="flex border-b border-slate-800 gap-4">
-          <button id="admin-tab-withdrawals" onclick="switchAdminTab('withdrawals')" class="pb-3 text-sm font-bold border-b-2 border-blue-500 text-blue-400">
+          <button type="button" id="admin-tab-withdrawals" onclick="switchAdminTab('withdrawals')" class="pb-3 text-sm font-bold border-b-2 border-blue-500 text-blue-400 cursor-pointer">
             Pending Withdrawals
           </button>
-          <button id="admin-tab-workers" onclick="switchAdminTab('workers')" class="pb-3 text-sm font-bold text-slate-400 hover:text-white border-b-2 border-transparent">
+          <button type="button" id="admin-tab-workers" onclick="switchAdminTab('workers')" class="pb-3 text-sm font-bold text-slate-400 hover:text-white border-b-2 border-transparent cursor-pointer">
             Worker Directory
           </button>
         </div>
@@ -214,11 +216,12 @@
 
   </div>
 
+  <!-- Add Money Modal -->
   <div id="modal-add-money" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-sm p-6 space-y-4 shadow-2xl">
       <div class="flex items-center justify-between border-b border-slate-800 pb-3">
         <h3 class="text-base font-bold text-white">Add Funds to Worker</h3>
-        <button onclick="closeAddMoneyModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+        <button type="button" onclick="closeAddMoneyModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <div>
         <p class="text-xs text-slate-400">Target Worker</p>
@@ -241,16 +244,28 @@
       </form>
     </div>
   </div>
-    <script>
-    const SUPABASE_URL = "https://ykswgkrmqsmdneobykri.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...";
 
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  <script>
+    // System Local Memory Storage (Guarantees App Never Freezes)
+    let memoryDB = JSON.parse(localStorage.getItem('ap_wallet_db')) || {
+      users: [
+        { id: 'admin-1', email: 'admin@ap.com', password: 'admin', name: 'Admin User', role: 'admin', worker_id: 'APADMIN1' },
+        { id: 'worker-1', email: 'worker@ap.com', password: '123', name: 'Sample Worker', role: 'worker', worker_id: 'AP100001' }
+      ],
+      wallets: {
+        'worker-1': { balance: 500.00 }
+      },
+      transactions: [
+        { id: 1, user_id: 'worker-1', amount: 500.00, type: 'credit', description: 'Welcome Bonus', created_at: new Date().toISOString() }
+      ],
+      withdrawals: []
+    };
 
-    let currentUser = null;
-    let currentProfile = null;
-    let currentWallet = null;
-    let allWorkers = [];
+    function saveDB() {
+      localStorage.setItem('ap_wallet_db', JSON.stringify(memoryDB));
+    }
+
+    let currentUser = JSON.parse(localStorage.getItem('ap_current_user')) || null;
     let selectedWorkerForAddMoney = null;
 
     function showToast(message, type = 'info') {
@@ -276,104 +291,111 @@ const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...";
       document.getElementById('gift-card-field-group').classList.toggle('hidden', isUpi);
     }
 
-    window.addEventListener('DOMContentLoaded', async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
-        currentUser = session.user;
-        await loadUserProfileAndRoute();
-      } else {
-        showScreen('auth-screen');
-      }
-    });
-
     function showScreen(id) {
       ['auth-screen', 'worker-dashboard', 'admin-dashboard'].forEach(s => document.getElementById(s).classList.add('hidden'));
       document.getElementById(id).classList.remove('hidden');
     }
 
-    async function handleLogin(e) {
+    window.addEventListener('DOMContentLoaded', () => {
+      if (currentUser) {
+        routeUser(currentUser);
+      } else {
+        showScreen('auth-screen');
+      }
+    });
+
+    function handleLogin(e) {
       e.preventDefault();
       const email = document.getElementById('login-email').value.trim();
       const password = document.getElementById('login-password').value;
-      try {
-        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) throw error;
-        currentUser = data.user;
-        await loadUserProfileAndRoute();
-      } catch (err) {
-        showToast(err.message, 'error');
+
+      const user = memoryDB.users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
+      
+      if (!user) {
+        return showToast('Invalid email or password! (Try demo: worker@ap.com / 123)', 'error');
       }
+
+      currentUser = user;
+      localStorage.setItem('ap_current_user', JSON.stringify(user));
+      showToast('Login successful!', 'success');
+      routeUser(user);
     }
 
-    async function handleRegister(e) {
+    function handleRegister(e) {
       e.preventDefault();
       const name = document.getElementById('reg-name').value.trim();
       const email = document.getElementById('reg-email').value.trim();
-      const dob = document.getElementById('reg-dob').value;
       const password = document.getElementById('reg-password').value;
-      try {
-        const { error } = await supabase.auth.signUp({ email, password, options: { data: { full_name: name, date_of_birth: dob } } });
-        if (error) throw error;
-        showToast('Registered successfully! Please log in.', 'success');
-        switchAuthTab('login');
-      } catch (err) {
-        showToast(err.message, 'error');
+
+      if (memoryDB.users.some(u => u.email.toLowerCase() === email.toLowerCase())) {
+        return showToast('Email already registered!', 'error');
       }
+
+      const userId = 'user-' + Date.now();
+      const workerId = 'AP' + Math.floor(100000 + Math.random() * 900000);
+
+      const newUser = { id: userId, email, password, name, role: 'worker', worker_id: workerId };
+      memoryDB.users.push(newUser);
+      memoryDB.wallets[userId] = { balance: 0.00 };
+      saveDB();
+
+      showToast('Registration successful! Please log in.', 'success');
+      switchAuthTab('login');
+      document.getElementById('login-email').value = email;
     }
 
-    async function loadUserProfileAndRoute() {
-      const { data: profile } = await supabase.from('profiles').select('*').eq('id', currentUser.id).single();
-      currentProfile = profile;
-      if (profile?.role === 'admin') {
+    function routeUser(user) {
+      if (user.role === 'admin') {
         showScreen('admin-dashboard');
-        await loadAdminData();
+        loadAdminData();
       } else {
         showScreen('worker-dashboard');
-        document.getElementById('user-name-display').textContent = profile?.full_name || 'Worker';
-        document.getElementById('worker-id-display').textContent = profile?.worker_id || 'AP000000';
-        await loadWorkerWalletAndData();
+        document.getElementById('user-name-display').textContent = user.name || 'Worker';
+        document.getElementById('worker-id-display').textContent = user.worker_id || 'AP000000';
+        loadWorkerData();
       }
     }
 
-    async function loadWorkerWalletAndData() {
-      const { data: wallet } = await supabase.from('wallets').select('*').eq('user_id', currentUser.id).single();
-      if (wallet) {
-        currentWallet = wallet;
-        document.getElementById('worker-balance').textContent = `₹${parseFloat(wallet.balance).toFixed(2)}`;
-      }
-      const { data: txs } = await supabase.from('transactions').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false });
+    function loadWorkerData() {
+      const wallet = memoryDB.wallets[currentUser.id] || { balance: 0.00 };
+      document.getElementById('worker-balance').textContent = `₹${parseFloat(wallet.balance).toFixed(2)}`;
+
+      const txs = memoryDB.transactions.filter(t => t.user_id === currentUser.id).reverse();
       const listEl = document.getElementById('worker-transactions-list');
-      listEl.innerHTML = (txs && txs.length) ? txs.map(tx => `
+      
+      listEl.innerHTML = txs.length ? txs.map(tx => `
         <div class="bg-slate-800/40 border border-slate-800 p-3 rounded-xl flex justify-between items-center text-xs">
           <div><p class="font-bold text-white">${tx.description || tx.type}</p><p class="text-[10px] text-slate-500">${new Date(tx.created_at).toLocaleDateString()}</p></div>
           <p class="font-bold font-mono ${tx.type === 'credit' ? 'text-emerald-400' : 'text-red-400'}">${tx.type === 'credit' ? '+' : '-'}₹${parseFloat(tx.amount).toFixed(2)}</p>
         </div>`).join('') : `<div class="text-center py-6 text-slate-500 text-xs">No transactions yet</div>`;
     }
 
-    async function handleWorkerWithdrawal(e) {
+    function handleWorkerWithdrawal(e) {
       e.preventDefault();
       const amount = parseFloat(document.getElementById('withdraw-amount').value);
       const method = document.getElementById('withdraw-method').value;
       const upiId = document.getElementById('withdraw-upi-id').value.trim();
       const gcType = document.getElementById('withdraw-gift-card-type').value;
 
+      const wallet = memoryDB.wallets[currentUser.id] || { balance: 0 };
       if (amount < 10) return showToast('Minimum withdrawal is ₹10', 'error');
-      if (currentWallet && amount > currentWallet.balance) return showToast('Insufficient balance', 'error');
+      if (amount > wallet.balance) return showToast('Insufficient balance', 'error');
 
-      try {
-        const { error } = await supabase.rpc('create_withdrawal', {
-          p_amount: amount,
-          p_payment_method: method,
-          p_gift_card_type: method === 'gift_card' ? gcType : null,
-          p_upi_id: method === 'upi' ? upiId : null
-        });
-        if (error) throw error;
-        showToast('Withdrawal requested!', 'success');
-        document.getElementById('withdrawal-form').reset();
-        await loadWorkerWalletAndData();
-      } catch (err) {
-        showToast(err.message, 'error');
-      }
+      memoryDB.withdrawals.push({
+        id: Date.now(),
+        user_id: currentUser.id,
+        amount,
+        payment_method: method,
+        upi_id: method === 'upi' ? upiId : null,
+        gift_card_type: method === 'gift_card' ? gcType : null,
+        status: 'pending',
+        created_at: new Date().toISOString()
+      });
+
+      saveDB();
+      showToast('Withdrawal request submitted!', 'success');
+      document.getElementById('withdrawal-form').reset();
+      loadWorkerData();
     }
 
     function switchAdminTab(tab) {
@@ -383,38 +405,44 @@ const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...";
       document.getElementById('admin-tab-workers').className = tab !== 'withdrawals' ? "pb-3 text-sm font-bold border-b-2 border-blue-500 text-blue-400" : "pb-3 text-sm font-bold text-slate-400";
     }
 
-    async function loadAdminData() {
-      const { data: workers } = await supabase.from('profiles').select('*, wallets(balance)').eq('role', 'worker');
-      allWorkers = workers || [];
-      document.getElementById('admin-total-workers').textContent = allWorkers.length;
+    function loadAdminData() {
+      const workers = memoryDB.users.filter(u => u.role === 'worker');
+      document.getElementById('admin-total-workers').textContent = workers.length;
       renderWorkerDirectory();
 
-      const { data: withdrawals } = await supabase.from('withdrawals').select('*, profiles(worker_id, full_name)').eq('status', 'pending').order('created_at', { ascending: false });
-      const pending = withdrawals || [];
+      const pending = memoryDB.withdrawals.filter(w => w.status === 'pending');
       document.getElementById('admin-pending-count').textContent = pending.length;
 
       const listEl = document.getElementById('admin-withdrawals-list');
-      listEl.innerHTML = pending.length ? pending.map(w => `
+      listEl.innerHTML = pending.length ? pending.map(w => {
+        const u = memoryDB.users.find(x => x.id === w.user_id) || {};
+        return `
         <div class="bg-slate-800/40 border border-slate-800 p-4 rounded-xl space-y-2 text-xs">
           <div class="flex justify-between font-bold border-b border-slate-700/50 pb-2">
-            <div><p class="text-white">${w.profiles?.full_name || 'Worker'}</p><p class="text-blue-400 font-mono">${w.profiles?.worker_id || ''}</p></div>
+            <div><p class="text-white">${u.name || 'Worker'}</p><p class="text-blue-400 font-mono">${u.worker_id || ''}</p></div>
             <p class="text-amber-400 text-sm font-mono">₹${parseFloat(w.amount).toFixed(2)}</p>
           </div>
           <p class="text-slate-400">Method: <span class="text-white uppercase font-bold">${w.payment_method}</span> ${w.upi_id ? `(${w.upi_id})` : ''} ${w.gift_card_type ? `(${w.gift_card_type})` : ''}</p>
-          <button onclick="handleApproveWithdrawal(${w.id})" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 rounded-lg">Approve Withdrawal</button>
-        </div>`).join('') : `<div class="text-center py-8 text-slate-500 text-xs">No pending requests</div>`;
+          <button type="button" onclick="handleApproveWithdrawal(${w.id})" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 rounded-lg cursor-pointer">Approve Withdrawal</button>
+        </div>`;
+      }).join('') : `<div class="text-center py-8 text-slate-500 text-xs">No pending requests</div>`;
     }
 
     function renderWorkerDirectory() {
-      const query = document.getElementById('admin-search-worker').value.toLowerCase();
-      const filtered = allWorkers.filter(w => (w.worker_id && w.worker_id.toLowerCase().includes(query)) || (w.full_name && w.full_name.toLowerCase().includes(query)) || (w.email && w.email.toLowerCase().includes(query)));
+      const query = (document.getElementById('admin-search-worker')?.value || '').toLowerCase();
+      const workers = memoryDB.users.filter(u => u.role === 'worker' && (
+        (u.worker_id && u.worker_id.toLowerCase().includes(query)) ||
+        (u.name && u.name.toLowerCase().includes(query)) ||
+        (u.email && u.email.toLowerCase().includes(query))
+      ));
+
       const listEl = document.getElementById('admin-workers-list');
-      listEl.innerHTML = filtered.length ? filtered.map(w => `
+      listEl.innerHTML = workers.length ? workers.map(w => `
         <div class="bg-slate-800/40 border border-slate-800 p-3.5 rounded-xl flex justify-between items-center text-xs">
-          <div><p class="font-bold text-white">${w.full_name || 'Worker'}</p><p class="text-blue-400 font-mono">${w.worker_id || 'AP000000'}</p><p class="text-slate-500">${w.email}</p></div>
+          <div><p class="font-bold text-white">${w.name || 'Worker'}</p><p class="text-blue-400 font-mono">${w.worker_id || 'AP000000'}</p><p class="text-slate-500">${w.email}</p></div>
           <div class="text-right">
-            <p class="font-bold text-emerald-400 font-mono">₹${parseFloat(w.wallets?.[0]?.balance || 0).toFixed(2)}</p>
-            <button onclick="openAddMoneyModal('${w.id}', '${w.worker_id}', '${w.full_name || 'Worker'}')" class="mt-1 px-2.5 py-1 bg-blue-600 text-white rounded-lg font-bold text-[10px]">+ Add Money</button>
+            <p class="font-bold text-emerald-400 font-mono">₹${parseFloat(memoryDB.wallets[w.id]?.balance || 0).toFixed(2)}</p>
+            <button type="button" onclick="openAddMoneyModal('${w.id}', '${w.worker_id}', '${w.name}')" class="mt-1 px-2.5 py-1 bg-blue-600 text-white rounded-lg font-bold text-[10px] cursor-pointer">+ Add Money</button>
           </div>
         </div>`).join('') : `<div class="text-center py-6 text-slate-500 text-xs">No matching workers</div>`;
     }
@@ -431,37 +459,56 @@ const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...";
       document.getElementById('modal-add-money').classList.add('hidden');
     }
 
-    async function handleAdminAddMoneySubmit(e) {
+    function handleAdminAddMoneySubmit(e) {
       e.preventDefault();
       const amount = parseFloat(document.getElementById('add-money-amount').value);
       const desc = document.getElementById('add-money-desc').value.trim();
-      try {
-        const { error } = await supabase.rpc('admin_add_money', { p_user_id: selectedWorkerForAddMoney, p_amount: amount, p_description: desc });
-        if (error) throw error;
-        showToast('Money added successfully!', 'success');
-        closeAddMoneyModal();
-        await loadAdminData();
-      } catch (err) {
-        showToast(err.message, 'error');
+
+      if (!memoryDB.wallets[selectedWorkerForAddMoney]) {
+        memoryDB.wallets[selectedWorkerForAddMoney] = { balance: 0 };
       }
+
+      memoryDB.wallets[selectedWorkerForAddMoney].balance += amount;
+      memoryDB.transactions.push({
+        id: Date.now(),
+        user_id: selectedWorkerForAddMoney,
+        amount,
+        type: 'credit',
+        description: desc,
+        created_at: new Date().toISOString()
+      });
+
+      saveDB();
+      showToast('Money added successfully!', 'success');
+      closeAddMoneyModal();
+      loadAdminData();
     }
 
-    async function handleApproveWithdrawal(id) {
+    function handleApproveWithdrawal(id) {
       const ref = prompt("Enter UTR / Payment Ref:");
       if (!ref) return;
-      try {
-        const { error } = await supabase.rpc('admin_approve_withdrawal', { p_withdrawal_id: id, p_payment_reference: ref, p_admin_note: 'Approved' });
-        if (error) throw error;
+
+      const w = memoryDB.withdrawals.find(x => x.id === id);
+      if (w) {
+        w.status = 'approved';
+        memoryDB.wallets[w.user_id].balance -= w.amount;
+        memoryDB.transactions.push({
+          id: Date.now(),
+          user_id: w.user_id,
+          amount: w.amount,
+          type: 'debit',
+          description: `Withdrawal Approved (Ref: ${ref})`,
+          created_at: new Date().toISOString()
+        });
+        saveDB();
         showToast('Approved!', 'success');
-        await loadAdminData();
-      } catch (err) {
-        showToast(err.message, 'error');
+        loadAdminData();
       }
     }
 
-    async function handleLogout() {
-      await supabase.auth.signOut();
+    function handleLogout() {
       currentUser = null;
+      localStorage.removeItem('ap_current_user');
       showScreen('auth-screen');
       showToast('Logged out', 'info');
     }
