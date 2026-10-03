@@ -138,6 +138,60 @@ border-radius:24px;padding:14px;
 box-shadow:0 12px 28px rgba(0,0,0,.12)
 }
 
+.balance-island{
+background:
+linear-gradient(135deg,#1e3a8a 0%,#2563eb 48%,#0f766e 100%);
+border:1px solid rgba(255,255,255,.14);
+box-shadow:0 16px 32px rgba(15,23,42,.22);
+position:relative;
+overflow:hidden
+}
+
+.balance-island::after{
+content:"";
+position:absolute;
+width:170px;height:170px;
+right:-65px;top:-75px;
+border-radius:50%;
+background:rgba(255,255,255,.08);
+pointer-events:none
+}
+
+.balance-label{
+color:rgba(239,246,255,.9);
+font-weight:600
+}
+
+.balance-amount{
+font-size:2.5rem;
+line-height:1.1;
+font-weight:900;
+letter-spacing:-.03em;
+color:#fff
+}
+
+.balance-subtext{
+color:rgba(239,246,255,.78)
+}
+
+.transaction-top-btn{
+display:flex;
+align-items:center;
+gap:7px;
+padding:10px 14px;
+border-radius:999px;
+border:1px solid rgba(96,165,250,.22);
+background:rgba(96,165,250,.10);
+color:#60a5fa;
+font-size:13px;
+font-weight:800;
+white-space:nowrap
+}
+
+.transaction-top-btn:active{
+transform:scale(.98)
+}
+
 .action-grid{
 display:grid;
 grid-template-columns:1fr 1fr;
@@ -379,23 +433,21 @@ title="Theme">
 
 <!-- BALANCE -->
 
-<div
-class="rounded-3xl p-6"
-style="background:linear-gradient(135deg,#2563eb,#047857)">
+<div class="balance-island rounded-3xl p-6">
 
-<p class="text-blue-100">
+<p class="balance-label">
 Your Balance
 </p>
 
 <h1
 id="workerBalance"
-class="text-4xl font-extrabold mt-3">
+class="balance-amount mt-3">
 
 ₹0.00
 
 </h1>
 
-<p class="text-xs text-blue-100 mt-4">
+<p class="balance-subtext text-xs mt-4">
 Available wallet balance
 </p>
 
@@ -406,7 +458,7 @@ Available wallet balance
 
 <div class="action-island">
 
-<div class="flex items-center justify-between mb-3 px-1">
+<div class="flex items-center justify-between gap-3 mb-3 px-1">
 
 <div>
 
@@ -414,11 +466,17 @@ Available wallet balance
 Quick Actions
 </p>
 
-<h2 class="text-lg font-extrabold mt-1">
-Actions
-</h2>
-
 </div>
+
+<button
+onclick="openTransactionHistory()"
+class="transaction-top-btn"
+title="Transaction History">
+
+<span>◷</span>
+<span>Transaction History</span>
+
+</button>
 
 </div>
 
@@ -462,27 +520,6 @@ View payout status
 
 </button>
 
-
-<button
-onclick="openTransactionHistory()"
-class="action-item">
-
-<div class="text-2xl mb-2">
-↕
-</div>
-
-<p class="font-extrabold text-sm">
-Transaction History
-</p>
-
-<p class="muted text-[11px] mt-1">
-Credits & withdrawals
-</p>
-
-</button>
-
-</div>
-
 </div>
 
 </div>
@@ -517,7 +554,6 @@ onclick="openTelegramChannel()">
 <div>
 Telegram
 </div>
-
 </button>
 
 
@@ -1411,7 +1447,7 @@ currentProfile.date_of_birth || "";
 
 $("editProfileModal").classList.remove(
 "hidden"
-);
+    );
 
 }
 
@@ -1988,8 +2024,7 @@ loadWorkerTransactions();
 
 function closeTransactionHistory() {
 
-$("transactionHistoryModal")
-.classList.add("hidden");
+$("transactionHistoryModal").classList.add("hidden");
 
 }
 
@@ -2006,8 +2041,7 @@ loadWorkerWithdrawals();
 
 function closeWithdrawalHistory() {
 
-$("withdrawalHistoryModal")
-.classList.add("hidden");
+$("withdrawalHistoryModal").classList.add("hidden");
 
 }
 
@@ -2326,7 +2360,7 @@ item.processed_at
 </p>
 `
 : ""
-}
+    }
 
 </div>
 
