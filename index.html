@@ -453,6 +453,20 @@ display:block;
 line-height:1.4;
 }
 
+
+/* ADMIN WORKER DETAILS */
+.admin-worker-details-card{background:#182338;border:1px solid #26344b;border-radius:22px;padding:18px}
+.light .admin-worker-details-card{background:#fff;border-color:#e2e8f0}
+.admin-worker-info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.admin-worker-info-box{background:rgba(148,163,184,.08);border:1px solid rgba(148,163,184,.16);border-radius:15px;padding:13px}
+.admin-worker-action-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.admin-worker-history-btn{grid-column:1 / -1}
+.admin-worker-action-btn{width:100%;padding:13px;border:0;border-radius:13px;font-weight:800;color:white}
+.admin-worker-back{display:flex;align-items:center;gap:8px;border:0;background:none;color:#60a5fa;font-weight:800;padding:0}
+.admin-worker-history-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px;border:1px solid #26344b;background:#101a2d;border-radius:16px}
+.light .admin-worker-history-row{background:#fff;border-color:#e2e8f0}
+@media(max-width:640px){.admin-worker-info-grid{grid-template-columns:1fr}}
+
 @media(max-width:640px){
 .withdrawal-history-row{
 padding:12px;
@@ -1159,7 +1173,7 @@ Logout
 
 </header>
 
-<div class="p-5 space-y-5">
+<div id="adminMainView" class="p-5 space-y-5">
 
 <div class="grid grid-cols-2 gap-3">
 
@@ -1242,6 +1256,72 @@ class="mb-3">
 id="adminWorkerList"
 class="space-y-3">
 </div>
+
+</div>
+
+</div>
+
+<div id="adminWorkerDetailsView" class="hidden p-5 space-y-5">
+
+<button onclick="closeAdminWorkerDetails()" class="admin-worker-back">
+← Back to Workers
+</button>
+
+<div class="admin-worker-details-card">
+
+<div class="flex items-start justify-between gap-4">
+
+<div>
+<p class="muted text-xs uppercase font-bold">Worker Details</p>
+<h2 id="adminDetailWorkerName" class="text-2xl font-extrabold mt-2">Worker</h2>
+</div>
+
+<div class="text-right">
+<p class="muted text-xs">Current Balance</p>
+<p id="adminDetailWorkerBalance" class="green text-2xl font-extrabold mt-1">₹0.00</p>
+</div>
+
+</div>
+
+<div class="admin-worker-info-grid mt-5">
+
+<div class="admin-worker-info-box">
+<p class="muted text-[10px] uppercase font-bold">Worker ID</p>
+<p id="adminDetailWorkerId" class="font-bold text-blue-400 font-mono mt-1">AP000000</p>
+</div>
+
+<div class="admin-worker-info-box">
+<p class="muted text-[10px] uppercase font-bold">Date of Birth</p>
+<p id="adminDetailWorkerDob" class="font-bold mt-1">Not set</p>
+</div>
+
+</div>
+</div>
+
+<div class="admin-worker-action-grid">
+
+<button onclick="addMoneyPrompt(selectedWorker && selectedWorker.id)" class="admin-worker-action-btn bg-blue-600">
++ Add Money
+</button>
+
+<button onclick="deductMoneyPrompt(selectedWorker && selectedWorker.id)" class="admin-worker-action-btn bg-red-600">
+− Deduct Money
+</button>
+
+<button onclick="openAdminWorkerTransactionHistory()" class="admin-worker-action-btn admin-worker-history-btn bg-slate-700">
+Transaction History
+</button>
+
+</div>
+
+<div id="adminWorkerHistoryPanel" class="hidden">
+
+<div class="flex items-center justify-between mb-3">
+<h3 class="text-lg font-extrabold">Transaction History</h3>
+<button onclick="closeAdminWorkerTransactionHistory()" class="text-blue-400 text-xs font-bold">Hide</button>
+</div>
+
+<div id="adminWorkerTransactions" class="space-y-3"></div>
 
 </div>
 
@@ -2433,11 +2513,6 @@ ${item.admin_note || "No admin note"}
 </div>
 
 
-<div class="withdrawal-payment-title">
-Payment from AP AGENCY
-</div>
-
-
 <div class="withdrawal-detail-card">
 
 <div class="withdrawal-detail-line">
@@ -2848,6 +2923,7 @@ await db
 id,
 full_name,
 email,
+date_of_birth,
 worker_id,
 is_active
 `)
@@ -2926,189 +3002,191 @@ renderWorkers();
 function renderWorkers() {
 
 const query =
-(
-$("workerSearch").value ||
-""
-).toLowerCase().trim();
+($('workerSearch').value || '').toLowerCase().trim();
 
-
-const list =
-workers.filter(worker =>
-
-(worker.worker_id || "")
-.toLowerCase()
-.includes(query)
-
-||
-
-(worker.full_name || "")
-.toLowerCase()
-.includes(query)
-
-||
-
-(worker.email || "")
-.toLowerCase()
-.includes(query)
-
+const list = workers.filter(worker =>
+(worker.worker_id || '').toLowerCase().includes(query) ||
+(worker.full_name || '').toLowerCase().includes(query) ||
+(worker.email || '').toLowerCase().includes(query)
 );
 
-
 if (!list.length) {
-
-$("adminWorkerList").innerHTML =
-`<p class="muted text-center p-5">
-No workers found.
-</p>`;
-
+$('adminWorkerList').innerHTML =
+`<p class="muted text-center p-5">No workers found.</p>`;
 return;
-
 }
 
-
-$("adminWorkerList").innerHTML =
-list.map(worker => `
-
+$('adminWorkerList').innerHTML = list.map(worker => `
 <div class="card rounded-2xl p-4">
-
-<div class="flex justify-between gap-3">
-
-<div>
-
-<p class="font-bold">
-${worker.full_name || "Worker"}
-</p>
-
-<p class="blue text-xs font-mono mt-1">
-${worker.worker_id || ""}
-</p>
-
-<p class="muted text-xs mt-1 break-all">
-${worker.email || ""}
-</p>
-
+<div class="flex items-center justify-between gap-3">
+<div class="min-w-0">
+<p class="font-bold truncate">${worker.full_name || 'Worker'}</p>
 </div>
-
-
-<div class="text-right">
-
-<p class="green font-bold">
-${money(worker.balance)}
-</p>
-
-
-<button
-onclick="addMoneyPrompt('${worker.id}')"
-class="mt-2 px-3 py-2 rounded-lg bg-blue-600 text-xs font-bold">
-
-+ Add Money
-
-</button>
-
+<div class="text-right flex-shrink-0">
+<p class="green font-bold">${money(worker.balance)}</p>
+<button onclick="openAdminWorkerDetails('${worker.id}')" class="mt-2 px-3 py-2 rounded-lg bg-blue-600 text-xs font-bold">View Details</button>
 </div>
-
 </div>
-
 </div>
-
-`).join("");
+`).join('');
 
 }
 
 
 async function addMoneyPrompt(workerId) {
 
-selectedWorker =
-workers.find(
-worker =>
-worker.id === workerId
-);
+selectedWorker = workers.find(worker => worker.id === workerId);
+if (!selectedWorker) return;
 
-
-if (!selectedWorker)
-return;
-
-
-const amountText =
-prompt(
-`Add money to ${selectedWorker.full_name}
+const amountText = prompt(`Add money to ${selectedWorker.full_name}
 Worker ID: ${selectedWorker.worker_id}
 
-Minimum amount: ₹1`
-);
+Minimum amount: ₹1`);
+if (amountText === null) return;
 
-
-if (amountText === null)
-return;
-
-
-const amount =
-Number(amountText);
-
-
+const amount = Number(amountText);
 if (!amount || amount < 1) {
-
-toast(
-"Minimum add-money amount is ₹1.",
-"error"
-);
-
+toast("Minimum add-money amount is ₹1.","error");
 return;
-
 }
 
-
-const description =
-prompt(
-"Transaction description:",
-"Admin credit"
-) || "Admin credit";
-
+const description = prompt("Transaction description:","Admin credit") || "Admin credit";
 
 try {
+const { error } = await db.rpc("admin_add_money", {
+p_user_id: selectedWorker.id,
+p_amount: amount,
+p_description: description
+});
+if (error) throw error;
 
-const { error } =
-await db.rpc(
-"admin_add_money",
-{
-p_user_id:
-selectedWorker.id,
-
-p_amount:
-amount,
-
-p_description:
-description
-}
-);
-
-
-if (error)
-throw error;
-
-
-toast(
-`${money(amount)} added successfully.`,
-"success"
-);
-
-
-selectedWorker = null;
-
-await loadAdmin();
-
-
+toast(`${money(amount)} added successfully.`,"success");
+await loadAdminWorkers();
+if (!$('adminWorkerDetailsView').classList.contains('hidden')) await openAdminWorkerDetails(selectedWorker.id);
 } catch (error) {
-
 console.error(error);
-
-toast(
-error.message,
-"error"
-);
-
+toast(error.message,"error");
+}
 }
 
+
+async function deductMoneyPrompt(workerId) {
+
+selectedWorker = workers.find(worker => worker.id === workerId);
+if (!selectedWorker) return;
+
+const amountText = prompt(`Deduct money from ${selectedWorker.full_name}
+Worker ID: ${selectedWorker.worker_id}
+
+Available balance: ${money(selectedWorker.balance)}`);
+if (amountText === null) return;
+
+const amount = Number(amountText);
+if (!amount || amount <= 0) {
+toast("Enter a valid deduction amount.","error");
+return;
+}
+
+if (amount > Number(selectedWorker.balance || 0)) {
+toast("Deduction cannot be greater than the worker balance.","error");
+return;
+}
+
+const description = prompt("Transaction description:","Admin deduction") || "Admin deduction";
+
+try {
+const { error } = await db.rpc("admin_deduct_money", {
+p_user_id: selectedWorker.id,
+p_amount: amount,
+p_description: description
+});
+if (error) throw error;
+
+toast(`${money(amount)} deducted successfully.`,"success");
+await loadAdminWorkers();
+if (!$('adminWorkerDetailsView').classList.contains('hidden')) await openAdminWorkerDetails(selectedWorker.id);
+} catch (error) {
+console.error(error);
+toast(error.message,"error");
+}
+}
+
+
+async function openAdminWorkerDetails(workerId) {
+
+const worker = workers.find(worker => worker.id === workerId);
+if (!worker) return;
+
+selectedWorker = worker;
+$('adminMainView').classList.add('hidden');
+$('adminWorkerDetailsView').classList.remove('hidden');
+$('adminWorkerHistoryPanel').classList.add('hidden');
+
+$('adminDetailWorkerName').textContent = worker.full_name || "Worker";
+$('adminDetailWorkerId').textContent = worker.worker_id || "AP000000";
+$('adminDetailWorkerDob').textContent = worker.date_of_birth || "Not set";
+$('adminDetailWorkerBalance').textContent = money(worker.balance);
+}
+
+
+function closeAdminWorkerDetails() {
+$('adminWorkerDetailsView').classList.add('hidden');
+$('adminMainView').classList.remove('hidden');
+$('adminWorkerHistoryPanel').classList.add('hidden');
+selectedWorker = null;
+}
+
+
+async function openAdminWorkerTransactionHistory() {
+
+if (!selectedWorker) return;
+
+$('adminWorkerHistoryPanel').classList.remove('hidden');
+$('adminWorkerTransactions').innerHTML = `<p class="muted text-sm">Loading transaction history...</p>`;
+
+const { data,error } = await db
+.from("transactions")
+.select(`
+id,
+type,
+amount,
+description,
+balance_after,
+created_at
+`)
+.eq("user_id", selectedWorker.id)
+.order("created_at", {ascending:false})
+.limit(100);
+
+if (error) {
+console.error(error);
+$('adminWorkerTransactions').innerHTML = `<p class="red text-sm">Unable to load transaction history.</p>`;
+return;
+}
+
+if (!data || !data.length) {
+$('adminWorkerTransactions').innerHTML = `<p class="muted text-sm">No transactions yet.</p>`;
+return;
+}
+
+$('adminWorkerTransactions').innerHTML = data.map(item => {
+const credit = item.type === "credit";
+return `
+<div class="admin-worker-history-row">
+<div>
+<p class="font-bold text-sm">${item.description || item.type}</p>
+<p class="muted text-[10px] mt-1">${new Date(item.created_at).toLocaleString("en-IN")}</p>
+<p class="muted text-[10px] mt-1">Balance after: ${money(item.balance_after)}</p>
+</div>
+<p class="${credit ? "green" : "red"} font-bold">${credit ? "+" : "-"}${money(item.amount)}</p>
+</div>
+`;
+}).join("");
+}
+
+
+function closeAdminWorkerTransactionHistory() {
+$('adminWorkerHistoryPanel').classList.add('hidden');
 }
 
 
@@ -3603,6 +3681,7 @@ error.message,
 );
 
 }
+
 
 }
 
