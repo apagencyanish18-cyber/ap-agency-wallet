@@ -934,6 +934,7 @@ Email ID
 id="withdrawEmail"
 type="email"
 placeholder="Enter email">
+
 </div>
 
 </div>
@@ -1259,6 +1260,7 @@ class="space-y-3">
 
 </div>
 
+</div>
 </div>
 
 <div id="adminWorkerDetailsView" class="hidden p-5 space-y-5">
@@ -1612,24 +1614,22 @@ let currentTheme =
 localStorage.getItem("ap_theme") || "dark";
 
 function applyTheme() {
+const themeIcon = document.getElementById("themeIcon");
+const adminThemeIcon = document.getElementById("adminThemeIcon");
 
 if (currentTheme === "light") {
 
 document.body.classList.add("light");
 
-$("themeIcon").textContent = "🌙";
-
-if ($("adminThemeIcon"))
-$("adminThemeIcon").textContent = "🌙";
+if (themeIcon) themeIcon.textContent = "🌙";
+if (adminThemeIcon) adminThemeIcon.textContent = "🌙";
 
 } else {
 
 document.body.classList.remove("light");
 
-$("themeIcon").textContent = "☀";
-
-if ($("adminThemeIcon"))
-$("adminThemeIcon").textContent = "☀";
+if (themeIcon) themeIcon.textContent = "☀";
+if (adminThemeIcon) adminThemeIcon.textContent = "☀";
 
 }
 
@@ -1672,7 +1672,7 @@ $("workerPage").classList.add("hidden");
 $("profilePage").classList.remove("hidden");
 
 loadProfilePage();
-    }
+}
 
 function closeProfile() {
 
@@ -1853,367 +1853,7 @@ throw uploadError;
 const { data } =
 db.storage
 .from("avatars")
-.getPublicUrl(
-filePath
-);
-
-const avatarUrl =
-data.publicUrl;
-
-const { error: profileError } =
-await db
-.from("profiles")
-.update({
-avatar_url: avatarUrl
-})
-.eq(
-"id",
-currentUser.id
-);
-
-if (profileError)
-throw profileError;
-
-currentProfile.avatar_url =
-avatarUrl;
-
-$("profileAvatar").src =
-avatarUrl;
-
-toast(
-"Profile photo updated successfully.",
-"success"
-);
-
-} catch (error) {
-
-console.error(error);
-
-toast(
-error.message,
-"error"
-);
-
-}
-
-}
-
-function adminTab(tab) {
-
-if (tab === "withdrawals") {
-
-$("adminWithdrawalsView")
-.classList.remove("hidden");
-
-$("adminWorkersView")
-.classList.add("hidden");
-
-$("adminWithdrawalTab")
-.classList.add(
-"text-blue-400"
-);
-
-$("adminWorkerTab")
-.classList.remove(
-"text-blue-400"
-);
-
-loadAdminWithdrawals();
-
-} else {
-
-$("adminWithdrawalsView")
-.classList.add("hidden");
-
-$("adminWorkersView")
-.classList.remove("hidden");
-
-$("adminWithdrawalTab")
-.classList.remove(
-"text-blue-400"
-);
-
-$("adminWorkerTab")
-.classList.add(
-"text-blue-400"
-);
-
-renderWorkers();
-
-}
-
-}
-
-function renderWorkers() {
-
-const search =
-(
-$("workerSearch").value || ""
-)
-.toLowerCase()
-.trim();
-
-const filtered =
-workers.filter(worker => {
-
-return (
-(worker.full_name || "")
-.toLowerCase()
-.includes(search)
-||
-(worker.worker_id || "")
-.toLowerCase()
-.includes(search)
-||
-(worker.email || "")
-.toLowerCase()
-.includes(search)
-);
-
-});
-
-if (!filtered.length) {
-
-$("adminWorkerList").innerHTML = `
-
-<div class="card rounded-xl p-4 text-center muted">
-
-No workers found.
-
-</div>
-
-`;
-
-return;
-
-}
-
-$("adminWorkerList").innerHTML =
-filtered.map(worker => {
-
-return `
-
-<div
-class="card rounded-xl p-4">
-
-<div class="flex items-center justify-between gap-3">
-
-<div>
-
-<p class="font-bold">
-${worker.full_name || "Worker"}
-</p>
-
-<p class="text-xs blue font-mono mt-1">
-${worker.worker_id || "AP000000"}
-</p>
-
-<p class="text-xs muted mt-1 break-all">
-${worker.email || ""}
-</p>
-
-</div>
-
-<div class="text-right">
-
-<p class="green font-extrabold">
-${money(worker.balance)}
-</p>
-
-<button
-onclick="openAdminWorkerDetails('${worker.id}')"
-class="text-blue-400 text-xs font-bold mt-2">
-
-View
-
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-`;
-
-}).join("");
-
-}
-
-async function openAdminWorkerDetails(workerId) {
-
-selectedWorker =
-workers.find(
-worker => worker.id === workerId
-);
-
-if (!selectedWorker)
-return;
-
-$("adminMainView")
-.classList.add("hidden");
-
-$("adminWorkerDetailsView")
-.classList.remove("hidden");
-
-$("adminDetailWorkerName")
-.textContent =
-selectedWorker.full_name || "Worker";
-
-$("adminDetailWorkerBalance")
-.textContent =
-money(selectedWorker.balance);
-
-$("adminDetailWorkerId")
-.textContent =
-selectedWorker.worker_id || "AP000000";
-
-$("adminDetailWorkerDob")
-.textContent =
-selectedWorker.date_of_birth || "Not set";
-
-$("adminDetailWorkerEmail")
-.textContent =
-selectedWorker.email || "Not available";
-
-$("adminWorkerHistoryPanel")
-.classList.add("hidden");
-
-}
-
-function closeAdminWorkerDetails() {
-
-$("adminWorkerDetailsView")
-.classList.add("hidden");
-
-$("adminMainView")
-.classList.remove("hidden");
-
-selectedWorker = null;
-
-}
-
-function openAdminWorkerTransactionHistory() {
-
-$("adminWorkerHistoryPanel")
-.classList.remove("hidden");
-
-loadAdminWorkerTransactions();
-
-}
-
-function closeAdminWorkerTransactionHistory() {
-
-$("adminWorkerHistoryPanel")
-.classList.add("hidden");
-
-}
-
-async function loadAdminWorkerTransactions() {
-
-if (!selectedWorker)
-return;
-
-const { data,error } =
-await db
-.from("transactions")
-.select(`
-id,
-type,
-amount,
-description,
-balance_after,
-created_at
-`)
-.eq(
-"user_id",
-selectedWorker.id
-)
-.order(
-"created_at",
-{ascending:false}
-)
-.limit(50);
-
-if (error) {
-
-console.error(error);
-
-$("adminWorkerTransactions").innerHTML = `
-
-<p class="muted text-sm">
-Unable to load transactions.
-</p>
-
-`;
-
-return;
-
-}
-
-if (!data || !data.length) {
-
-$("adminWorkerTransactions").innerHTML = `
-
-<p class="muted text-sm">
-No transactions yet.
-</p>
-
-`;
-
-return;
-
-}
-
-$("adminWorkerTransactions").innerHTML =
-data.map(item => {
-
-const credit =
-item.type === "credit";
-
-return `
-
-<div
-class="card rounded-xl p-4 flex justify-between gap-3">
-
-<div>
-
-<p class="font-bold text-sm">
-${item.description || item.type}
-</p>
-
-<p class="muted text-[10px] mt-1">
-${new Date(
-item.created_at
-).toLocaleString("en-IN")}
-</p>
-
-<p class="muted text-[10px] mt-1">
-Balance after:
-${money(item.balance_after)}
-</p>
-
-</div>
-
-<p class="${
-credit
-? "green"
-: "red"
-} font-bold">
-
-${credit ? "+" : "-"}
-${money(item.amount)}
-
-</p>
-
-</div>
-
-`;
-
-}).join("");
-
-}
-    .getPublicUrl(filePath);
+.getPublicUrl(filePath);
 
 const avatarUrl =
 data.publicUrl;
@@ -2232,7 +1872,8 @@ throw updateError;
 currentProfile.avatar_url =
 avatarUrl;
 
-$("profileAvatar").src = avatarUrl;
+$("profileAvatar").src =
+avatarUrl;
 
 toast(
 "Profile photo updated.",
@@ -2260,14 +1901,17 @@ const SUPABASE_URL =
 "https://ykswgkrmqsmdneobykri.supabase.co";
 
 const SUPABASE_KEY =
-"sb_publishable_iED-0Op0GP8e1msvL7ksdw_53rXjJ_H";
-    const db =
+"sb_publishable_iED-0Op0GP8e1msvL7ksdw_53rXj_H";
+
+const db =
 window.supabase && typeof window.supabase.createClient === "function"
-? window.supabase.createClient(
+?
+window.supabase.createClient(
 SUPABASE_URL,
 SUPABASE_KEY
 )
-: null;
+:
+null;
 
 const $ = id =>
 document.getElementById(id);
@@ -2280,11 +1924,19 @@ let selectedWorker = null;
 let selectedWithdrawal = null;
 
 function requireDb() {
+
 if (!db) {
-alert("Supabase connection could not be loaded. Please refresh the page.");
+
+alert(
+"Supabase connection could not be loaded. Please refresh the page."
+);
+
 return false;
+
 }
+
 return true;
+
 }
 
 function toast(message, type = "info") {
@@ -2309,96 +1961,142 @@ message;
 $("toast").appendChild(box);
 
 setTimeout(() => {
+
 box.remove();
-},3500);
 
-}
-
-function money(value) {
-
-return "₹" +
-Number(value || 0).toLocaleString(
-"en-IN",
-{
-minimumFractionDigits:2,
-maximumFractionDigits:2
-}
-);
+}, 3000);
 
 }
 
 function showPage(id) {
 
-$("authPage").classList.add("hidden");
-$("workerPage").classList.add("hidden");
-$("adminPage").classList.add("hidden");
-$("profilePage").classList.add("hidden");
+[
+"authPage",
+"workerPage",
+"adminPage",
+"profilePage"
+].forEach(page => {
 
+if ($(page))
+$(page).classList.add("hidden");
+
+});
+
+if ($(id))
 $(id).classList.remove("hidden");
 
-if (id === "workerPage") {
+}
 
-$("settingsModal").classList.add("hidden");
-$("withdrawalModal").classList.add("hidden");
-$("transactionHistoryModal").classList.add("hidden");
-$("withdrawalHistoryModal").classList.add("hidden");
-$("withdrawalDetailsModal").classList.add("hidden");
+function showAuthTab(tab) {
+
+if (tab === "login") {
+
+$("loginForm").classList.remove("hidden");
+$("registerForm").classList.add("hidden");
+
+$("loginTab").classList.add("bg-blue-600");
+$("loginTab").classList.add("font-bold");
+
+$("registerTab").classList.remove("bg-blue-600");
+$("registerTab").classList.remove("font-bold");
+
+} else {
+
+$("loginForm").classList.add("hidden");
+$("registerForm").classList.remove("hidden");
+
+$("registerTab").classList.add("bg-blue-600");
+$("registerTab").classList.add("font-bold");
+
+$("loginTab").classList.remove("bg-blue-600");
+$("loginTab").classList.remove("font-bold");
 
 }
 
 }
 
-function showAuthTab(type) {
-
-const login =
-type === "login";
-
-$("loginForm").classList.toggle(
-"hidden",
-!login
-);
-
-$("registerForm").classList.toggle(
-"hidden",
-login
-);
-
-$("loginTab").className =
-login
-? "flex-1 py-3 rounded-xl bg-blue-600 font-bold"
-: "flex-1 py-3 rounded-xl muted";
-
-$("registerTab").className =
-!login
-? "flex-1 py-3 rounded-xl bg-blue-600 font-bold"
-: "flex-1 py-3 rounded-xl muted";
-
-}
-
-async function login(event) {
+async function registerUser(event) {
 
 event.preventDefault();
-if (!requireDb()) return;
+
+if (!requireDb())
+return;
+
+const fullName =
+$("regName").value.trim();
+
+const email =
+$("regEmail").value.trim();
+
+const dob =
+$("regDob").value;
+
+const password =
+$("regPassword").value;
+
+if (!fullName || !email || !dob || !password) {
+
+toast(
+"Please fill all fields.",
+"error"
+);
+
+return;
+
+}
 
 try {
 
-const { data,error } =
-await db.auth.signInWithPassword({
-
-email:
-$("loginEmail")
-.value
-.trim(),
-
-password:
-$("loginPassword").value
-
+const {
+data,
+error
+} =
+await db.auth.signUp({
+email,
+password
 });
 
 if (error)
 throw error;
 
-await openApp(data.user);
+if (!data.user) {
+
+toast(
+"Registration could not be completed.",
+"error"
+);
+
+return;
+
+}
+
+const {
+error: profileError
+} =
+await db
+.from("profiles")
+.insert({
+id: data.user.id,
+full_name: fullName,
+date_of_birth: dob,
+email: email,
+role: "worker"
+});
+
+if (profileError)
+throw profileError;
+
+toast(
+"Account created successfully. Please login.",
+"success"
+);
+
+$("regName").value = "";
+$("regEmail").value = "";
+$("regDob").value = "";
+$("regPassword").value = "";
+
+showAuthTab("login");
 
 } catch (error) {
 
@@ -2413,61 +2111,45 @@ error.message,
 
 }
 
-async function registerUser(event) {
+async function login(event) {
+
 event.preventDefault();
-if (!requireDb()) return;
+
+if (!requireDb())
+return;
+
+const email =
+$("loginEmail").value.trim();
+
+const password =
+$("loginPassword").value;
 
 try {
 
-const { data,error } =
-await db.auth.signUp({
-
-email:
-$("regEmail")
-.value
-.trim(),
-
-password:
-$("regPassword").value,
-
-options: {
-
-data: {
-
-full_name:
-$("regName")
-.value
-.trim(),
-
-date_of_birth:
-$("regDob").value
-
-}
-
-}
-
+const {
+data,
+error
+} =
+await db.auth.signInWithPassword({
+email,
+password
 });
 
 if (error)
 throw error;
 
-if (data.session) {
-
-await openApp(data.user);
-
-} else {
+if (!data.user) {
 
 toast(
-"Account created. Check your email.",
-"success"
+"Login failed.",
+"error"
 );
 
-showAuthTab("login");
-
-$("loginEmail").value =
-$("regEmail").value.trim();
+return;
 
 }
+
+await openApp(data.user);
 
 } catch (error) {
 
@@ -2484,48 +2166,57 @@ error.message,
 
 async function openApp(user) {
 
-currentUser = user;
+if (!user)
+return;
 
-const { data,error } =
+currentUser =
+user;
+
+try {
+
+const {
+data: profile,
+error
+} =
 await db
 .from("profiles")
-.select(`
-id,
-full_name,
-date_of_birth,
-role,
-is_active,
-worker_id,
-avatar_url,
-email
-`)
-.eq("id",user.id)
+.select("*")
+.eq("id", user.id)
 .single();
 
 if (error)
 throw error;
 
-if (data.is_active === false) {
+currentProfile =
+profile;
 
-throw new Error(
-"Your account is inactive."
-);
-
-}
-
-currentProfile = data;
-
-if (data.role === "admin") {
+if (profile.role === "admin") {
 
 showPage("adminPage");
 
-await loadAdmin();
+await loadAdminDashboard();
 
 } else {
 
 showPage("workerPage");
 
-await loadWorker();
+await loadWorkerDashboard();
+
+}
+
+} catch (error) {
+
+console.error(error);
+
+currentUser = null;
+currentProfile = null;
+
+toast(
+"Could not load your profile.",
+"error"
+);
+
+showPage("authPage");
 
 }
 
@@ -2533,11 +2224,15 @@ await loadWorker();
 
 async function restoreSession() {
 
-if (!requireDb()) return;
+if (!requireDb())
+return;
 
 try {
 
-const { data,error } =
+const {
+data,
+error
+} =
 await db.auth.getSession();
 
 if (error)
@@ -2567,96 +2262,49 @@ showPage("authPage");
 
 async function logout() {
 
-if (!requireDb()) return;
+if (!requireDb())
+return;
+
+try {
 
 await db.auth.signOut();
+
+} catch (error) {
+
+console.error(error);
+
+}
 
 currentUser = null;
 currentProfile = null;
 
+$("settingsModal")?.classList.add("hidden");
+$("editProfileModal")?.classList.add("hidden");
+
 showPage("authPage");
 
-$("loginPassword").value = "";
-
-toast(
-"Logged out successfully.",
-"success"
-);
-
-}
-
-function openWithdrawal() {
-
-$("withdrawalModal")
-.classList.remove("hidden");
-
-changePaymentMethod();
-
-}
-
-function closeWithdrawal() {
-
-$("withdrawalModal")
-.classList.add("hidden");
-
-}
-
-function openTransactionHistory() {
-
-$("transactionHistoryModal")
-.classList.remove("hidden");
-
-loadWorkerTransactions();
-
-}
-
-function closeTransactionHistory() {
-
-$("transactionHistoryModal").classList.add("hidden");
-
-}
-
-function openWithdrawalHistory() {
-
-$("withdrawalHistoryModal")
-.classList.remove("hidden");
-
-loadWorkerWithdrawals();
-
-}
-
-function closeWithdrawalHistory() {
-
-$("withdrawalHistoryModal").classList.add("hidden");
-
-}
-
-function closeWithdrawalDetails() {
-
-$("withdrawalDetailsModal").classList.add("hidden");
+showAuthTab("login");
 
 }
 
 function goHome() {
 
-closeSettings();
-closeWithdrawal();
-closeTransactionHistory();
-closeWithdrawalHistory();
-closeWithdrawalDetails();
+if (currentProfile?.role === "admin") {
 
-$("profilePage")
-.classList.add("hidden");
+showPage("adminPage");
 
-$("workerPage")
-.classList.remove("hidden");
+} else {
+
+showPage("workerPage");
+
+}
 
 }
 
 function openTelegramChannel() {
 
 window.open(
-"https://t.me/apagencyofficial",
+"https://t.me/APAgency",
 "_blank"
 );
 
@@ -2665,482 +2313,83 @@ window.open(
 function openSupport() {
 
 window.open(
-"https://t.me/APAgencyAdmin2",
+"https://t.me/APAgency",
 "_blank"
 );
 
 }
 
-async function loadWorker() {
+function openWithdrawal() {
 
-$("workerBalance").textContent =
-"₹0.00";
+if (!currentUser) {
 
-const { data: wallet,error } =
-await db
-.from("wallets")
-.select("balance")
-.eq(
-"user_id",
-currentUser.id
-)
-.single();
-
-if (!error && wallet) {
-
-$("workerBalance").textContent =
-money(wallet.balance);
-
-}
-
-await loadWorkerTransactions();
-
-await loadWorkerWithdrawals();
-
-}
-
-async function loadWorkerTransactions() {
-
-const { data,error } =
-await db
-.from("transactions")
-.select(`
-id,
-type,
-amount,
-description,
-balance_after,
-created_at
-`)
-.eq(
-"user_id",
-currentUser.id
-)
-.order(
-"created_at",
-{ascending:false}
-)
-.limit(50);
-
-if (error) {
-
-console.error(error);
-
-$("transactions").innerHTML =
-`<p class="muted text-sm">
-Unable to load transactions.
-</p>`;
+toast(
+"Please login first.",
+"error"
+);
 
 return;
 
 }
 
-if (!data || !data.length) {
-
-$("transactions").innerHTML =
-`<p class="muted text-sm">
-No transactions yet.
-</p>`;
-
-return;
+$("withdrawalModal").classList.remove(
+"hidden"
+);
 
 }
 
-$("transactions").innerHTML =
-data.map(item => {
+function closeWithdrawal() {
 
-const credit =
-item.type === "credit";
-
-return `
-<div class="card rounded-xl p-4 flex justify-between">
-
-<div>
-
-<p class="font-bold text-sm">
-${item.description || item.type}
-</p>
-
-<p class="muted text-[10px] mt-1">
-${new Date(
-item.created_at
-).toLocaleString("en-IN")}
-</p>
-
-</div>
-
-<p class="${
-credit
-? "green"
-: "red"
-} font-bold">
-
-${credit ? "+" : "-"}
-${money(item.amount)}
-
-</p>
-
-</div>
-`;
-
-}).join("");
+$("withdrawalModal").classList.add(
+"hidden"
+);
 
 }
-
-function withdrawalMethodLabel(item) {
-
-if (item.payment_method === "upi")
-return "UPI";
-
-if (item.gift_card_type === "amazon")
-return "Amazon Gift Card";
-
-if (item.gift_card_type === "flipkart")
-return "Flipkart Gift Card";
-
-if (item.gift_card_type === "google_play")
-return "Google Play Gift Card";
-
-return "Gift Card";
-
-}
-
-
-function withdrawalStatusText(status) {
-
-return status === "approved"
-? "Successful"
-: status === "rejected"
-? "Rejected"
-: "Requested";
-
-}
-
-
-function withdrawalStatusClass(status) {
-
-return status === "approved"
-? "success"
-: status === "rejected"
-? "reject"
-: "pending";
-
-}
-
-
-function withdrawalReferenceLabel(item) {
-
-return item.payment_method === "upi"
-? "UTR"
-: "Gift Card Code";
-
-}
-
-
-function openWithdrawalDetails(index) {
-
-const item =
-(window.workerWithdrawalData || [])[index];
-
-if (!item)
-return;
-
-const status =
-item.status || "pending";
-
-const method =
-withdrawalMethodLabel(item);
-
-const statusText =
-withdrawalStatusText(status);
-
-const statusClass =
-withdrawalStatusClass(status);
-
-const referenceLabel =
-withdrawalReferenceLabel(item);
-
-const referenceValue =
-item.payment_reference ||
-"Not available yet";
-
-$("withdrawalDetails").innerHTML = `
-
-<div class="withdrawal-detail-card">
-
-<div class="withdrawal-detail-amount">
-${money(item.amount)}
-</div>
-
-<div class="withdrawal-detail-label">
-Withdrawal Amount
-</div>
-
-</div>
-
-
-<div class="withdrawal-detail-card">
-
-<div class="withdrawal-detail-label">
-Admin Note
-</div>
-
-<div class="withdrawal-detail-value">
-${item.admin_note || "No admin note"}
-</div>
-
-</div>
-
-
-<div class="withdrawal-detail-card">
-
-<div class="withdrawal-detail-line">
-
-<span>Mode</span>
-
-<strong>
-${method}
-</strong>
-
-</div>
-
-
-<div class="withdrawal-detail-line">
-
-<span>Status</span>
-
-<strong class="withdrawal-detail-status ${statusClass}">
-${statusText}
-</strong>
-
-</div>
-
-
-<div class="withdrawal-detail-line">
-
-<span>${referenceLabel}</span>
-
-<strong>
-${referenceValue}
-</strong>
-
-</div>
-
-</div>
-
-
-
-
-<div class="withdrawal-detail-times">
-
-<div>
-
-<span>Requested</span>
-<strong>
-${new Date(
-item.created_at
-).toLocaleString("en-IN")}
-</strong>
-
-</div>
-
-
-<div>
-
-<span>Processed</span>
-
-<strong>
-${
-item.processed_at
-? new Date(
-item.processed_at
-).toLocaleString("en-IN")
-: "-"
-}
-</strong>
-
-</div>
-
-</div>
-
-`;
-
-$("withdrawalDetailsModal")
-.classList.remove("hidden");
-
-}
-
-
-function closeWithdrawalDetails() {
-
-$("withdrawalDetailsModal")
-.classList.add("hidden");
-
-}
-
-
-async function loadWorkerWithdrawals() {
-
-const { data,error } =
-await db
-.from("withdrawals")
-.select(`
-id,
-amount,
-status,
-payment_method,
-gift_card_type,
-upi_id,
-email,
-payment_reference,
-admin_note,
-created_at,
-processed_at
-`)
-.eq(
-"user_id",
-currentUser.id
-)
-.order(
-"created_at",
-{ascending:false}
-)
-.limit(30);
-
-
-if (error) {
-
-console.error(error);
-
-$("workerWithdrawals").innerHTML =
-`<p class="muted text-sm">
-Unable to load withdrawal requests.
-</p>`;
-
-return;
-
-}
-
-
-if (!data || !data.length) {
-
-$("workerWithdrawals").innerHTML =
-`<p class="muted text-sm">
-No withdrawal requests yet.
-</p>`;
-
-return;
-
-}
-
-
-window.workerWithdrawalData = data;
-
-$("workerWithdrawals").innerHTML =
-data.map((item,index) => {
-
-const status =
-item.status || "pending";
-
-const statusClass =
-withdrawalStatusClass(status);
-
-const statusText =
-withdrawalStatusText(status);
-
-return `
-
-<div class="withdrawal-history-row" onclick="openWithdrawalDetails(${index})" style="cursor:pointer">
-
-<div class="withdrawal-history-main">
-
-<div class="withdrawal-history-icon">
-₹
-</div>
-
-<div>
-
-<p class="withdrawal-history-title">
-Withdrawal
-</p>
-
-<p class="withdrawal-history-sub">
-${new Date(
-item.created_at
-).toLocaleString("en-IN")}
-</p>
-
-</div>
-
-</div>
-
-
-<div class="withdrawal-history-right">
-
-<div class="withdrawal-history-amount">
--${money(item.amount)}
-</div>
-
-
-<div class="withdrawal-history-status ${statusClass}">
-${statusText}
-</div>
-
-</div>
-
-</div>
-
-`;
-
-}).join("");
-
-}
-
 
 function changePaymentMethod() {
-
-const upi =
-$("paymentMethod").value === "upi";
-
-$("upiFields").classList.toggle(
-"hidden",
-!upi
-);
-
-$("giftFields").classList.toggle(
-"hidden",
-upi
-);
-
-    }
-    async function createWithdrawal(event) {
-
-event.preventDefault();
-
-
-const amount =
-Number(
-$("withdrawAmount").value
-);
-
 
 const method =
 $("paymentMethod").value;
 
+if (method === "upi") {
 
-const email =
-method === "upi"
-? $("withdrawEmail").value.trim()
-: $("giftEmail").value.trim();
+$("upiFields").classList.remove("hidden");
+$("giftFields").classList.add("hidden");
 
+} else {
 
-const upi =
-$("upiId").value.trim();
+$("upiFields").classList.add("hidden");
+$("giftFields").classList.remove("hidden");
 
+}
 
-const gift =
-$("giftCardType").value;
-        if (amount < 10) {
+}
+
+async function createWithdrawal(event) {
+
+event.preventDefault();
+
+if (!requireDb())
+return;
+
+if (!currentUser) {
+
+toast(
+"Please login again.",
+"error"
+);
+
+return;
+
+}
+
+const amount =
+Number($("withdrawAmount").value);
+
+const method =
+$("paymentMethod").value;
+
+if (!amount || amount < 10) {
 
 toast(
 "Minimum withdrawal is ₹10.",
@@ -3151,11 +2400,41 @@ return;
 
 }
 
+let upiId = null;
+let email = null;
+let giftCardType = null;
+
+if (method === "upi") {
+
+upiId =
+$("upiId").value.trim();
+
+email =
+$("withdrawEmail").value.trim();
+
+if (!upiId || !email) {
+
+toast(
+"Enter UPI ID and email.",
+"error"
+);
+
+return;
+
+}
+
+} else {
+
+giftCardType =
+$("giftCardType").value;
+
+email =
+$("giftEmail").value.trim();
 
 if (!email) {
 
 toast(
-"Email ID is required.",
+"Enter email.",
 "error"
 );
 
@@ -3163,89 +2442,46 @@ return;
 
 }
 
-
-if (
-method === "upi" &&
-/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) === false
-) {
-
-toast(
-"Enter a valid email ID.",
-"error"
-);
-
-return;
-
 }
-
-
-if (
-method === "upi" &&
-/^[^\s@]+@[^\s@]+$/.test(upi) === false
-) {
-
-toast(
-"Enter a valid UPI ID.",
-"error"
-);
-
-return;
-
-}
-
 
 try {
 
-const { error } =
+const {
+data,
+error
+} =
 await db.rpc(
 "create_withdrawal",
 {
-p_amount:
-amount,
-
-p_payment_method:
-method,
-
-p_gift_card_type:
-method === "gift_card"
-? gift
-: null,
-
-p_upi_id:
-method === "upi"
-? upi
-: null,
-
-p_email:
-email
+p_amount: amount,
+p_payment_method: method,
+p_upi_id: upiId,
+p_email: email,
+p_gift_card_type: giftCardType
 }
 );
-
 
 if (error)
 throw error;
 
+toast(
+"Withdrawal request submitted successfully.",
+"success"
+);
+
+closeWithdrawal();
 
 $("withdrawAmount").value = "";
 $("upiId").value = "";
 $("withdrawEmail").value = "";
 $("giftEmail").value = "";
 
-
-toast(
-"Withdrawal request submitted.",
-"success"
-);
-
-
-closeWithdrawal();
-
-await loadWorker();
-
+await loadWorkerDashboard();
 
 } catch (error) {
 
 console.error(error);
+
 toast(
 error.message,
 "error"
@@ -3253,42 +2489,307 @@ error.message,
 
 }
 
+}
+
+async function loadWorkerDashboard() {
+
+if (!currentUser)
+return;
+
+await loadWorkerBalance();
+await loadTransactions();
 
 }
 
+async function loadWorkerBalance() {
 
-async function loadAdmin() {
-
-await loadAdminWorkers();
-
-await loadAdminWithdrawals();
-
-}
-
-
-async function loadAdminWorkers() {
-
-const { data,error } =
+const {
+data,
+error
+} =
 await db
-.from("profiles")
-.select(`
-id,
-full_name,
-email,
-date_of_birth,
-worker_id,
-is_active
-`)
-.eq("role","worker")
-.order("full_name");
+.from("wallets")
+.select("balance")
+.eq("user_id", currentUser.id)
+.single();
 
+if (error) {
+
+console.error(error);
+return;
+
+}
+
+$("workerBalance").textContent =
+"₹" +
+Number(data.balance || 0).toFixed(2);
+
+}
+
+async function openTransactionHistory() {
+
+if (!currentUser)
+return;
+
+$("transactionHistoryModal")
+.classList.remove("hidden");
+
+await loadTransactions();
+
+}
+
+function closeTransactionHistory() {
+
+$("transactionHistoryModal")
+.classList.add("hidden");
+
+}
+
+async function loadTransactions() {
+
+if (!currentUser)
+return;
+
+const {
+data,
+error
+} =
+await db
+.from("transactions")
+.select("*")
+.eq("user_id", currentUser.id)
+.order("created_at", {
+ascending: false
+});
 
 if (error) {
 
 console.error(error);
 
+return;
+
+}
+
+const box =
+$("transactions");
+
+if (!data || !data.length) {
+
+box.innerHTML =
+`
+<div class="text-center muted py-8">
+No transactions yet.
+</div>
+`;
+
+return;
+
+}
+
+box.innerHTML =
+data.map(tx => {
+
+const isCredit =
+tx.type === "credit" ||
+tx.transaction_type === "credit";
+
+const amount =
+Number(tx.amount || 0);
+
+return `
+<div class="card rounded-2xl p-4 flex justify-between items-center">
+
+<div>
+
+<p class="font-bold text-sm">
+${escapeHtml(
+tx.description ||
+(isCredit ? "Money Added" : "Withdrawal")
+)}
+</p>
+
+<p class="muted text-[11px] mt-1">
+${formatDate(tx.created_at)}
+</p>
+
+</div>
+
+<p class="font-extrabold ${isCredit ? "green" : "red"}">
+${isCredit ? "+" : "-"}₹${amount.toFixed(2)}
+</p>
+
+</div>
+`;
+
+}).join("");
+
+}
+
+function openWithdrawalHistory() {
+
+if (!currentUser)
+return;
+
+$("withdrawalHistoryModal")
+.classList.remove("hidden");
+
+loadWithdrawalHistory();
+
+}
+
+function closeWithdrawalHistory() {
+
+$("withdrawalHistoryModal")
+.classList.add("hidden");
+
+}
+
+async function loadWithdrawalHistory() {
+
+const {
+data,
+error
+} =
+await db
+.from("withdrawals")
+.select("*")
+.eq("user_id", currentUser.id)
+.order("created_at", {
+ascending: false
+});
+
+if (error) {
+
+console.error(error);
+
+$("workerWithdrawals").innerHTML =
+`
+<div class="text-center muted py-8">
+Unable to load withdrawal history.
+</div>
+`;
+
+return;
+
+}
+
+const box =
+$("workerWithdrawals");
+
+if (!data || !data.length) {
+
+box.innerHTML =
+`
+<div class="text-center muted py-8">
+No withdrawal requests yet.
+</div>
+`;
+
+return;
+
+}
+
+box.innerHTML =
+data.map(w => {
+
+const status =
+String(w.status || "pending").toLowerCase();
+
+let statusClass =
+"pending";
+
+let statusText =
+"Pending";
+
+if (status === "approved") {
+
+statusClass =
+"success";
+
+statusText =
+"Approved";
+
+} else if (status === "rejected") {
+
+statusClass =
+"reject";
+
+statusText =
+"Rejected";
+
+}
+
+const method =
+w.payment_method === "gift_card"
+? "Gift Card"
+: "UPI";
+
+return `
+<div class="withdrawal-history-row">
+
+<div class="withdrawal-history-main">
+
+<div class="withdrawal-history-icon">
+↗
+</div>
+
+<div>
+
+<div class="withdrawal-history-title">
+${method}
+</div>
+
+<div class="withdrawal-history-sub">
+${formatDate(w.created_at)}
+</div>
+
+</div>
+
+</div>
+
+<div class="withdrawal-history-right">
+
+<div class="withdrawal-history-amount">
+₹${Number(w.amount || 0).toFixed(2)}
+</div>
+
+<div class="withdrawal-history-status ${statusClass}">
+${statusText}
+</div>
+
+<button
+class="withdrawal-view-btn"
+onclick="openWithdrawalDetails('${w.id}')">
+
+View Details
+
+</button>
+
+</div>
+
+</div>
+`;
+
+}).join("");
+
+}
+
+async function openWithdrawalDetails(id) {
+
+const {
+data,
+error
+} =
+await db
+.from("withdrawals")
+.select("*")
+.eq("id", id)
+.single();
+
+if (error) {
+
 toast(
-"Unable to load workers.",
+"Could not load withdrawal details.",
 "error"
 );
 
@@ -3296,149 +2797,300 @@ return;
 
 }
 
+selectedWithdrawal =
+data;
 
-const ids =
-(data || []).map(
-worker => worker.id
+const status =
+String(data.status || "pending").toLowerCase();
+
+let statusClass =
+"pending";
+
+let statusText =
+"Pending";
+
+if (status === "approved") {
+
+statusClass =
+"success";
+
+statusText =
+"Approved";
+
+} else if (status === "rejected") {
+
+statusClass =
+"reject";
+
+statusText =
+"Rejected";
+
+}
+
+const method =
+data.payment_method === "gift_card"
+? "Gift Card"
+: "UPI";
+
+let paymentHtml = "";
+
+if (data.payment_method === "upi") {
+
+paymentHtml =
+`
+<div class="withdrawal-payment-title">
+UPI Payment
+</div>
+
+<div class="withdrawal-detail-line">
+
+<span>UPI ID</span>
+
+<strong>
+${escapeHtml(data.upi_id || "-")}
+</strong>
+
+</div>
+
+<div class="withdrawal-detail-line">
+
+<span>Email</span>
+
+<strong>
+${escapeHtml(data.email || "-")}
+</strong>
+
+</div>
+`;
+
+} else {
+
+paymentHtml =
+`
+<div class="withdrawal-payment-title">
+Gift Card
+</div>
+
+<div class="withdrawal-detail-line">
+
+<span>Gift Card</span>
+
+<strong>
+${escapeHtml(
+formatGiftCardType(data.gift_card_type)
+)}
+</strong>
+
+</div>
+
+<div class="withdrawal-detail-line">
+
+<span>Email</span>
+
+<strong>
+${escapeHtml(data.email || "-")}
+</strong>
+
+</div>
+`;
+
+}
+
+let referenceHtml = "";
+
+if (data.payment_reference) {
+
+referenceHtml =
+`
+<div class="withdrawal-detail-line">
+
+<span>Payment Reference</span>
+
+<strong>
+${escapeHtml(
+data.payment_reference
+)}
+</strong>
+
+</div>
+`;
+
+}
+
+if (data.admin_note) {
+
+referenceHtml +=
+`
+<div class="withdrawal-detail-line">
+
+<span>Admin Note</span>
+
+<strong>
+${escapeHtml(
+data.admin_note
+)}
+</strong>
+
+</div>
+`;
+
+}
+
+let processedHtml = "";
+
+if (data.processed_at || data.processed_by) {
+
+processedHtml =
+`
+<div class="withdrawal-processed">
+
+<div class="withdrawal-detail-label">
+Processed By
+</div>
+
+<div class="withdrawal-processed-name">
+${escapeHtml(
+data.processed_by || "Admin"
+)}
+</div>
+
+<div class="withdrawal-detail-times">
+
+<div>
+
+<span>Requested</span>
+
+<strong>
+${formatDate(data.created_at)}
+</strong>
+
+</div>
+
+<div>
+
+<span>Processed</span>
+
+<strong>
+${formatDate(data.processed_at)}
+</strong>
+
+</div>
+
+</div>
+
+</div>
+`;
+
+}
+
+$("withdrawalDetails").innerHTML =
+`
+<div class="withdrawal-detail-card">
+
+<div class="flex items-start justify-between gap-3">
+
+<div>
+
+<div class="withdrawal-detail-label">
+Withdrawal Amount
+</div>
+
+<div class="withdrawal-detail-amount mt-2">
+₹${Number(data.amount || 0).toFixed(2)}
+</div>
+
+</div>
+
+<span class="withdrawal-detail-status ${statusClass}">
+${statusText}
+</span>
+
+</div>
+
+<div class="withdrawal-detail-line mt-4">
+
+<span>Payment Method</span>
+
+<strong>
+${method}
+</strong>
+
+</div>
+
+${paymentHtml}
+
+${referenceHtml}
+
+${processedHtml}
+
+</div>
+`;
+
+$("withdrawalDetailsModal")
+.classList.remove("hidden");
+
+}
+
+function closeWithdrawalDetails() {
+
+$("withdrawalDetailsModal")
+.classList.add("hidden");
+
+selectedWithdrawal = null;
+
+}
+
+function formatGiftCardType(type) {
+
+if (type === "amazon")
+return "Amazon Gift Card";
+
+if (type === "flipkart")
+return "Flipkart Gift Card";
+
+if (type === "google_play")
+return "Google Play Gift Card";
+
+return type || "-";
+
+}
+
+function formatDate(value) {
+
+if (!value)
+return "-";
+
+const date =
+new Date(value);
+
+if (Number.isNaN(date.getTime()))
+return String(value);
+
+return date.toLocaleString(
+"en-IN",
+{
+day:"2-digit",
+month:"short",
+year:"numeric",
+hour:"2-digit",
+minute:"2-digit"
+}
 );
 
-
-let walletData = [];
-
-
-if (ids.length) {
-
-const result =
-await db
-.from("wallets")
-.select(
-"user_id,balance"
-)
-.in(
-"user_id",
-ids
-);
-
-
-walletData =
-result.data || [];
 }
 
+function escapeHtml(value) {
 
-const balances =
-Object.fromEntries(
-walletData.map(wallet => [
-wallet.user_id,
-wallet.balance
-])
-);
-
-
-workers =
-(data || []).map(worker => ({
-...worker,
-balance:
-balances[worker.id] || 0
-}));
-
-
-$("totalWorkers").textContent =
-workers.length;
-
-
-renderWorkers();
+return String(value ?? "")
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
 
 }
 
-
-function renderWorkers() {
-
-const query =
-($('workerSearch').value || '').toLowerCase().trim();
-
-const list = workers.filter(worker =>
-(worker.worker_id || '').toLowerCase().includes(query) ||
-(worker.full_name || '').toLowerCase().includes(query) ||
-(worker.email || '').toLowerCase().includes(query)
-);
-
-if (!list.length) {
-$('adminWorkerList').innerHTML =
-`<p class="muted text-center p-5">No workers found.</p>`;
-return;
-}
-
-$('adminWorkerList').innerHTML = list.map(worker => `
-<div class="card rounded-2xl p-4">
-<div class="flex items-center justify-between gap-3">
-<div class="min-w-0">
-<p class="font-bold truncate">${worker.full_name || 'Worker'}</p>
-</div>
-<div class="text-right flex-shrink-0">
-<p class="green font-bold">${money(worker.balance)}</p>
-<button onclick="openAdminWorkerDetails('${worker.id}')" class="mt-2 px-3 py-2 rounded-lg bg-blue-600 text-xs font-bold">View Details</button>
-</div>
-</div>
-</div>
-`).join('');
-
-}
-
-
-async function addMoneyPrompt(workerId) {
-
-selectedWorker = workers.find(worker => worker.id === workerId);
-if (!selectedWorker) return;
-
-const amountText = prompt(`Add money to ${selectedWorker.full_name}
-Worker ID: ${selectedWorker.worker_id}
-
-Minimum amount: ₹1`);
-if (amountText === null) return;
-
-const amount = Number(amountText);
-if (!amount || amount < 1) {
-toast("Minimum add-money amount is ₹1.","error");
-return;
-}
-
-const description = prompt("Transaction description:","Admin credit") || "Admin credit";
-
-try {
-const { error } = await db.rpc("admin_add_money", {
-p_user_id: selectedWorker.id,
-p_amount: amount,
-p_description: description
-});
-if (error) throw error;
-
-toast(`${money(amount)} added successfully.`,"success");
-await loadAdminWorkers();
-if (!$('adminWorkerDetailsView').classList.contains('hidden')) await openAdminWorkerDetails(selectedWorker.id);
-} catch (error) {
-console.error(error);
-toast(error.message,"error");
-}
-}
-
-
-async function deductMoneyPrompt(workerId) {
-
-selectedWorker = workers.find(worker => worker.id === workerId);
-if (!selectedWorker) return;
-
-const amountText = prompt(`Deduct money from ${selectedWorker.full_name}
-Worker ID: ${selectedWorker.worker_id}
-
-Available balance: ${money(selectedWorker.balance)}`);
-if (amountText === null) return;
-
-const amount = Number(amountText);
-if (!amount || amount <= 0) {
-toast("Enter a valid deduction amount.","error");
-return;
-}
-
+</script>
 if (amount > Number(selectedWorker.balance || 0)) {
 toast("Deduction cannot be greater than the worker balance.","error");
 return;
@@ -3591,8 +3243,7 @@ return;
 }
 
 
-withdrawals =
-data || [];
+withdrawals = data || [];
 
 
 $("pendingCount").textContent =
@@ -3924,6 +3575,7 @@ await loadAdmin();
 } catch (error) {
 
 console.error(error);
+
 toast(
 error.message,
 "error"
@@ -4026,6 +3678,7 @@ await loadAdmin();
 } catch (error) {
 
 console.error(error);
+
 toast(
 error.message,
 "error"
@@ -4037,6 +3690,7 @@ error.message,
 }
 
 
+if (db) {
 db.auth.onAuthStateChange(
 (event,session) => {
 
