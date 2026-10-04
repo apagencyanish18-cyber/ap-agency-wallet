@@ -228,395 +228,243 @@ max-height:70vh;
 overflow:auto
 }
 
-
 /* WITHDRAWAL HISTORY REDESIGN */
 
-.withdrawal-list{
-display:flex;
-flex-direction:column;
-gap:0
-}
-
-.withdrawal-row{
+.withdrawal-history-row{
 display:flex;
 align-items:center;
+justify-content:space-between;
 gap:12px;
-padding:16px 4px;
-border-bottom:1px solid rgba(148,163,184,.14);
-cursor:pointer;
-transition:.18s
+padding:14px;
+border:1px solid #26344b;
+background:#101a2d;
+border-radius:18px;
 }
 
-.withdrawal-row:last-child{
-border-bottom:0
+.light .withdrawal-history-row{
+background:#fff;
+border-color:#e2e8f0;
 }
 
-.withdrawal-row:active{
-transform:scale(.99);
-opacity:.88
-}
-
-.withdrawal-row-icon{
-width:48px;
-height:48px;
-border-radius:50%;
+.withdrawal-history-main{
 display:flex;
 align-items:center;
-justify-content:center;
-flex:0 0 48px;
-font-size:21px;
-background:rgba(37,99,235,.12);
-border:1px solid rgba(96,165,250,.16)
-}
-
-.withdrawal-row-main{
+gap:11px;
 min-width:0;
-flex:1
 }
 
-.withdrawal-row-title{
-font-size:15px;
-font-weight:800;
-line-height:1.25
-}
-
-.withdrawal-row-date{
-font-size:11px;
-color:#94a3b8;
-margin-top:4px
-}
-
-.withdrawal-row-badge{
-display:inline-flex;
-align-items:center;
-gap:5px;
-margin-top:7px;
-padding:5px 9px;
-border-radius:999px;
-font-size:10px;
-font-weight:800
-}
-
-.withdrawal-row-right{
-text-align:right;
-min-width:92px
-}
-
-.withdrawal-row-amount{
-font-size:16px;
-font-weight:900
-}
-
-.withdrawal-view{
-font-size:11px;
-font-weight:800;
-color:#60a5fa;
-margin-top:6px;
-white-space:nowrap
-}
-
-.light .withdrawal-row{
-border-color:#e5e7eb
-}
-
-.light .withdrawal-row-date{
-color:#64748b
-}
-
-.light .withdrawal-row-icon{
-background:#eff6ff;
-border-color:#dbeafe
-}
-
-
-/* WITHDRAWAL DETAILS */
-
-.withdrawal-details-modal{
-background:rgba(2,6,23,.72)
-}
-
-.withdrawal-details-box{
-max-width:430px;
-max-height:88vh;
-overflow:auto;
-padding:0!important;
-background:#182338;
-border:1px solid #334155;
-border-radius:24px
-}
-
-.withdrawal-details-header{
-position:sticky;
-top:0;
-z-index:2;
-display:flex;
-align-items:center;
-gap:12px;
-padding:17px 18px;
-background:#182338;
-border-bottom:1px solid #334155
-}
-
-.withdrawal-details-back{
+.withdrawal-history-icon{
 width:40px;
 height:40px;
-border-radius:50%;
-border:1px solid #475569;
-background:#1e293b;
-color:#fff;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:21px
-}
-
-.withdrawal-details-title{
-font-size:19px;
-font-weight:800
-}
-
-.withdrawal-details-content{
-padding:18px
-}
-
-.details-amount-card{
-padding:18px;
-border-radius:20px;
-background:rgba(37,99,235,.08);
-border:1px solid rgba(96,165,250,.16)
-}
-
-.details-label{
-font-size:11px;
-font-weight:800;
-color:#94a3b8;
-text-transform:uppercase;
-letter-spacing:.05em
-}
-
-.details-amount{
-font-size:32px;
-font-weight:900;
-line-height:1.15;
-margin-top:6px
-}
-
-.details-amount-check{
-display:inline-flex;
-align-items:center;
-justify-content:center;
-width:22px;
-height:22px;
-border-radius:50%;
-background:#10b981;
-color:#fff;
-font-size:13px;
-margin-left:5px;
-vertical-align:middle
-}
-
-.details-note{
-margin-top:12px;
-padding:13px 14px;
-border-radius:15px;
-background:rgba(148,163,184,.07);
-border:1px solid rgba(148,163,184,.12)
-}
-
-.details-payment{
-margin-top:14px;
-padding:14px;
-border-radius:16px;
-background:rgba(59,130,246,.08);
-border:1px solid rgba(59,130,246,.14)
-}
-
-.details-payment-title{
-font-size:13px;
-font-weight:800
-}
-
-.details-payment-sub{
-font-size:11px;
-color:#94a3b8;
-margin-top:4px
-}
-
-.details-status{
-display:inline-flex;
-align-items:center;
-gap:7px;
-margin-top:14px;
-padding:9px 13px;
-border-radius:999px;
-font-size:11px;
-font-weight:800
-}
-
-.details-section{
-margin-top:16px;
-border:1px solid rgba(148,163,184,.15);
-border-radius:18px;
-overflow:hidden
-}
-
-.details-party{
-padding:16px
-}
-
-.details-party-block + .details-party-block{
-margin-top:15px;
-padding-top:15px;
-border-top:1px solid rgba(148,163,184,.12)
-}
-
-.details-party-name{
-font-size:16px;
-font-weight:800;
-margin-top:6px
-}
-
-.details-party-sub{
-font-size:12px;
-color:#94a3b8;
-margin-top:5px;
-word-break:break-all
-}
-
-.details-info-row{
-display:flex;
-justify-content:space-between;
-gap:15px;
-padding:13px 15px;
-border-top:1px solid rgba(148,163,184,.12);
-font-size:13px
-}
-
-.details-info-row:first-child{
-border-top:0
-}
-
-.details-info-label{
-color:#94a3b8
-}
-
-.details-info-value{
-font-weight:700;
-text-align:right;
-word-break:break-word
-}
-
-.details-reference{
-padding:15px
-}
-
-.details-reference-box{
-margin-top:7px;
-padding:12px 13px;
 border-radius:13px;
-background:rgba(16,185,129,.08);
-border:1px solid rgba(16,185,129,.14)
+display:flex;
+align-items:center;
+justify-content:center;
+background:rgba(37,99,235,.12);
+color:#60a5fa;
+font-weight:900;
+flex-shrink:0;
 }
 
-.details-reference-value{
+.withdrawal-history-title{
 font-size:14px;
 font-weight:800;
-word-break:break-all
 }
 
-.details-processed{
+.withdrawal-history-sub{
+font-size:11px;
+color:#94a3b8;
+margin-top:4px;
+}
+
+.withdrawal-history-right{
+display:flex;
+flex-direction:column;
+align-items:flex-end;
+gap:5px;
+flex-shrink:0;
+}
+
+.withdrawal-history-amount{
+font-size:14px;
+font-weight:900;
+}
+
+.withdrawal-view-btn{
+border:0;
+background:none;
+padding:0;
+color:#60a5fa;
+font-size:11px;
+font-weight:800;
+}
+
+.withdrawal-history-status{
+font-size:10px;
+font-weight:800;
+padding:4px 8px;
+border-radius:999px;
+}
+
+.withdrawal-history-status.success{
+background:rgba(16,185,129,.12);
+color:#34d399;
+}
+
+.withdrawal-history-status.pending{
+background:rgba(245,158,11,.12);
+color:#fbbf24;
+}
+
+.withdrawal-history-status.reject{
+background:rgba(239,68,68,.12);
+color:#f87171;
+}
+
+.withdrawal-detail-card{
+border:1px solid #26344b;
+background:#101a2d;
+border-radius:18px;
+padding:16px;
+margin-bottom:12px;
+}
+
+.light .withdrawal-detail-card{
+background:#fff;
+border-color:#e2e8f0;
+}
+
+.withdrawal-detail-amount{
+font-size:30px;
+font-weight:900;
+letter-spacing:-.03em;
+}
+
+.withdrawal-detail-label{
+font-size:11px;
+font-weight:700;
+color:#94a3b8;
+text-transform:uppercase;
+letter-spacing:.04em;
+}
+
+.withdrawal-detail-value{
+font-size:14px;
+font-weight:700;
+margin-top:7px;
+line-height:1.5;
+}
+
+.withdrawal-payment-title{
+font-size:15px;
+font-weight:900;
+margin:18px 2px 10px;
+}
+
+.withdrawal-detail-line{
 display:flex;
 align-items:center;
 justify-content:space-between;
-gap:10px;
-margin-top:16px;
-padding:14px;
-border-radius:16px;
-background:rgba(148,163,184,.06);
-border:1px solid rgba(148,163,184,.12)
+gap:12px;
+padding:11px 0;
+border-bottom:1px solid rgba(148,163,184,.12);
 }
 
-.details-processed-name{
-font-weight:800
+.withdrawal-detail-line:last-child{
+border-bottom:0;
 }
 
-.details-processed-badge{
+.withdrawal-detail-line span{
+font-size:12px;
+color:#94a3b8;
+}
+
+.withdrawal-detail-line strong{
+font-size:13px;
+text-align:right;
+word-break:break-word;
+}
+
+.withdrawal-detail-status{
 display:inline-flex;
-align-items:center;
-justify-content:center;
-width:30px;
-height:30px;
-border-radius:50%;
-background:#2563eb;
-color:#fff;
-font-size:15px
-}
-
-.details-date{
-margin-top:14px;
-padding-top:14px;
-border-top:1px solid rgba(148,163,184,.12);
+padding:5px 9px;
+border-radius:999px;
 font-size:11px;
-color:#94a3b8
+font-weight:800;
 }
 
-.light .withdrawal-details-box{
-background:#fff;
-border-color:#e2e8f0
+.withdrawal-detail-status.success{
+background:rgba(16,185,129,.12);
+color:#34d399;
+border:1px solid rgba(52,211,153,.18);
 }
 
-.light .withdrawal-details-header{
-background:#fff;
-border-color:#e2e8f0
+.withdrawal-detail-status.pending{
+background:rgba(245,158,11,.12);
+color:#fbbf24;
+border:1px solid rgba(251,191,36,.18);
 }
 
-.light .withdrawal-details-back{
-background:#f8fafc;
-color:#172033;
-border-color:#dbe2ea
+.withdrawal-detail-status.reject{
+background:rgba(239,68,68,.12);
+color:#f87171;
+border:1px solid rgba(248,113,113,.18);
 }
 
-.light .details-label,
-.light .details-payment-sub,
-.light .details-party-sub,
-.light .details-date,
-.light .details-info-label{
-color:#64748b
+.withdrawal-processed{
+border-top:1px solid rgba(148,163,184,.12);
+padding-top:14px;
+margin-top:14px;
 }
 
-.light .details-amount-card{
-background:#eff6ff;
-border-color:#dbeafe
+.withdrawal-processed-name{
+font-size:14px;
+font-weight:900;
+margin-top:6px;
 }
 
-.light .details-note{
-background:#f8fafc;
-border-color:#e2e8f0
+.withdrawal-detail-times{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+margin-top:12px;
 }
 
-.light .details-payment{
-background:#eff6ff;
-border-color:#dbeafe
+.withdrawal-detail-times>div{
+border:1px solid #26344b;
+border-radius:14px;
+padding:11px;
 }
 
-.light .details-section{
-border-color:#e2e8f0
+.light .withdrawal-detail-times>div{
+border-color:#e2e8f0;
 }
 
-.light .details-party-block + .details-party-block,
-.light .details-info-row,
-.light .details-date{
-border-color:#e5e7eb
+.withdrawal-detail-times span{
+display:block;
+font-size:10px;
+color:#94a3b8;
+margin-bottom:5px;
 }
 
-.light .details-processed{
-background:#f8fafc;
-border-color:#e2e8f0
+.withdrawal-detail-times strong{
+font-size:11px;
+display:block;
+line-height:1.4;
 }
 
-.light .details-reference-box{
-background:#ecfdf5;
-border-color:#d1fae5
+@media(max-width:640px){
+.withdrawal-history-row{
+padding:12px;
+}
+
+.withdrawal-history-amount{
+font-size:13px;
+}
+
+.withdrawal-detail-times{
+grid-template-columns:1fr;
+}
 }
 
 </style>
@@ -626,7 +474,6 @@ border-color:#d1fae5
 
 <div id="toast"
 style="position:fixed;top:15px;right:15px;z-index:200"></div>
-
 
 <!-- AUTH -->
 
@@ -648,7 +495,6 @@ Do tasks, Earn rewards!
 </p>
 
 </div>
-
 
 <div class="card rounded-2xl p-1 flex mb-5">
 
@@ -672,45 +518,34 @@ Register
 
 </div>
 
-
 <form
 id="loginForm"
 onsubmit="login(event)"
 class="space-y-4">
 
 <div>
-
 <label class="field-label">Email Address</label>
 
 <div class="input-wrap">
-
 <input
 id="loginEmail"
 type="email"
 required
 placeholder="Enter your email">
-
 </div>
-
 </div>
-
 
 <div>
-
 <label class="field-label">Password</label>
 
 <div class="input-wrap">
-
 <input
 id="loginPassword"
 type="password"
 required
 placeholder="Enter your password">
-
 </div>
-
 </div>
-
 
 <button class="primary">
 Login
@@ -718,78 +553,57 @@ Login
 
 </form>
 
-
 <form
 id="registerForm"
 onsubmit="registerUser(event)"
 class="hidden space-y-4">
 
 <div>
-
 <label class="field-label">Full Name</label>
 
 <div class="input-wrap">
-
 <input
 id="regName"
 required
 placeholder="Enter your full name">
-
 </div>
-
 </div>
-
 
 <div>
-
 <label class="field-label">Email Address</label>
 
 <div class="input-wrap">
-
 <input
 id="regEmail"
 type="email"
 required
 placeholder="Enter your email">
-
 </div>
-
 </div>
-
 
 <div>
-
 <label class="field-label">Date of Birth</label>
 
 <div class="input-wrap">
-
 <input
 id="regDob"
 type="date"
 required>
-
 </div>
-
 </div>
-
 
 <div>
-
 <label class="field-label">Password</label>
 
 <div class="input-wrap">
-
 <input
 id="regPassword"
 type="password"
 minlength="6"
 required
 placeholder="Create a password">
-
 </div>
-
 </div>
-
 
 <button class="primary">
 Create Account
@@ -800,7 +614,6 @@ Create Account
 </div>
 
 </section>
-
 
 <!-- WORKER APP -->
 
@@ -829,7 +642,6 @@ Do tasks, Earn rewards!
 
 </div>
 
-
 <button
 onclick="toggleTheme()"
 class="icon-btn"
@@ -841,9 +653,7 @@ title="Theme">
 
 </header>
 
-
 <div class="p-5 space-y-5">
-
 
 <!-- BALANCE -->
 
@@ -866,7 +676,6 @@ Available wallet balance
 </p>
 
 </div>
-
 
 <!-- ACTIONS -->
 
@@ -894,7 +703,6 @@ title="Transaction History">
 
 </div>
 
-
 <div class="action-grid">
 
 <button
@@ -914,7 +722,6 @@ Request a payout
 </p>
 
 </button>
-
 
 <button
 onclick="openWithdrawalHistory()"
@@ -938,7 +745,6 @@ View payout status
 
 </div>
 
-
 <!-- BOTTOM NAV -->
 
 <nav class="bottom-nav">
@@ -957,7 +763,6 @@ Home
 
 </button>
 
-
 <button
 onclick="openTelegramChannel()">
 
@@ -971,7 +776,6 @@ Telegram
 
 </button>
 
-
 <button
 onclick="openSupport()">
 
@@ -984,7 +788,6 @@ Support
 </div>
 
 </button>
-
 
 <button
 onclick="openSettings()">
@@ -1001,8 +804,9 @@ Settings
 
 </nav>
 
-</section>
+</div>
 
+</section>
 
 <!-- WITHDRAWAL MODAL -->
 
@@ -1036,11 +840,9 @@ class="icon-btn">
 
 </div>
 
-
 <form
 onsubmit="createWithdrawal(event)"
 class="space-y-4">
-
 
 <div>
 
@@ -1061,7 +863,6 @@ placeholder="Enter amount">
 </div>
 
 </div>
-
 
 <div>
 
@@ -1089,7 +890,6 @@ Gift Card
 
 </div>
 
-
 <div id="upiFields">
 
 <div class="mb-3">
@@ -1107,7 +907,6 @@ placeholder="name@upi">
 </div>
 
 </div>
-
 
 <div>
 
@@ -1127,7 +926,6 @@ placeholder="Enter email">
 </div>
 
 </div>
-
 
 <div
 id="giftFields"
@@ -1161,7 +959,6 @@ Google Play Gift Card
 
 </div>
 
-
 <div>
 
 <label class="field-label">
@@ -1181,7 +978,6 @@ placeholder="Enter email">
 
 </div>
 
-
 <button class="primary">
 Request Withdrawal
 </button>
@@ -1191,7 +987,6 @@ Request Withdrawal
 </div>
 
 </div>
-
 
 <!-- TRANSACTION HISTORY MODAL -->
 
@@ -1225,7 +1020,6 @@ class="icon-btn">
 
 </div>
 
-
 <div
 id="transactions"
 class="history-box space-y-3">
@@ -1234,7 +1028,6 @@ class="history-box space-y-3">
 </div>
 
 </div>
-
 
 <!-- WITHDRAWAL HISTORY MODAL -->
 
@@ -1268,7 +1061,6 @@ class="icon-btn">
 
 </div>
 
-
 <div
 id="workerWithdrawals"
 class="history-box space-y-3">
@@ -1278,28 +1070,19 @@ class="history-box space-y-3">
 
 </div>
 
-
 <!-- WITHDRAWAL DETAILS MODAL -->
 
 <div
 id="withdrawalDetailsModal"
-class="modal withdrawal-details-modal hidden">
+class="modal hidden">
 
-<div class="modal-box withdrawal-details-box">
+<div class="modal-box">
 
-<div class="withdrawal-details-header">
-
-<button
-onclick="closeWithdrawalDetails()"
-class="withdrawal-details-back">
-
-←
-
-</button>
+<div class="flex justify-between items-center mb-5">
 
 <div>
 
-<h2 class="withdrawal-details-title">
+<h2 class="text-xl font-extrabold">
 Withdrawal Details
 </h2>
 
@@ -1309,21 +1092,22 @@ Payment information
 
 </div>
 
-</div>
+<button
+onclick="closeWithdrawalDetails()"
+class="icon-btn">
 
+✕
 
-<div
-id="withdrawalDetailsContent"
-class="withdrawal-details-content">
-
-</div>
-
-</div>
+</button>
 
 </div>
 
+<div id="withdrawalDetailsContent"></div>
 
-<!-- ADMIN -->
+</div>
+
+    </div>
+    <!-- ADMIN -->
 
 <section
 id="adminPage"
@@ -1351,7 +1135,6 @@ ADMIN PANEL
 
 </div>
 
-
 <div class="flex gap-2">
 
 <button
@@ -1364,7 +1147,6 @@ class="icon-btn">
 
 </button>
 
-
 <button
 onclick="logout()"
 class="secondary text-red-400">
@@ -1376,7 +1158,6 @@ Logout
 </div>
 
 </header>
-
 
 <div class="p-5 space-y-5">
 
@@ -1398,7 +1179,6 @@ class="text-2xl font-bold mt-1">
 
 </div>
 
-
 <div class="card rounded-2xl p-4">
 
 <p class="muted text-xs">
@@ -1413,583 +1193,623 @@ class="text-2xl font-bold text-yellow-400 mt-1">
 
 </h2>
 
-    </div>
-    .withdrawal-detail-status.reject{background:rgba(239,68,68,.12);color:#f87171;border:1px solid rgba(248,113,113,.18)}
-.withdrawal-detail-status.pending{background:rgba(245,158,11,.12);color:#fbbf24;border:1px solid rgba(251,191,36,.18)}
-
-@media (max-width:640px){
-.withdrawal-history-row{
-padding:14px;
-gap:10px;
-}
-.withdrawal-history-title{
-font-size:14px;
-}
-.withdrawal-history-sub{
-font-size:11px;
-}
-.withdrawal-detail-card{
-padding:16px;
-}
-.withdrawal-detail-amount{
-font-size:28px;
-}
-}
-</style>
-</head>
-
-<body>
-
-<div id="app"></div>
-
-<!-- AUTH SCREEN -->
-<div id="authScreen" class="min-h-screen flex items-center justify-center p-4">
-<div class="w-full max-w-md">
-
-<div class="text-center mb-6">
-<div class="text-3xl font-bold">AP AGENCY</div>
-<div class="muted text-sm mt-1">Worker Wallet</div>
 </div>
 
-<div class="card p-6">
-
-<div class="flex gap-2 mb-5">
-<button id="loginTab"
-class="tab-btn active flex-1 py-2 rounded-xl"
-onclick="showAuthTab('login')">
-Login
-</button>
-
-<button id="registerTab"
-class="tab-btn flex-1 py-2 rounded-xl"
-onclick="showAuthTab('register')">
-Register
-</button>
 </div>
 
-<!-- LOGIN -->
-<div id="loginForm">
-
-<label class="label">Email</label>
-<input id="loginEmail"
-type="email"
-class="input"
-placeholder="Enter email">
-
-<label class="label mt-4">Password</label>
-<input id="loginPassword"
-type="password"
-class="input"
-placeholder="Enter password">
+<div class="flex gap-5 border-b border-dark">
 
 <button
-onclick="loginUser()"
-class="primary-btn w-full mt-5">
-Login
-</button>
+id="adminWithdrawalTab"
+onclick="adminTab('withdrawals')"
+class="pb-3 text-blue-400 font-bold">
 
-<div id="loginMsg" class="msg mt-3"></div>
+Withdrawals
 
-</div>
-
-<!-- REGISTER -->
-<div id="registerForm" class="hidden">
-
-<label class="label">Full Name</label>
-<input id="registerName"
-class="input"
-placeholder="Enter full name">
-
-<label class="label mt-4">Email</label>
-<input id="registerEmail"
-type="email"
-class="input"
-placeholder="Enter email">
-
-<label class="label mt-4">Date of Birth</label>
-<input id="registerDob"
-type="date"
-class="input">
-
-<label class="label mt-4">Password</label>
-<input id="registerPassword"
-type="password"
-class="input"
-placeholder="Create password">
-
-<button
-onclick="registerUser()"
-class="primary-btn w-full mt-5">
-Create Account
-</button>
-
-<div id="registerMsg" class="msg mt-3"></div>
-
-</div>
-
-</div>
-</div>
-</div>
-
-<!-- WORKER APP -->
-<div id="workerApp" class="hidden min-h-screen">
-
-<header class="top-header">
-<div>
-<div class="brand">AP AGENCY</div>
-<div id="workerWelcome" class="header-sub">Worker Wallet</div>
-</div>
-
-<div class="header-actions">
-
-<button
-onclick="openSettings()"
-class="icon-btn">
-⚙
 </button>
 
 <button
-onclick="logoutUser()"
-class="logout-btn">
-Logout
-</button>
+id="adminWorkerTab"
+onclick="adminTab('workers')"
+class="pb-3 muted font-bold">
 
-</div>
-</header>
+Workers
 
-<main class="max-w-5xl mx-auto p-4">
-
-<!-- BALANCE -->
-<div class="balance-island">
-
-<div class="balance-label">
-Available Balance
-</div>
-
-<div id="workerBalance"
-class="balance-amount">
-₹0.00
-</div>
-
-<div class="balance-meta">
-Wallet Balance
-</div>
-
-</div>
-
-<!-- ACTIONS -->
-<div class="actions-island mt-4">
-
-<div class="flex items-center justify-between mb-3">
-
-<div>
-<div class="section-title">Actions</div>
-<div class="muted text-xs">Manage your wallet</div>
-</div>
-
-<button
-onclick="openTransactions()"
-class="history-pill">
-Transaction History
 </button>
 
 </div>
 
-<div class="grid grid-cols-2 gap-3">
+<div id="adminWithdrawalsView">
 
-<button
-onclick="openWithdrawModal()"
-class="action-btn">
-<div class="action-icon">↗</div>
-<div>
-<div class="action-title">Withdraw Fund</div>
-<div class="action-sub">Request payment</div>
-</div>
-</button>
-
-<button
-onclick="openWithdrawalHistory()"
-class="action-btn">
-<div class="action-icon">▣</div>
-<div>
-<div class="action-title">Withdrawal History</div>
-<div class="action-sub">View requests</div>
-</div>
-</button>
-
+<div
+id="adminWithdrawalList"
+class="space-y-3">
 </div>
 
 </div>
 
-</main>
+<div
+id="adminWorkersView"
+class="hidden">
+
+<input
+id="workerSearch"
+oninput="renderWorkers()"
+placeholder="Search Worker ID or Name"
+class="mb-3">
+
+<div
+id="adminWorkerList"
+class="space-y-3">
 </div>
 
-<!-- WITHDRAW MODAL -->
-<div id="withdrawModal" class="modal hidden">
+</div>
+
+</div>
+
+</section>
+
+<!-- SETTINGS POPUP -->
+
+<div
+id="settingsModal"
+class="modal hidden">
 
 <div class="modal-box">
 
-<div class="flex items-center justify-between mb-5">
-
-<div>
-<h2 class="modal-title">Withdraw Fund</h2>
-<p class="muted text-xs mt-1">
-Minimum withdrawal ₹10
-</p>
-</div>
-
-<button
-onclick="closeWithdrawModal()"
-class="close-btn">
-×
-</button>
-
-</div>
-
-<label class="label">Amount</label>
-
-<input
-id="withdrawAmount"
-type="number"
-min="10"
-step="1"
-class="input"
-placeholder="Enter amount">
-
-<label class="label mt-4">Payment Method</label>
-
-<select
-id="withdrawMethod"
-class="input"
-onchange="toggleWithdrawMethod()">
-
-<option value="upi">UPI</option>
-<option value="gift_card">Gift Card</option>
-
-</select>
-
-<div id="upiFields">
-
-<label class="label mt-4">UPI ID</label>
-
-<input
-id="withdrawUpi"
-class="input"
-placeholder="example@upi">
-
-</div>
-
-<div id="giftCardFields" class="hidden">
-
-<label class="label mt-4">Gift Card Type</label>
-
-<select
-id="withdrawGiftCard"
-class="input">
-
-<option value="amazon">Amazon Gift Card</option>
-<option value="flipkart">Flipkart Gift Card</option>
-<option value="google_play">Google Play Gift Card</option>
-
-</select>
-
-</div>
-
-<label class="label mt-4">Email ID</label>
-
-<input
-id="withdrawEmail"
-type="email"
-class="input"
-placeholder="Enter email">
-
-<button
-onclick="createWithdrawal()"
-class="primary-btn w-full mt-5">
-Submit Withdrawal
-</button>
-
-<div id="withdrawMsg" class="msg mt-3"></div>
-
-</div>
-</div>
-
-<!-- TRANSACTION HISTORY MODAL -->
-<div id="transactionsModal" class="modal hidden">
-
-<div class="modal-box large">
-
-<div class="flex items-center justify-between mb-5">
-
-<div>
-<h2 class="modal-title">Transaction History</h2>
-
-<p class="muted text-xs mt-1">
-Money added and withdrawals
-</p>
-
-</div>
-
-<button
-onclick="closeTransactions()"
-class="close-btn">
-×
-</button>
-
-</div>
-
-<div id="transactionsList"></div>
-
-</div>
-</div>
-
-<!-- WITHDRAWAL HISTORY MODAL -->
-<div id="withdrawalHistoryModal" class="modal hidden">
-
-<div class="modal-box large">
-
-<div class="flex items-center justify-between mb-5">
-
-<div>
-<h2 class="modal-title">Withdrawal History</h2>
-
-<p class="muted text-xs mt-1">
-Your withdrawal requests
-</p>
-
-</div>
-
-<button
-onclick="closeWithdrawalHistory()"
-class="close-btn">
-×
-</button>
-
-</div>
-
-<div id="withdrawalHistoryList"></div>
-
-</div>
-</div>
-
-<!-- WITHDRAWAL DETAILS MODAL -->
-<div id="withdrawalDetailsModal" class="modal hidden">
-
-<div class="modal-box">
-
-<div class="flex items-center justify-between mb-5">
-
-<div>
-<h2 class="modal-title">Withdrawal Details</h2>
-<p class="muted text-xs mt-1">
-Payment information
-</p>
-</div>
-
-<button
-onclick="closeWithdrawalDetails()"
-class="close-btn">
-×
-</button>
-
-</div>
-
-<div id="withdrawalDetailsContent"></div>
-
-</div>
-</div>
-
-<!-- ADMIN APP -->
-<div id="adminApp" class="hidden min-h-screen">
-
-<header class="top-header">
-
-<div>
-<div class="brand">AP AGENCY</div>
-<div class="header-sub">Admin Panel</div>
-</div>
-
-<div class="header-actions">
-
-<button
-onclick="logoutUser()"
-class="logout-btn">
-Logout
-</button>
-
-</div>
-
-</header>
-
-<main class="max-w-6xl mx-auto p-4">
-
-<div class="admin-grid">
-
-<div class="admin-card">
-<div class="admin-card-title">Workers</div>
-<div id="adminWorkerCount" class="admin-card-value">0</div>
-</div>
-
-<div class="admin-card">
-<div class="admin-card-title">Pending Withdrawals</div>
-<div id="adminPendingCount" class="admin-card-value">0</div>
-</div>
-
-</div>
-
-<div class="card mt-4 p-4">
-
-<div class="flex items-center justify-between mb-4">
-
-<div>
-<h2 class="section-title">Workers</h2>
-<div class="muted text-xs">
-Search and manage workers
-</div>
-</div>
-
-</div>
-
-<div class="flex gap-2">
-
-<input
-id="adminWorkerSearch"
-class="input flex-1"
-placeholder="Search by Worker ID, name or email"
-oninput="filterAdminWorkers()">
-
-<button
-onclick="loadAdminWorkers()"
-class="secondary-btn">
-Refresh
-</button>
-
-</div>
-
-<div id="adminWorkersList" class="mt-4"></div>
-
-</div>
-
-<div class="card mt-4 p-4">
-
-<div class="flex items-center justify-between mb-4">
-
-<div>
-<h2 class="section-title">Withdrawal Requests</h2>
-<div class="muted text-xs">
-Process pending payments
-</div>
-</div>
-
-<button
-onclick="loadAdminWithdrawals()"
-class="secondary-btn">
-Refresh
-</button>
-
-</div>
-
-<div id="adminWithdrawalsList"></div>
-
-</div>
-
-</main>
-</div>
-
-<!-- SETTINGS -->
-<div id="settingsModal" class="modal hidden">
-
-<div class="modal-box">
-
-<div class="flex items-center justify-between mb-5">
-
-<div>
-<h2 class="modal-title">Settings</h2>
-<p class="muted text-xs mt-1">
-Account preferences
-</p>
-</div>
+<div class="flex justify-between items-center mb-5">
+
+<h2 class="text-xl font-bold">
+Settings
+</h2>
 
 <button
 onclick="closeSettings()"
-class="close-btn">
-×
+class="icon-btn">
+
+✕
+
 </button>
 
-</div>
-
-<div class="setting-row">
-<div>
-<div class="setting-title">Dark Mode</div>
-<div class="muted text-xs">Use dark appearance</div>
-</div>
-
-<label class="switch">
-<input
-id="themeToggle"
-type="checkbox"
-onchange="toggleTheme()">
-<span class="slider"></span>
-</label>
-</div>
-
-</div>
-</div>
-
-<!-- PROFILE -->
-<div id="profileModal" class="modal hidden">
-
-<div class="modal-box">
-
-<div class="flex items-center justify-between mb-5">
-
-<div>
-<h2 class="modal-title">Profile</h2>
-<p class="muted text-xs mt-1">
-Your account information
-</p>
 </div>
 
 <button
-onclick="closeProfile()"
-class="close-btn">
-×
+onclick="openProfile()"
+class="w-full flex items-center gap-4 p-4 rounded-xl card mb-3 text-left">
+
+<span class="text-2xl">
+👤
+</span>
+
+<div>
+
+<p class="font-bold">
+My Profile
+</p>
+
+<p class="text-xs muted">
+View and edit your profile
+</p>
+
+</div>
+
+</button>
+
+<button
+onclick="logout()"
+class="w-full flex items-center gap-4 p-4 rounded-xl bg-red-500/10 text-red-400 text-left">
+
+<span class="text-2xl">
+↪
+</span>
+
+<div>
+
+<p class="font-bold">
+Logout
+</p>
+
+<p class="text-xs">
+Sign out of your account
+</p>
+
+</div>
+
 </button>
 
 </div>
 
-<div class="profile-avatar-wrap">
+</div>
+
+<!-- PROFILE PAGE -->
+
+<section
+id="profilePage"
+class="hidden page pb-24">
+
+<header class="header p-4 flex items-center gap-4">
+
+<button
+onclick="closeProfile()"
+class="icon-btn">
+
+←
+
+</button>
+
+<div>
+
+<h1 class="text-xl font-bold">
+My Profile
+</h1>
+
+<p class="text-xs muted">
+Account information
+</p>
+
+</div>
+
+</header>
+
+<div class="p-5">
+
+<div class="profile-card">
+
+<div class="flex items-start justify-between gap-4">
+
+<div class="relative">
 
 <img
 id="profileAvatar"
-class="profile-avatar"
+class="avatar"
 src="./file_00000000e37481fabb8b78aea4e71cd6.png">
 
-</div>
+<label
+for="avatarInput"
+class="absolute bottom-0 right-0 w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center border-2 border-white cursor-pointer">
 
-<div class="profile-info">
-<div class="profile-label">Worker ID</div>
-<div id="profileWorkerId" class="profile-value">-</div>
-</div>
+📷
 
-<div class="profile-info">
-<div class="profile-label">Full Name</div>
-<div id="profileName" class="profile-value">-</div>
-</div>
+</label>
 
-<div class="profile-info">
-<div class="profile-label">Email</div>
-<div id="profileEmail" class="profile-value">-</div>
-</div>
+<input
+id="avatarInput"
+type="file"
+accept="image/*"
+class="hidden"
+onchange="uploadAvatar(event)">
 
 </div>
+
+<button
+onclick="editProfile()"
+class="px-4 py-2.5 rounded-xl bg-blue-600 text-white font-bold text-sm">
+
+✎ Edit
+
+</button>
+
+</div>
+
+<div class="mt-5">
+
+<h2
+id="profileNameTop"
+class="text-2xl font-extrabold">
+
+Worker
+
+</h2>
+
+<p
+id="profileEmailTop"
+class="text-sm muted mt-1 break-all">
+
+email@example.com
+
+</p>
+
+</div>
+
+<div class="profile-meta">
+
+<div class="profile-meta-box">
+
+<p class="text-[10px] muted uppercase font-bold">
+Date of Birth
+</p>
+
+<p
+id="profileDobTop"
+class="font-bold mt-1">
+
+Not set
+
+</p>
+
+</div>
+
+<div class="profile-meta-box">
+
+<p class="text-[10px] muted uppercase font-bold">
+Wallet / Worker ID
+</p>
+
+<p
+id="profileWorkerId"
+class="font-bold text-blue-400 mt-1 font-mono">
+
+AP000000
+
+</p>
+
+</div>
+
+</div>
+
+<div class="mt-4 flex items-center justify-between rounded-2xl px-4 py-3 bg-emerald-500/10 border border-emerald-500/20">
+
+<div>
+
+<p class="text-xs muted">
+Account Status
+</p>
+
+<p class="font-bold text-emerald-400">
+Active
+</p>
+
+</div>
+
+<span class="text-emerald-400">
+●
+</span>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- EDIT PROFILE MODAL -->
+
+<div
+id="editProfileModal"
+class="modal hidden">
+
+<div class="modal-box">
+
+<div class="flex justify-between items-center mb-5">
+
+<h2 class="text-xl font-bold">
+Edit Profile
+</h2>
+
+<button
+onclick="closeEditProfile()"
+class="icon-btn">
+
+✕
+
+</button>
+
+</div>
+
+<form
+onsubmit="saveProfile(event)"
+class="space-y-4">
+
+<input
+id="editName"
+required
+placeholder="Full Name">
+
+<input
+id="editDob"
+type="date"
+required>
+
+<button class="primary">
+Save Changes
+</button>
+
+</form>
+
+</div>
+
 </div>
 
 <script>
-    </div>
 
-</div>
-</div>
+let currentTheme =
+localStorage.getItem("ap_theme") || "dark";
+
+function applyTheme() {
+
+if (currentTheme === "light") {
+
+document.body.classList.add("light");
+
+$("themeIcon").textContent = "🌙";
+
+if ($("adminThemeIcon"))
+$("adminThemeIcon").textContent = "🌙";
+
+} else {
+
+document.body.classList.remove("light");
+
+$("themeIcon").textContent = "☀";
+
+if ($("adminThemeIcon"))
+$("adminThemeIcon").textContent = "☀";
+
+}
+
+}
+
+function toggleTheme() {
+
+currentTheme =
+currentTheme === "dark"
+? "light"
+: "dark";
+
+localStorage.setItem(
+"ap_theme",
+currentTheme
+);
+
+applyTheme();
+
+}
+
+function openSettings() {
+
+$("settingsModal").classList.remove("hidden");
+
+}
+
+function closeSettings() {
+
+$("settingsModal").classList.add("hidden");
+
+}
+
+function openProfile() {
+
+closeSettings();
+
+$("workerPage").classList.add("hidden");
+
+$("profilePage").classList.remove("hidden");
+
+loadProfilePage();
+
+}
+
+function closeProfile() {
+
+$("profilePage").classList.add("hidden");
+
+$("workerPage").classList.remove("hidden");
+
+}
+
+async function loadProfilePage() {
+
+if (!currentUser || !currentProfile)
+return;
+
+$("profileNameTop").textContent =
+currentProfile.full_name || "Worker";
+
+$("profileWorkerId").textContent =
+currentProfile.worker_id || "AP000000";
+
+$("profileEmailTop").textContent =
+currentUser.email || "-";
+
+const dob =
+currentProfile.date_of_birth;
+
+$("profileDobTop").textContent =
+dob || "Not set";
+
+if (currentProfile.avatar_url) {
+
+$("profileAvatar").src =
+currentProfile.avatar_url;
+
+} else {
+
+$("profileAvatar").src =
+"./file_00000000e37481fabb8b78aea4e71cd6.png";
+
+}
+
+}
+
+function editProfile() {
+
+$("editName").value =
+currentProfile.full_name || "";
+
+$("editDob").value =
+currentProfile.date_of_birth || "";
+
+$("editProfileModal").classList.remove(
+"hidden"
+);
+
+}
+
+function closeEditProfile() {
+
+$("editProfileModal").classList.add(
+"hidden"
+);
+
+}
+
+async function saveProfile(event) {
+
+event.preventDefault();
+
+const name =
+$("editName").value.trim();
+
+const dob =
+$("editDob").value;
+
+if (!name || !dob) {
+
+toast(
+"Name and date of birth are required.",
+"error"
+);
+
+return;
+
+}
+
+try {
+
+const { error } =
+await db
+.from("profiles")
+.update({
+full_name: name,
+date_of_birth: dob
+})
+.eq("id", currentUser.id);
+
+if (error) throw error;
+
+currentProfile.full_name = name;
+currentProfile.date_of_birth = dob;
+
+closeEditProfile();
+
+loadProfilePage();
+
+toast(
+"Profile updated successfully.",
+"success"
+);
+
+} catch (error) {
+
+console.error(error);
+
+toast(
+error.message,
+"error"
+);
+
+}
+
+}
+
+async function uploadAvatar(event) {
+
+const file =
+event.target.files[0];
+
+if (!file)
+return;
+
+if (!file.type.startsWith("image/")) {
+
+toast(
+"Please select an image.",
+"error"
+);
+
+return;
+
+}
+
+if (file.size > 2 * 1024 * 1024) {
+
+toast(
+"Image must be below 2 MB.",
+"error"
+);
+
+return;
+
+}
+
+try {
+
+const extension =
+file.name.split(".").pop().toLowerCase();
+
+const filePath =
+`${currentUser.id}/avatar.${extension}`;
+
+const { error: uploadError } =
+await db.storage
+.from("avatars")
+.upload(
+filePath,
+file,
+{
+upsert: true,
+contentType: file.type
+}
+);
+
+if (uploadError)
+throw uploadError;
+
+const { data } =
+db.storage
+.from("avatars")
+.getPublicUrl(filePath);
+
+const avatarUrl =
+data.publicUrl;
+
+const { error: updateError } =
+await db
+.from("profiles")
+.update({
+avatar_url: avatarUrl
+})
+.eq("id", currentUser.id);
+
+if (updateError)
+throw updateError;
+
+currentProfile.avatar_url =
+avatarUrl;
+
+$("profileAvatar").src =
+avatarUrl;
+
+toast(
+"Profile photo updated.",
+"success"
+);
+
+} catch (error) {
+
+console.error(error);
+
+toast(
+"Photo upload failed. Make sure the avatars storage bucket exists.",
+"error"
+);
+
+}
+
+}
+
+</script>
 
 <script>
 
@@ -1999,57 +1819,53 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
 "sb_publishable_iED-0Op0GP8e1msvL7ksdw_53rXjJ_H";
 
-const supabaseClient =
+const db =
 supabase.createClient(
 SUPABASE_URL,
 SUPABASE_KEY
 );
 
+const $ = id =>
+document.getElementById(id);
+
 let currentUser = null;
 let currentProfile = null;
-let workerWithdrawals = [];
+let workers = [];
+let withdrawals = [];
+let selectedWorker = null;
+let selectedWithdrawal = null;
 
-function $(id){
-return document.getElementById(id);
+function toast(message, type = "info") {
+
+const box =
+document.createElement("div");
+
+box.style.cssText =
+"background:" +
+(type === "error"
+? "#dc2626"
+: type === "success"
+? "#059669"
+: "#2563eb") +
+";color:white;padding:12px 16px;" +
+"border-radius:12px;margin-bottom:8px;" +
+"font-size:14px;font-weight:bold";
+
+box.textContent =
+message;
+
+$("toast").appendChild(box);
+
+setTimeout(() => {
+box.remove();
+},3500);
+
 }
 
-function showAuthTab(tab){
+function money(value) {
 
-$("loginForm").classList.toggle(
-"hidden",
-tab !== "login"
-);
-
-$("registerForm").classList.toggle(
-"hidden",
-tab !== "register"
-);
-
-$("loginTab").classList.toggle(
-"active",
-tab === "login"
-);
-
-$("registerTab").classList.toggle(
-"active",
-tab === "register"
-);
-
-}
-
-function msg(id,text,type=""){
-const el=$(id);
-
-if(!el)return;
-
-el.textContent=text;
-
-el.className="msg mt-3 "+type;
-}
-
-function formatMoney(value){
-
-return "₹"+Number(value||0).toLocaleString(
+return "₹" +
+Number(value || 0).toLocaleString(
 "en-IN",
 {
 minimumFractionDigits:2,
@@ -2059,123 +1875,291 @@ maximumFractionDigits:2
 
 }
 
-function formatDate(value){
+function showPage(id) {
 
-if(!value)return "-";
+$("authPage").classList.add("hidden");
+$("workerPage").classList.add("hidden");
+$("adminPage").classList.add("hidden");
+$("profilePage").classList.add("hidden");
 
-const d=new Date(value);
+$(id).classList.remove("hidden");
 
-if(Number.isNaN(d.getTime()))
-return "-";
-
-return d.toLocaleString(
-"en-IN",
-{
-day:"2-digit",
-month:"short",
-year:"numeric",
-hour:"2-digit",
-minute:"2-digit"
-}
-);
-
-}
-
-function escapeHtml(value){
-
-return String(value ?? "")
-.replace(/&/g,"&amp;")
-.replace(/</g,"&lt;")
-.replace(/>/g,"&gt;")
-.replace(/"/g,"&quot;")
-.replace(/'/g,"&#039;");
-
-}
-
-function applyTheme(){
-
-const saved =
-localStorage.getItem("ap_theme") || "dark";
-
-document.body.classList.toggle(
-"light-theme",
-saved === "light"
-);
-
-const toggle=$("themeToggle");
-
-if(toggle)
-toggle.checked=saved==="dark";
-
-}
-
-function toggleTheme(){
-
-const isDark =
-$("themeToggle")?.checked;
-
-localStorage.setItem(
-"ap_theme",
-isDark ? "dark" : "light"
-);
-
-applyTheme();
-
-}
-
-function openSettings(){
-
-$("settingsModal").classList.remove("hidden");
-
-}
-
-function closeSettings(){
+if (id === "workerPage") {
 
 $("settingsModal").classList.add("hidden");
+$("withdrawalModal").classList.add("hidden");
+$("transactionHistoryModal").classList.add("hidden");
+$("withdrawalHistoryModal").classList.add("hidden");
+$("withdrawalDetailsModal").classList.add("hidden");
 
 }
 
-function openProfile(){
+}
 
-$("profileModal").classList.remove("hidden");
+function showAuthTab(type) {
+
+const login =
+type === "login";
+
+$("loginForm").classList.toggle(
+"hidden",
+!login
+);
+
+$("registerForm").classList.toggle(
+"hidden",
+login
+);
+
+$("loginTab").className =
+login
+? "flex-1 py-3 rounded-xl bg-blue-600 font-bold"
+: "flex-1 py-3 rounded-xl muted";
+
+$("registerTab").className =
+!login
+? "flex-1 py-3 rounded-xl bg-blue-600 font-bold"
+: "flex-1 py-3 rounded-xl muted";
 
 }
 
-function closeProfile(){
+async function login(event) {
 
-$("profileModal").classList.add("hidden");
+event.preventDefault();
+
+try {
+
+const { data,error } =
+await db.auth.signInWithPassword({
+
+email:
+$("loginEmail")
+.value
+.trim(),
+
+password:
+$("loginPassword").value
+
+});
+
+if (error)
+throw error;
+
+await openApp(data.user);
+
+} catch (error) {
+
+console.error(error);
+
+toast(
+error.message,
+"error"
+);
 
 }
 
-function openWithdrawModal(){
+}
 
-$("withdrawModal").classList.remove("hidden");
+async function registerUser(event) {
 
-$("withdrawMsg").textContent="";
+event.preventDefault();
+
+try {
+
+const { data,error } =
+await db.auth.signUp({
+
+email:
+$("regEmail")
+.value
+.trim(),
+
+password:
+$("regPassword").value,
+
+options: {
+
+data: {
+
+full_name:
+$("regName")
+.value
+.trim(),
+
+date_of_birth:
+$("regDob").value
 
 }
 
-function closeWithdrawModal(){
+}
 
-$("withdrawModal").classList.add("hidden");
+});
+
+if (error)
+throw error;
+
+if (data.session) {
+
+await openApp(data.user);
+
+} else {
+
+toast(
+"Account created. Check your email.",
+"success"
+);
+
+showAuthTab("login");
+
+$("loginEmail").value =
+$("regEmail").value.trim();
 
 }
 
-function openTransactions(){
+} catch (error) {
 
-$("transactionsModal").classList.remove("hidden");
+console.error(error);
 
-loadTransactions();
-
-}
-
-function closeTransactions(){
-
-$("transactionsModal").classList.add("hidden");
+toast(
+error.message,
+"error"
+);
 
 }
 
-function openWithdrawalHistory(){
+}
+
+async function openApp(user) {
+
+currentUser = user;
+
+const { data,error } =
+await db
+.from("profiles")
+.select(`
+id,
+full_name,
+date_of_birth,
+role,
+is_active,
+worker_id,
+avatar_url,
+email
+`)
+.eq("id",user.id)
+.single();
+
+if (error)
+throw error;
+
+if (data.is_active === false) {
+
+throw new Error(
+"Your account is inactive."
+);
+
+}
+
+currentProfile = data;
+
+if (data.role === "admin") {
+
+showPage("adminPage");
+
+await loadAdmin();
+
+} else {
+
+showPage("workerPage");
+
+await loadWorker();
+
+}
+
+}
+
+async function restoreSession() {
+
+try {
+
+const { data,error } =
+await db.auth.getSession();
+
+if (error)
+throw error;
+
+if (data.session) {
+
+await openApp(
+data.session.user
+);
+
+} else {
+
+showPage("authPage");
+
+}
+
+} catch (error) {
+
+console.error(error);
+
+showPage("authPage");
+
+}
+
+}
+
+async function logout() {
+
+await db.auth.signOut();
+
+currentUser = null;
+currentProfile = null;
+
+showPage("authPage");
+
+$("loginPassword").value = "";
+
+toast(
+"Logged out successfully.",
+"success"
+);
+
+}
+
+function openWithdrawal() {
+
+$("withdrawalModal")
+.classList.remove("hidden");
+
+changePaymentMethod();
+
+}
+
+function closeWithdrawal() {
+
+$("withdrawalModal")
+.classList.add("hidden");
+
+}
+
+function openTransactionHistory() {
+
+$("transactionHistoryModal")
+.classList.remove("hidden");
+
+loadWorkerTransactions();
+
+}
+
+function closeTransactionHistory() {
+
+$("transactionHistoryModal").classList.add("hidden");
+
+}
+
+function openWithdrawalHistory() {
 
 $("withdrawalHistoryModal")
 .classList.remove("hidden");
@@ -2184,369 +2168,283 @@ loadWorkerWithdrawals();
 
 }
 
-function closeWithdrawalHistory(){
+function closeWithdrawalHistory() {
 
-$("withdrawalHistoryModal")
+$("withdrawalHistoryModal").classList.add("hidden");
+
+}
+
+function closeWithdrawalDetails() {
+
+$("withdrawalDetailsModal").classList.add("hidden");
+
+}
+
+function goHome() {
+
+closeSettings();
+closeWithdrawal();
+closeTransactionHistory();
+closeWithdrawalHistory();
+closeWithdrawalDetails();
+
+$("profilePage")
 .classList.add("hidden");
 
-}
-
-function closeWithdrawalDetails(){
-
-$("withdrawalDetailsModal")
-.classList.add("hidden");
+$("workerPage")
+.classList.remove("hidden");
 
 }
 
-function toggleWithdrawMethod(){
+function openTelegramChannel() {
 
-const method=$("withdrawMethod").value;
-
-$("upiFields").classList.toggle(
-"hidden",
-method!=="upi"
-);
-
-$("giftCardFields").classList.toggle(
-"hidden",
-method!=="gift_card"
+window.open(
+"https://t.me/apagencyofficial",
+"_blank"
 );
 
 }
 
-async function registerUser(){
+function openSupport() {
 
-const name=$("registerName").value.trim();
-const email=$("registerEmail").value.trim();
-const dob=$("registerDob").value;
-const password=$("registerPassword").value;
-
-if(!name||!email||!dob||!password){
-
-msg(
-"registerMsg",
-"Please fill all fields.",
-"error"
+window.open(
+"https://t.me/APAgencyAdmin2",
+"_blank"
 );
 
-return;
 }
 
-if(password.length<6){
+async function loadWorker() {
 
-msg(
-"registerMsg",
-"Password must be at least 6 characters.",
-"error"
-);
+$("workerBalance").textContent =
+"₹0.00";
 
-return;
-}
+const { data: wallet,error } =
+await db
+.from("wallets")
+.select("balance")
+.eq(
+"user_id",
+currentUser.id
+)
+.single();
 
-msg(
-"registerMsg",
-"Creating account...",
-""
-);
+if (!error && wallet) {
 
-const {data,error}=
-await supabaseClient.auth.signUp({
-
-email,
-password,
-
-options:{
-data:{
-full_name:name,
-date_of_birth:dob
-}
-}
-
-});
-
-if(error){
-
-msg(
-"registerMsg",
-error.message,
-"error"
-);
-
-return;
+$("workerBalance").textContent =
+money(wallet.balance);
 
 }
 
-if(data.user){
+await loadWorkerTransactions();
 
-msg(
-"registerMsg",
-"Account created successfully. You can now login.",
-"success"
-);
-
-$("registerPassword").value="";
+await loadWorkerWithdrawals();
 
 }
 
-}
+async function loadWorkerTransactions() {
 
-async function loginUser(){
+const { data,error } =
+await db
+.from("transactions")
+.select(`
+id,
+type,
+amount,
+description,
+balance_after,
+created_at
+`)
+.eq(
+"user_id",
+currentUser.id
+)
+.order(
+"created_at",
+{ascending:false}
+)
+.limit(50);
 
-const email=$("loginEmail").value.trim();
-const password=$("loginPassword").value;
-
-if(!email||!password){
-
-msg(
-"loginMsg",
-"Enter email and password.",
-"error"
-);
-
-return;
-
-}
-
-msg(
-"loginMsg",
-"Logging in...",
-""
-);
-
-const {data,error}=
-await supabaseClient.auth.signInWithPassword({
-
-email,
-password
-
-});
-
-if(error){
-
-msg(
-"loginMsg",
-error.message,
-"error"
-);
-
-return;
-
-}
-
-currentUser=data.user;
-
-await restoreSession();
-
-}
-
-async function logoutUser(){
-
-await supabaseClient.auth.signOut();
-
-currentUser=null;
-currentProfile=null;
-
-$("workerApp").classList.add("hidden");
-$("adminApp").classList.add("hidden");
-$("authScreen").classList.remove("hidden");
-
-}
-
-async function restoreSession(){
-
-const {
-data:{
-session
-}
-}=await supabaseClient.auth.getSession();
-
-if(!session){
-
-$("authScreen").classList.remove("hidden");
-$("workerApp").classList.add("hidden");
-$("adminApp").classList.add("hidden");
-
-return;
-
-}
-
-currentUser=session.user;
-
-const {data,error}=
-await supabaseClient
-.from("profiles")
-.select("*")
-.eq("id",currentUser.id)
-.maybeSingle();
-
-if(error){
+if (error) {
 
 console.error(error);
 
-return;
-
-}
-
-if(!data){
-
-$("authScreen").classList.remove("hidden");
+$("transactions").innerHTML =
+`<p class="muted text-sm">
+Unable to load transactions.
+</p>`;
 
 return;
 
 }
 
-currentProfile=data;
+if (!data || !data.length) {
 
-$("authScreen").classList.add("hidden");
-
-if(data.role==="admin"){
-
-$("workerApp").classList.add("hidden");
-$("adminApp").classList.remove("hidden");
-
-await loadAdminWorkers();
-await loadAdminWithdrawals();
-
-}else{
-
-$("adminApp").classList.add("hidden");
-$("workerApp").classList.remove("hidden");
-
-await loadWorkerData();
-
-}
-
-}
-
-async function loadWorkerData(){
-
-if(!currentUser)return;
-
-const {data:profile,error:profileError}=
-await supabaseClient
-.from("profiles")
-.select("*")
-.eq("id",currentUser.id)
-.single();
-
-if(profileError){
-
-console.error(profileError);
-return;
-
-}
-
-currentProfile=profile;
-
-$("workerWelcome").textContent=
-"Welcome, "+(profile.full_name||"Worker");
-
-$("profileWorkerId").textContent=
-profile.worker_id||"-";
-
-$("profileName").textContent=
-profile.full_name||"-";
-
-$("profileEmail").textContent=
-currentUser.email||"-";
-
-const {data:wallet,error:walletError}=
-await supabaseClient
-.from("wallets")
-.select("balance")
-.eq("user_id",currentUser.id)
-.maybeSingle();
-
-if(walletError){
-
-console.error(walletError);
-
-return;
-
-}
-
-$("workerBalance").textContent=
-formatMoney(wallet?.balance||0);
-
-const emailInput=$("withdrawEmail");
-
-if(emailInput&&!emailInput.value)
-emailInput.value=currentUser.email||"";
-
-}
-
-async function loadTransactions(){
-
-if(!currentUser)return;
-
-const {data,error}=
-await supabaseClient
-.from("transactions")
-.select("*")
-.eq("user_id",currentUser.id)
-.order("created_at",{ascending:false});
-
-if(error){
-
-$("transactionsList").innerHTML=
-`<div class="empty-state">${escapeHtml(error.message)}</div>`;
-
-return;
-
-}
-
-if(!data||data.length===0){
-
-$("transactionsList").innerHTML=
-`<div class="empty-state">
+$("transactions").innerHTML =
+`<p class="muted text-sm">
 No transactions yet.
-</div>`;
+</p>`;
 
 return;
 
 }
 
-$("transactionsList").innerHTML=
-data.map(item=>{
+$("transactions").innerHTML =
+data.map(item => {
 
-const credit=item.type==="credit";
+const credit =
+item.type === "credit";
 
 return `
-<div class="transaction-row">
-
-<div class="transaction-left">
-
-<div class="transaction-icon ${credit?"credit":"debit"}">
-${credit?"↓":"↑"}
-</div>
+<div class="card rounded-xl p-4 flex justify-between">
 
 <div>
 
-<div class="transaction-title">
-${escapeHtml(item.description||(
-credit?"Money Added":"Withdrawal"
-))}
-</div>
+<p class="font-bold text-sm">
+${item.description || item.type}
+</p>
 
-<div class="transaction-date">
-${formatDate(item.created_at)}
-</div>
-
-</div>
+<p class="muted text-[10px] mt-1">
+${new Date(
+item.created_at
+).toLocaleString("en-IN")}
+</p>
 
 </div>
 
-<div class="transaction-right">
+<p class="${
+credit
+? "green"
+: "red"
+} font-bold">
 
-<div class="${credit?"amount-credit":"amount-debit"}">
-${credit?"+":"-"}${formatMoney(item.amount)}
+${credit ? "+" : "-"}
+${money(item.amount)}
+
+</p>
+
+</div>
+`;
+
+}).join("");
+
+}
+ async function loadWorker() {
+
+$("workerBalance").textContent =
+"₹0.00";
+
+
+const { data: wallet,error } =
+await db
+.from("wallets")
+.select("balance")
+.eq(
+"user_id",
+currentUser.id
+)
+.single();
+
+
+if (!error && wallet) {
+
+$("workerBalance").textContent =
+money(wallet.balance);
+
+}
+
+
+await loadWorkerTransactions();
+
+await loadWorkerWithdrawals();
+
+}
+
+
+async function loadWorkerTransactions() {
+
+const { data,error } =
+await db
+.from("transactions")
+.select(`
+id,
+type,
+amount,
+description,
+balance_after,
+created_at
+`)
+.eq(
+"user_id",
+currentUser.id
+)
+.order(
+"created_at",
+{ascending:false}
+)
+.limit(50);
+
+
+if (error) {
+
+console.error(error);
+
+$("transactions").innerHTML =
+`<p class="muted text-sm">
+Unable to load transactions.
+</p>`;
+
+return;
+
+}
+
+
+if (!data || !data.length) {
+
+$("transactions").innerHTML =
+`<p class="muted text-sm">
+No transactions yet.
+</p>`;
+
+return;
+
+}
+
+
+$("transactions").innerHTML =
+data.map(item => {
+
+const credit =
+item.type === "credit";
+
+
+return `
+<div class="card rounded-xl p-4 flex justify-between">
+
+<div>
+
+<p class="font-bold text-sm">
+${item.description || item.type}
+</p>
+
+<p class="muted text-[10px] mt-1">
+${new Date(
+item.created_at
+).toLocaleString("en-IN")}
+</p>
+
 </div>
 
-<div class="transaction-balance">
-Balance ${formatMoney(item.balance_after)}
-</div>
+<p class="${
+credit
+? "green"
+: "red"
+} font-bold">
 
-</div>
+${credit ? "+" : "-"}
+${money(item.amount)}
+
+</p>
 
 </div>
 `;
@@ -2555,63 +2453,90 @@ Balance ${formatMoney(item.balance_after)}
 
 }
 
-function withdrawalMethodLabel(item){
 
-if(item.payment_method==="upi")
+function withdrawalMethodLabel(item) {
+
+if (item.payment_method === "upi")
 return "UPI";
 
-if(item.gift_card_type==="amazon")
+if (item.gift_card_type === "amazon")
 return "Amazon Gift Card";
 
-if(item.gift_card_type==="flipkart")
+if (item.gift_card_type === "flipkart")
 return "Flipkart Gift Card";
 
-if(item.gift_card_type==="google_play")
+if (item.gift_card_type === "google_play")
 return "Google Play Gift Card";
 
 return "Gift Card";
 
 }
 
-function openWithdrawalDetails(index){
 
-const item=workerWithdrawals[index];
+function withdrawalStatusText(status) {
 
-if(!item)
-return;
-
-const status=item.status||"pending";
-
-const statusText=
-status==="approved"
+return status === "approved"
 ? "Successful"
-: status==="rejected"
+: status === "rejected"
 ? "Rejected"
 : "Requested";
 
-const statusClass=
-status==="approved"
+}
+
+
+function withdrawalStatusClass(status) {
+
+return status === "approved"
 ? "success"
-: status==="rejected"
+: status === "rejected"
 ? "reject"
 : "pending";
 
-const method=withdrawalMethodLabel(item);
+}
 
-const referenceLabel=
-item.payment_method==="upi"
+
+function withdrawalReferenceLabel(item) {
+
+return item.payment_method === "upi"
 ? "UTR"
 : "Gift Card Code";
 
-const referenceValue=
-item.payment_reference||"Not available yet";
+}
 
-$("withdrawalDetailsContent").innerHTML=`
+
+function openWithdrawalDetails(index) {
+
+const item =
+(window.workerWithdrawalData || [])[index];
+
+if (!item)
+return;
+
+const status =
+item.status || "pending";
+
+const method =
+withdrawalMethodLabel(item);
+
+const statusText =
+withdrawalStatusText(status);
+
+const statusClass =
+withdrawalStatusClass(status);
+
+const referenceLabel =
+withdrawalReferenceLabel(item);
+
+const referenceValue =
+item.payment_reference ||
+"Not available yet";
+
+$("withdrawalDetails").innerHTML = `
 
 <div class="withdrawal-detail-card">
 
 <div class="withdrawal-detail-amount">
-${formatMoney(item.amount)}
+${money(item.amount)}
 </div>
 
 <div class="withdrawal-detail-label">
@@ -2620,7 +2545,6 @@ Withdrawal Amount
 
 </div>
 
-${item.admin_note ? `
 
 <div class="withdrawal-detail-card">
 
@@ -2629,16 +2553,16 @@ Admin Note
 </div>
 
 <div class="withdrawal-detail-value">
-${escapeHtml(item.admin_note)}
+${item.admin_note || "No admin note"}
 </div>
 
 </div>
 
-` : ""}
 
 <div class="withdrawal-payment-title">
 Payment from AP AGENCY
 </div>
+
 
 <div class="withdrawal-detail-card">
 
@@ -2647,10 +2571,11 @@ Payment from AP AGENCY
 <span>Mode</span>
 
 <strong>
-${escapeHtml(method)}
+${method}
 </strong>
 
 </div>
+
 
 <div class="withdrawal-detail-line">
 
@@ -2662,17 +2587,19 @@ ${statusText}
 
 </div>
 
+
 <div class="withdrawal-detail-line">
 
 <span>${referenceLabel}</span>
 
 <strong>
-${escapeHtml(referenceValue)}
+${referenceValue}
 </strong>
 
 </div>
 
 </div>
+
 
 <div class="withdrawal-processed">
 
@@ -2686,16 +2613,36 @@ AP AGENCY ✓
 
 </div>
 
+
 <div class="withdrawal-detail-times">
 
 <div>
+
 <span>Requested</span>
-<strong>${formatDate(item.created_at)}</strong>
+
+<strong>
+${new Date(
+item.created_at
+).toLocaleString("en-IN")}
+</strong>
+
 </div>
 
+
 <div>
+
 <span>Processed</span>
-<strong>${formatDate(item.processed_at)}</strong>
+
+<strong>
+${
+item.processed_at
+? new Date(
+item.processed_at
+).toLocaleString("en-IN")
+: "-"
+}
+</strong>
+
 </div>
 
 </div>
@@ -2705,16 +2652,21 @@ AP AGENCY ✓
 $("withdrawalDetailsModal")
 .classList.remove("hidden");
 
-    }
-    $("profileAvatar").src =
-"./file_00000000e37481fabb8b78aea4e71cd6.png";
+}
 
-async function loadWorkerWithdrawals(){
 
-if(!currentUser)return;
+function closeWithdrawalDetails() {
 
-const {data,error}=
-await supabaseClient
+$("withdrawalDetailsModal")
+.classList.add("hidden");
+
+}
+
+
+async function loadWorkerWithdrawals() {
+
+const { data,error } =
+await db
 .from("withdrawals")
 .select(`
 id,
@@ -2729,51 +2681,56 @@ admin_note,
 created_at,
 processed_at
 `)
-.eq("user_id",currentUser.id)
-.order("created_at",{ascending:false});
+.eq(
+"user_id",
+currentUser.id
+)
+.order(
+"created_at",
+{ascending:false}
+)
+.limit(30);
 
-if(error){
 
-$("withdrawalHistoryList").innerHTML=
-`<div class="empty-state">
-${escapeHtml(error.message)}
-</div>`;
+if (error) {
+
+console.error(error);
+
+$("workerWithdrawals").innerHTML =
+`<p class="muted text-sm">
+Unable to load withdrawal requests.
+</p>`;
 
 return;
 
 }
 
-workerWithdrawals=data||[];
 
-if(workerWithdrawals.length===0){
+if (!data || !data.length) {
 
-$("withdrawalHistoryList").innerHTML=
-`<div class="empty-state">
+$("workerWithdrawals").innerHTML =
+`<p class="muted text-sm">
 No withdrawal requests yet.
-</div>`;
+</p>`;
 
 return;
 
 }
 
-$("withdrawalHistoryList").innerHTML=
-workerWithdrawals.map((item,index)=>{
 
-const status=item.status||"pending";
+window.workerWithdrawalData = data;
 
-const statusText=
-status==="approved"
-? "Successful"
-: status==="rejected"
-? "Rejected"
-: "Requested";
+$("workerWithdrawals").innerHTML =
+data.map((item,index) => {
 
-const statusClass=
-status==="approved"
-? "success"
-: status==="rejected"
-? "reject"
-: "pending";
+const status =
+item.status || "pending";
+
+const statusClass =
+withdrawalStatusClass(status);
+
+const statusText =
+withdrawalStatusText(status);
 
 return `
 
@@ -2787,28 +2744,34 @@ return `
 
 <div>
 
-<div class="withdrawal-history-title">
+<p class="withdrawal-history-title">
 Withdrawal
+</p>
+
+<p class="withdrawal-history-sub">
+${new Date(
+item.created_at
+).toLocaleString("en-IN")}
+</p>
+
 </div>
 
-<div class="withdrawal-history-sub">
-${formatDate(item.created_at)}
 </div>
 
-</div>
-
-</div>
 
 <div class="withdrawal-history-right">
 
 <div class="withdrawal-history-amount">
--${formatMoney(item.amount)}
+-${money(item.amount)}
 </div>
 
 <button
+type="button"
 class="withdrawal-view-btn"
 onclick="openWithdrawalDetails(${index})">
+
 View Details
+
 </button>
 
 <div class="withdrawal-history-status ${statusClass}">
@@ -2825,41 +2788,61 @@ ${statusText}
 
 }
 
-async function createWithdrawal(){
 
-if(!currentUser){
+function changePaymentMethod() {
 
-msg(
-"withdrawMsg",
-"Please login first.",
-"error"
+const upi =
+$("paymentMethod").value === "upi";
+
+
+$("upiFields").classList.toggle(
+"hidden",
+!upi
 );
 
-return;
+
+$("giftFields").classList.toggle(
+"hidden",
+upi
+);
+
 
 }
 
-const amount=Number(
+
+async function createWithdrawal(event) {
+
+event.preventDefault();
+
+
+const amount =
+Number(
 $("withdrawAmount").value
 );
 
-const method=
-$("withdrawMethod").value;
 
-const giftCard=
-$("withdrawGiftCard").value;
+const method =
+$("paymentMethod").value;
 
-const upi=
-$("withdrawUpi").value.trim();
 
-const email=
-$("withdrawEmail").value.trim();
+const email =
+method === "upi"
+? $("withdrawEmail").value.trim()
+: $("giftEmail").value.trim();
 
-if(!amount||amount<10){
 
-msg(
-"withdrawMsg",
-"Minimum withdrawal amount is ₹10.",
+const upi =
+$("upiId").value.trim();
+
+
+const gift =
+$("giftCardType").value;
+
+
+if (amount < 10) {
+
+toast(
+"Minimum withdrawal is ₹10.",
 "error"
 );
 
@@ -2867,40 +2850,10 @@ return;
 
 }
 
-if(method==="upi"){
 
-if(!upi||!upi.includes("@")){
+if (!email) {
 
-msg(
-"withdrawMsg",
-"Enter a valid UPI ID.",
-"error"
-);
-
-return;
-
-}
-
-}else{
-
-if(!giftCard){
-
-msg(
-"withdrawMsg",
-"Select a gift card type.",
-"error"
-);
-
-return;
-
-}
-
-}
-
-if(!email){
-
-msg(
-"withdrawMsg",
+toast(
 "Email ID is required.",
 "error"
 );
@@ -2909,35 +2862,14 @@ return;
 
 }
 
-msg(
-"withdrawMsg",
-"Submitting withdrawal...",
-""
-);
 
-const {error}=
-await supabaseClient.rpc(
-"create_withdrawal",
-{
-p_amount:amount,
-p_payment_method:method,
-p_gift_card_type:
-method==="gift_card"
-? giftCard
-: null,
-p_upi_id:
-method==="upi"
-? upi
-: null,
-p_email:email
-}
-);
+if (
+method === "upi" &&
+!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+) {
 
-if(error){
-
-msg(
-"withdrawMsg",
-error.message,
+toast(
+"Enter a valid email ID.",
 "error"
 );
 
@@ -2945,97 +2877,262 @@ return;
 
 }
 
-msg(
-"withdrawMsg",
-"Withdrawal request submitted successfully.",
+
+if (
+method === "upi" &&
+!/^[^\s@]+@[^\s@]+$/.test(upi)
+) {
+
+toast(
+"Enter a valid UPI ID.",
+"error"
+);
+
+return;
+
+}
+
+
+try {
+
+const { error } =
+await db.rpc(
+"create_withdrawal",
+{
+p_amount:
+amount,
+
+p_payment_method:
+method,
+
+p_gift_card_type:
+method === "gift_card"
+? gift
+: null,
+
+p_upi_id:
+method === "upi"
+? upi
+: null,
+
+p_email:
+email
+}
+);
+
+
+if (error)
+throw error;
+
+
+$("withdrawAmount").value = "";
+$("upiId").value = "";
+$("withdrawEmail").value = "";
+$("giftEmail").value = "";
+
+
+toast(
+"Withdrawal request submitted.",
 "success"
 );
 
-$("withdrawAmount").value="";
-$("withdrawUpi").value="";
 
-await loadWorkerData();
+closeWithdrawal();
 
-setTimeout(()=>{
-closeWithdrawModal();
-},900);
+await loadWorker();
 
-}
 
-async function loadAdminWorkers(){
+} catch (error) {
 
-if(!currentUser)return;
+console.error(error);
 
-const {data,error}=
-await supabaseClient
-.from("profiles")
-.select("*")
-.eq("role","worker")
-.order("full_name");
-
-if(error){
-
-$("adminWorkersList").innerHTML=
-`<div class="empty-state">
-${escapeHtml(error.message)}
-</div>`;
-
-return;
-
-}
-
-window.adminWorkers=data||[];
-
-$("adminWorkerCount").textContent=
-window.adminWorkers.length;
-
-renderAdminWorkers(
-window.adminWorkers
+toast(
+error.message,
+"error"
 );
 
 }
 
-function renderAdminWorkers(workers){
 
-if(!workers||workers.length===0){
+}
 
-$("adminWorkersList").innerHTML=
-`<div class="empty-state">
-No workers found.
-</div>`;
+
+async function loadAdmin() {
+
+await loadAdminWorkers();
+
+await loadAdminWithdrawals();
+
+}
+
+
+async function loadAdminWorkers() {
+
+const { data,error } =
+await db
+.from("profiles")
+.select(`
+id,
+full_name,
+email,
+worker_id,
+is_active
+`)
+.eq("role","worker")
+.order("full_name");
+
+
+if (error) {
+
+console.error(error);
+
+toast(
+"Unable to load workers.",
+"error"
+);
 
 return;
 
 }
 
-$("adminWorkersList").innerHTML=
-workers.map(worker=>`
 
-<div class="admin-worker-row">
+const ids =
+(data || []).map(
+worker => worker.id
+);
 
-<div class="admin-worker-info">
 
-<div class="admin-worker-name">
-${escapeHtml(worker.full_name||"Worker")}
+let walletData = [];
+
+
+if (ids.length) {
+
+const result =
+await db
+.from("wallets")
+.select(
+"user_id,balance"
+)
+.in(
+"user_id",
+ids
+);
+
+
+walletData =
+result.data || [];
+}
+
+
+const balances =
+Object.fromEntries(
+walletData.map(wallet => [
+wallet.user_id,
+wallet.balance
+])
+);
+
+
+workers =
+(data || []).map(worker => ({
+...worker,
+balance:
+balances[worker.id] || 0
+}));
+
+
+$("totalWorkers").textContent =
+workers.length;
+
+
+renderWorkers();
+
+}
+
+
+function renderWorkers() {
+
+const query =
+(
+$("workerSearch").value ||
+""
+).toLowerCase().trim();
+
+
+const list =
+workers.filter(worker =>
+
+(worker.worker_id || "")
+.toLowerCase()
+.includes(query)
+
+||
+
+(worker.full_name || "")
+.toLowerCase()
+.includes(query)
+
+||
+
+(worker.email || "")
+.toLowerCase()
+.includes(query)
+
+);
+
+
+if (!list.length) {
+
+$("adminWorkerList").innerHTML =
+`<p class="muted text-center p-5">
+No workers found.
+</p>`;
+
+return;
+
+}
+
+
+$("adminWorkerList").innerHTML =
+list.map(worker => `
+
+<div class="card rounded-2xl p-4">
+
+<div class="flex justify-between gap-3">
+
+<div>
+
+<p class="font-bold">
+${worker.full_name || "Worker"}
+</p>
+
+<p class="blue text-xs font-mono mt-1">
+${worker.worker_id || ""}
+</p>
+
+<p class="muted text-xs mt-1 break-all">
+${worker.email || ""}
+</p>
+
 </div>
 
-<div class="admin-worker-meta">
-ID: ${escapeHtml(worker.worker_id||"-")}
-</div>
 
-<div class="admin-worker-meta">
-${escapeHtml(worker.email||"")}
-</div>
+<div class="text-right">
 
-</div>
+<p class="green font-bold">
+${money(worker.balance)}
+</p>
 
-<div class="admin-worker-actions">
 
 <button
-class="secondary-btn"
-onclick="openAdminAddMoney('${worker.id}')">
-Add Money
+onclick="addMoneyPrompt('${worker.id}')"
+class="mt-2 px-3 py-2 rounded-lg bg-blue-600 text-xs font-bold">
+
++ Add Money
+
 </button>
+
+</div>
 
 </div>
 
@@ -3045,382 +3142,676 @@ Add Money
 
 }
 
-function filterAdminWorkers(){
 
-const query=
-$("adminWorkerSearch").value
-.trim()
-.toLowerCase();
+async function addMoneyPrompt(workerId) {
 
-if(!window.adminWorkers)return;
-
-const filtered=
-window.adminWorkers.filter(worker=>{
-
-return (
-
-(worker.full_name||"")
-.toLowerCase()
-.includes(query)
-
-||
-
-(worker.worker_id||"")
-.toLowerCase()
-.includes(query)
-
-||
-
-(worker.email||"")
-.toLowerCase()
-.includes(query)
-
+selectedWorker =
+workers.find(
+worker =>
+worker.id === workerId
 );
 
-});
 
-renderAdminWorkers(filtered);
+if (!selectedWorker)
+return;
 
-}
 
-function openAdminAddMoney(userId){
+const amountText =
+prompt(
+`Add money to ${selectedWorker.full_name}
+Worker ID: ${selectedWorker.worker_id}
 
-const worker=
-(window.adminWorkers||[])
-.find(w=>w.id===userId);
-
-if(!worker)return;
-
-const amount=prompt(
-"Enter amount to add for "+
-(worker.full_name||"worker")+
-":"
+Minimum amount: ₹1`
 );
 
-if(amount===null)return;
 
-const value=Number(amount);
+if (amountText === null)
+return;
 
-if(!value||value<1){
 
-alert("Minimum add money amount is ₹1.");
+const amount =
+Number(amountText);
+
+
+if (!amount || amount < 1) {
+
+toast(
+"Minimum add-money amount is ₹1.",
+"error"
+);
 
 return;
 
 }
 
-adminAddMoney(
-userId,
-value
-);
 
-}
+const description =
+prompt(
+"Transaction description:",
+"Admin credit"
+) || "Admin credit";
 
-async function adminAddMoney(
-userId,
-amount
-){
 
-const {error}=
-await supabaseClient.rpc(
+try {
+
+const { error } =
+await db.rpc(
 "admin_add_money",
 {
-p_user_id:userId,
-p_amount:amount,
-p_description:"Admin credit"
+p_user_id:
+selectedWorker.id,
+
+p_amount:
+amount,
+
+p_description:
+description
 }
 );
 
-if(error){
 
-alert(error.message);
+if (error)
+throw error;
 
-return;
 
-}
-
-alert(
-"₹"+amount+
-" added successfully."
+toast(
+`${money(amount)} added successfully.`,
+"success"
 );
 
-await loadAdminWorkers();
 
-}
+selectedWorker = null;
 
-async function loadAdminWithdrawals(){
+await loadAdmin();
 
-if(!currentUser)return;
 
-const {data,error}=
-await supabaseClient
-.from("withdrawals")
-.select(`
-*,
-profiles!withdrawals_user_id_fkey(
-full_name,
-worker_id
-)
-`)
-.eq("status","pending")
-.order("created_at",{ascending:false});
-
-if(error){
+} catch (error) {
 
 console.error(error);
 
-$("adminWithdrawalsList").innerHTML=
-`<div class="empty-state">
-${escapeHtml(error.message)}
-</div>`;
+toast(
+error.message,
+"error"
+);
+
+    }
+    toast(
+"Minimum add-money amount is ₹1.",
+"error"
+);
 
 return;
 
 }
 
-window.adminWithdrawals=data||[];
 
-$("adminPendingCount").textContent=
-window.adminWithdrawals.length;
+const description =
+prompt(
+"Transaction description:",
+"Admin credit"
+) || "Admin credit";
 
-if(window.adminWithdrawals.length===0){
 
-$("adminWithdrawalsList").innerHTML=
-`<div class="empty-state">
-No pending withdrawal requests.
-</div>`;
+try {
+
+const { error } =
+await db.rpc(
+"admin_add_money",
+{
+p_user_id:
+selectedWorker.id,
+
+p_amount:
+amount,
+
+p_description:
+description
+}
+);
+
+
+if (error)
+throw error;
+
+
+toast(
+`${money(amount)} added successfully.`,
+"success"
+);
+
+
+selectedWorker = null;
+
+await loadAdmin();
+
+
+} catch (error) {
+
+console.error(error);
+
+toast(
+error.message,
+"error"
+);
+
+}
+
+}
+
+
+async function loadAdminWithdrawals() {
+
+const { data,error } =
+await db
+.from("withdrawals")
+.select(`
+id,
+user_id,
+amount,
+status,
+payment_method,
+gift_card_type,
+upi_id,
+email,
+payment_reference,
+admin_note,
+created_at,
+processed_at,
+profiles(
+full_name,
+worker_id,
+email
+)
+`)
+.eq(
+"status",
+"pending"
+)
+.order(
+"created_at",
+{ascending:false}
+);
+
+
+if (error) {
+
+console.error(error);
+
+toast(
+"Unable to load withdrawals.",
+"error"
+);
 
 return;
 
 }
 
-$("adminWithdrawalsList").innerHTML=
-window.adminWithdrawals.map(
-(item,index)=>{
 
-const worker=item.profiles||{};
+withdrawals =
+data || [];
 
-const method=
-withdrawalMethodLabel(item);
 
-return `
+$("pendingCount").textContent =
+withdrawals.length;
 
-<div class="admin-withdrawal-card">
 
-<div class="admin-withdrawal-top">
+if (!withdrawals.length) {
 
-<div>
+$("adminWithdrawalList").innerHTML =
+`<p class="muted text-center p-5">
+No pending withdrawals.
+</p>`;
 
-<div class="admin-withdrawal-name">
-${escapeHtml(
-worker.full_name||"Worker"
-)}
-</div>
+return;
 
-<div class="admin-worker-meta">
-ID: ${escapeHtml(
-worker.worker_id||"-"
-)}
-</div>
+}
 
-</div>
 
-<div class="admin-withdrawal-amount">
-${formatMoney(item.amount)}
-</div>
+$("adminWithdrawalList").innerHTML =
+withdrawals.map(item => `
 
-</div>
+<div class="card rounded-2xl p-4">
 
-<div class="admin-withdrawal-details">
+<div class="flex justify-between">
 
 <div>
-<span>Payment Mode</span>
-<strong>
-${escapeHtml(method)}
-</strong>
-</div>
 
-<div>
-<span>Email</span>
-<strong>
-${escapeHtml(item.email||"-")}
-</strong>
-</div>
+<p class="font-bold">
+${item.profiles?.full_name || "Worker"}
+</p>
 
-${item.payment_method==="upi" ? `
-
-<div>
-<span>UPI ID</span>
-<strong>
-${escapeHtml(item.upi_id||"-")}
-</strong>
-</div>
-
-` : ""}
-
-<div>
-<span>Requested</span>
-<strong>
-${formatDate(item.created_at)}
-</strong>
-</div>
+<p class="blue text-xs font-mono">
+${item.profiles?.worker_id || ""}
+</p>
 
 </div>
 
-<div class="admin-withdrawal-actions">
+<p class="text-yellow-400 font-bold">
+${money(item.amount)}
+</p>
+
+</div>
+
+
+<div class="muted text-xs mt-4 space-y-1">
+
+<p>
+
+Method:
+
+<b class="text-white">
+
+${
+item.payment_method === "upi"
+? "UPI"
+: "Gift Card"
+}
+
+</b>
+
+</p>
+
+
+${
+item.payment_method === "upi"
+? `
+<p>
+
+UPI ID:
+
+<b class="text-white">
+${item.upi_id || "-"}
+</b>
+
+</p>
+`
+: `
+<p>
+
+Gift Card:
+
+<b class="text-white">
+${item.gift_card_type || "-"}
+</b>
+
+</p>
+`
+}
+
+
+<p>
+
+Email:
+
+<b class="text-white">
+
+${
+item.email ||
+item.profiles?.email ||
+"-"
+}
+
+</b>
+
+</p>
+
+
+<p>
+
+Requested:
+
+${new Date(
+item.created_at
+).toLocaleString("en-IN")}
+
+</p>
+
+</div>
+
+
+<div class="grid grid-cols-2 gap-2 mt-4">
+
 
 <button
-class="reject-btn"
-onclick="rejectAdminWithdrawal(${item.id})">
+onclick="approvePrompt('${item.id}')"
+class="primary">
+
+Approve / Mark Paid
+
+</button>
+
+
+<button
+onclick="rejectPrompt('${item.id}')"
+class="secondary text-red-400">
+
 Reject
+
 </button>
 
-<button
-class="approve-btn"
-onclick="approveAdminWithdrawal(${item.id})">
-Approve & Pay
-</button>
 
 </div>
 
 </div>
+
+`).join("");
+
+}
+
+
+function adminTab(type) {
+
+const withdrawalsTab =
+type === "withdrawals";
+
+
+$("adminWithdrawalsView")
+.classList.toggle(
+"hidden",
+!withdrawalsTab
+);
+
+
+$("adminWorkersView")
+.classList.toggle(
+"hidden",
+withdrawalsTab
+);
+
+
+$("adminWithdrawalTab").className =
+withdrawalsTab
+? "pb-3 text-blue-400 font-bold border-b-2 border-blue-500"
+: "pb-3 muted font-bold";
+
+
+$("adminWorkerTab").className =
+!withdrawalsTab
+? "pb-3 text-blue-400 font-bold border-b-2 border-blue-500"
+: "pb-3 muted font-bold";
+
+}
+
+
+function approvePrompt(withdrawalId) {
+
+selectedWithdrawal =
+withdrawals.find(
+item =>
+String(item.id) ===
+String(withdrawalId)
+);
+
+
+if (!selectedWithdrawal)
+return;
+
+
+const item =
+selectedWithdrawal;
+
+
+let details =
+`Worker: ${item.profiles?.full_name || "Worker"}
+
+Worker ID: ${item.profiles?.worker_id || ""}
+
+Amount: ${money(item.amount)}
+
+Method: ${
+item.payment_method === "upi"
+? "UPI"
+: "Gift Card"
+}
+
+`;
+
+
+if (item.payment_method === "upi") {
+
+details +=
+`UPI ID: ${item.upi_id || "-"}
+
+`;
+
+} else {
+
+details +=
+`Gift Card: ${item.gift_card_type || "-"}
 
 `;
 
 }
-).join("");
 
-}
 
-async function approveAdminWithdrawal(
-withdrawalId
-){
+details +=
+`Email: ${
+item.email ||
+item.profiles?.email ||
+"-"
+}`;
 
-const reference=prompt(
-"Enter UTR / Gift Card Code:"
+
+const reference =
+prompt(
+details +
+`
+
+Enter UTR / Gift Card Code:`
 );
 
-if(reference===null)return;
 
-if(!reference.trim()){
+if (reference === null)
+return;
 
-alert(
-"Payment reference is required."
+
+if (!reference.trim()) {
+
+toast(
+"UTR / Gift Card Code is required.",
+"error"
 );
 
 return;
 
 }
 
-const note=prompt(
-"Admin note (optional):"
+
+const note =
+prompt(
+"Admin note (optional):",
+""
 );
 
-const {error}=
-await supabaseClient.rpc(
+
+approveWithdrawal(
+reference.trim(),
+note ? note.trim() : null
+);
+
+}
+
+
+async function approveWithdrawal(
+reference,
+note
+) {
+
+if (!selectedWithdrawal)
+return;
+
+
+try {
+
+const { error } =
+await db.rpc(
 "admin_approve_withdrawal",
 {
-p_withdrawal_id:withdrawalId,
-p_payment_reference:reference.trim(),
+p_withdrawal_id:
+Number(
+selectedWithdrawal.id
+),
+
+p_payment_reference:
+reference,
+
 p_admin_note:
-note&&note.trim()
-? note.trim()
-: null
+note
 }
 );
 
-if(error){
 
-alert(error.message);
+if (error)
+throw error;
+
+
+toast(
+"Withdrawal approved successfully.",
+"success"
+);
+
+
+selectedWithdrawal = null;
+
+
+await loadAdmin();
+
+
+} catch (error) {
+
+console.error(error);
+
+toast(
+error.message,
+"error"
+);
+
+}
+
+}
+
+
+function rejectPrompt(withdrawalId) {
+
+selectedWithdrawal =
+withdrawals.find(
+item =>
+String(item.id) ===
+String(withdrawalId)
+);
+
+
+if (!selectedWithdrawal)
+return;
+
+
+const item =
+selectedWithdrawal;
+
+
+const reason =
+prompt(
+`Reject withdrawal for ${
+item.profiles?.full_name || "Worker"
+}\n\nAmount: ${money(item.amount)}\n\nEnter rejection reason:`,
+""
+);
+
+
+if (reason === null)
+return;
+
+
+if (!reason.trim()) {
+
+toast(
+"Rejection reason is required.",
+"error"
+);
 
 return;
 
 }
 
-alert(
-"Withdrawal approved successfully."
-);
 
-await loadAdminWithdrawals();
+rejectWithdrawal(
+reason.trim()
+);
 
 }
 
-async function rejectAdminWithdrawal(
-withdrawalId
-){
 
-const note=prompt(
-"Reason / Admin note for rejection (optional):"
-);
+async function rejectWithdrawal(reason) {
 
-if(note===null)return;
+if (!selectedWithdrawal)
+return;
 
-const {error}=
-await supabaseClient.rpc(
+
+try {
+
+const { error } =
+await db.rpc(
 "admin_reject_withdrawal",
 {
-p_withdrawal_id:withdrawalId,
+p_withdrawal_id:
+Number(
+selectedWithdrawal.id
+),
+
 p_admin_note:
-note.trim()
-? note.trim()
-: null
+reason
 }
 );
 
-if(error){
 
-alert(error.message);
+if (error)
+throw error;
 
-return;
 
-}
-
-alert(
-"Withdrawal rejected and amount refunded."
+toast(
+"Withdrawal rejected and amount refunded.",
+"success"
 );
 
-await loadAdminWithdrawals();
+
+selectedWithdrawal = null;
+
+
+await loadAdmin();
+
+
+} catch (error) {
+
+console.error(error);
+
+toast(
+error.message,
+"error"
+);
 
 }
 
-supabaseClient.auth.onAuthStateChange(
-async(event,session)=>{
+}
 
-if(event==="SIGNED_OUT"){
 
-currentUser=null;
-currentProfile=null;
+db.auth.onAuthStateChange(
+(event,session) => {
 
-$("authScreen")
-.classList.remove("hidden");
+if (event === "SIGNED_OUT") {
 
-$("workerApp")
-.classList.add("hidden");
+currentUser = null;
+currentProfile = null;
 
-$("adminApp")
-.classList.add("hidden");
-
-return;
+showPage("authPage");
 
 }
 
-if(
-session &&
-(
-event==="SIGNED_IN" ||
-event==="INITIAL_SESSION"
-)
-){
-
-currentUser=session.user;
-
-await restoreSession();
-
 }
+);
 
-});
 
 applyTheme();
+
 
 restoreSession();
 
@@ -3428,3 +3819,4 @@ restoreSession();
 
 </body>
 </html>
+    
