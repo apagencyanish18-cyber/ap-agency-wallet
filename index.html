@@ -1029,6 +1029,7 @@ onclick="closeTransactionHistory()"
 class="icon-btn">
 
 ✕
+    ✕
 
 </button>
 
@@ -1293,6 +1294,11 @@ class="space-y-3">
 <div class="admin-worker-info-box">
 <p class="muted text-[10px] uppercase font-bold">Date of Birth</p>
 <p id="adminDetailWorkerDob" class="font-bold mt-1">Not set</p>
+</div>
+
+<div class="admin-worker-info-box">
+<p class="muted text-[10px] uppercase font-bold">Email</p>
+<p id="adminDetailWorkerEmail" class="font-bold mt-1 break-all">Not available</p>
 </div>
 
 </div>
@@ -1897,8 +1903,7 @@ const SUPABASE_URL =
 
 const SUPABASE_KEY =
 "sb_publishable_iED-0Op0GP8e1msvL7ksdw_53rXjJ_H";
-
-const db =
+    const db =
 supabase.createClient(
 SUPABASE_URL,
 SUPABASE_KEY
@@ -2040,7 +2045,6 @@ error.message,
 }
 
 async function registerUser(event) {
-
 event.preventDefault();
 
 try {
@@ -2408,7 +2412,8 @@ ${money(item.amount)}
 }).join("");
 
 }
- function withdrawalMethodLabel(item) {
+
+function withdrawalMethodLabel(item) {
 
 if (item.payment_method === "upi")
 return "UPI";
@@ -2742,23 +2747,18 @@ function changePaymentMethod() {
 const upi =
 $("paymentMethod").value === "upi";
 
-
 $("upiFields").classList.toggle(
 "hidden",
 !upi
 );
-
 
 $("giftFields").classList.toggle(
 "hidden",
 upi
 );
 
-
-}
-
-
-async function createWithdrawal(event) {
+    }
+    async function createWithdrawal(event) {
 
 event.preventDefault();
 
@@ -2893,7 +2893,6 @@ await loadWorker();
 } catch (error) {
 
 console.error(error);
-
 toast(
 error.message,
 "error"
@@ -3125,6 +3124,7 @@ $('adminWorkerHistoryPanel').classList.add('hidden');
 $('adminDetailWorkerName').textContent = worker.full_name || "Worker";
 $('adminDetailWorkerId').textContent = worker.worker_id || "AP000000";
 $('adminDetailWorkerDob').textContent = worker.date_of_birth || "Not set";
+$('adminDetailWorkerEmail').textContent = worker.email || "Not available";
 $('adminDetailWorkerBalance').textContent = money(worker.balance);
 }
 
@@ -3711,3 +3711,4 @@ restoreSession();
 
 </body>
 </html>
+    
