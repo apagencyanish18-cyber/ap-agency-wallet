@@ -228,53 +228,50 @@ max-height:70vh;
 overflow:auto
 }
 
-/* WITHDRAWAL HISTORY REDESIGN */
-
 .withdrawal-history-row{
+background:#182338;
+border:1px solid #26344b;
+border-radius:18px;
+padding:14px;
 display:flex;
 align-items:center;
 justify-content:space-between;
 gap:12px;
-padding:14px;
-border:1px solid #26344b;
-background:#101a2d;
-border-radius:18px;
+transition:.2s
 }
 
-.light .withdrawal-history-row{
-background:#fff;
-border-color:#e2e8f0;
+.withdrawal-history-row:active{
+transform:scale(.99)
 }
 
 .withdrawal-history-main{
 display:flex;
 align-items:center;
-gap:11px;
-min-width:0;
+gap:12px;
+min-width:0
 }
 
 .withdrawal-history-icon{
-width:40px;
-height:40px;
-border-radius:13px;
+width:42px;height:42px;
+border-radius:14px;
+background:rgba(37,99,235,.12);
+color:#60a5fa;
 display:flex;
 align-items:center;
 justify-content:center;
-background:rgba(37,99,235,.12);
-color:#60a5fa;
 font-weight:900;
-flex-shrink:0;
+flex-shrink:0
 }
 
 .withdrawal-history-title{
-font-size:14px;
 font-weight:800;
+font-size:14px
 }
 
 .withdrawal-history-sub{
-font-size:11px;
+font-size:10px;
 color:#94a3b8;
-margin-top:4px;
+margin-top:3px
 }
 
 .withdrawal-history-right{
@@ -282,12 +279,12 @@ display:flex;
 flex-direction:column;
 align-items:flex-end;
 gap:5px;
-flex-shrink:0;
+flex-shrink:0
 }
 
 .withdrawal-history-amount{
-font-size:14px;
 font-weight:900;
+font-size:15px
 }
 
 .withdrawal-view-btn{
@@ -296,174 +293,167 @@ background:none;
 padding:0;
 color:#60a5fa;
 font-size:11px;
-font-weight:800;
+font-weight:800
 }
 
 .withdrawal-history-status{
 font-size:10px;
-font-weight:800;
-padding:4px 8px;
-border-radius:999px;
-}
-
-.withdrawal-history-status.success{
-background:rgba(16,185,129,.12);
-color:#34d399;
-}
-
-.withdrawal-history-status.pending{
-background:rgba(245,158,11,.12);
-color:#fbbf24;
-}
-
-.withdrawal-history-status.reject{
-background:rgba(239,68,68,.12);
-color:#f87171;
+font-weight:800
 }
 
 .withdrawal-detail-card{
-border:1px solid #26344b;
 background:#101a2d;
+border:1px solid #26344b;
 border-radius:18px;
 padding:16px;
-margin-bottom:12px;
-}
-
-.light .withdrawal-detail-card{
-background:#fff;
-border-color:#e2e8f0;
+margin-bottom:12px
 }
 
 .withdrawal-detail-amount{
 font-size:30px;
 font-weight:900;
-letter-spacing:-.03em;
+line-height:1.1
 }
 
 .withdrawal-detail-label{
 font-size:11px;
-font-weight:700;
 color:#94a3b8;
-text-transform:uppercase;
-letter-spacing:.04em;
+margin-top:5px
 }
 
 .withdrawal-detail-value{
 font-size:14px;
 font-weight:700;
-margin-top:7px;
-line-height:1.5;
+margin-top:8px;
+word-break:break-word
 }
 
 .withdrawal-payment-title{
 font-size:15px;
 font-weight:900;
-margin:18px 2px 10px;
+margin:18px 2px 10px
 }
 
 .withdrawal-detail-line{
 display:flex;
-align-items:center;
 justify-content:space-between;
-gap:12px;
+gap:16px;
 padding:11px 0;
-border-bottom:1px solid rgba(148,163,184,.12);
+border-bottom:1px solid #26344b;
+font-size:13px
 }
 
 .withdrawal-detail-line:last-child{
-border-bottom:0;
+border-bottom:0
 }
 
 .withdrawal-detail-line span{
-font-size:12px;
-color:#94a3b8;
+color:#94a3b8
 }
 
 .withdrawal-detail-line strong{
-font-size:13px;
 text-align:right;
-word-break:break-word;
+word-break:break-word
 }
 
 .withdrawal-detail-status{
-display:inline-flex;
+display:inline-block;
 padding:5px 9px;
-border-radius:999px;
-font-size:11px;
-font-weight:800;
+border-radius:20px;
+font-size:11px
 }
 
 .withdrawal-detail-status.success{
-background:rgba(16,185,129,.12);
-color:#34d399;
-border:1px solid rgba(52,211,153,.18);
+background:#064e3b;
+color:#34d399
 }
 
 .withdrawal-detail-status.pending{
-background:rgba(245,158,11,.12);
-color:#fbbf24;
-border:1px solid rgba(251,191,36,.18);
+background:#78350f;
+color:#fbbf24
 }
 
 .withdrawal-detail-status.reject{
-background:rgba(239,68,68,.12);
-color:#f87171;
-border:1px solid rgba(248,113,113,.18);
+background:#7f1d1d;
+color:#fca5a5
 }
 
 .withdrawal-processed{
-border-top:1px solid rgba(148,163,184,.12);
-padding-top:14px;
-margin-top:14px;
+margin-top:18px;
+padding:15px;
+border-radius:18px;
+background:rgba(37,99,235,.08);
+border:1px solid rgba(96,165,250,.15)
 }
 
 .withdrawal-processed-name{
-font-size:14px;
 font-weight:900;
-margin-top:6px;
+margin-top:5px
 }
 
 .withdrawal-detail-times{
 display:grid;
 grid-template-columns:1fr 1fr;
 gap:10px;
-margin-top:12px;
+margin-top:10px
 }
 
 .withdrawal-detail-times>div{
-border:1px solid #26344b;
+background:rgba(148,163,184,.07);
+border:1px solid rgba(148,163,184,.12);
 border-radius:14px;
-padding:11px;
-}
-
-.light .withdrawal-detail-times>div{
-border-color:#e2e8f0;
+padding:11px
 }
 
 .withdrawal-detail-times span{
 display:block;
 font-size:10px;
-color:#94a3b8;
-margin-bottom:5px;
+color:#94a3b8
 }
 
 .withdrawal-detail-times strong{
-font-size:11px;
 display:block;
-line-height:1.4;
+font-size:11px;
+margin-top:4px
 }
 
-@media(max-width:640px){
+.light .withdrawal-history-row,
+.light .withdrawal-detail-card{
+background:#fff!important;
+border-color:#e2e8f0!important;
+color:#172033!important
+}
+
+.light .withdrawal-history-sub,
+.light .withdrawal-detail-label,
+.light .withdrawal-detail-line span,
+.light .withdrawal-detail-times span{
+color:#64748b!important
+}
+
+.light .withdrawal-detail-line{
+border-color:#e2e8f0!important
+}
+
+.light .withdrawal-processed{
+background:rgba(37,99,235,.06);
+border-color:#dbeafe
+}
+
+.light .withdrawal-detail-times>div{
+background:#f8fafc;
+border-color:#e2e8f0
+}
+
+@media(max-width:480px){
 .withdrawal-history-row{
-padding:12px;
+padding:12px
 }
-
-.withdrawal-history-amount{
-font-size:13px;
+.withdrawal-history-icon{
+width:38px;height:38px
 }
-
 .withdrawal-detail-times{
-grid-template-columns:1fr;
+grid-template-columns:1fr
 }
 }
 
@@ -474,6 +464,7 @@ grid-template-columns:1fr;
 
 <div id="toast"
 style="position:fixed;top:15px;right:15px;z-index:200"></div>
+
 
 <!-- AUTH -->
 
@@ -495,6 +486,7 @@ Do tasks, Earn rewards!
 </p>
 
 </div>
+
 
 <div class="card rounded-2xl p-1 flex mb-5">
 
@@ -518,6 +510,7 @@ Register
 
 </div>
 
+
 <form
 id="loginForm"
 onsubmit="login(event)"
@@ -535,6 +528,7 @@ placeholder="Enter your email">
 </div>
 </div>
 
+
 <div>
 <label class="field-label">Password</label>
 
@@ -547,11 +541,13 @@ placeholder="Enter your password">
 </div>
 </div>
 
+
 <button class="primary">
 Login
 </button>
 
 </form>
+
 
 <form
 id="registerForm"
@@ -569,6 +565,7 @@ placeholder="Enter your full name">
 </div>
 </div>
 
+
 <div>
 <label class="field-label">Email Address</label>
 
@@ -581,6 +578,7 @@ placeholder="Enter your email">
 </div>
 </div>
 
+
 <div>
 <label class="field-label">Date of Birth</label>
 
@@ -591,6 +589,7 @@ type="date"
 required>
 </div>
 </div>
+
 
 <div>
 <label class="field-label">Password</label>
@@ -605,6 +604,7 @@ placeholder="Create a password">
 </div>
 </div>
 
+
 <button class="primary">
 Create Account
 </button>
@@ -614,6 +614,7 @@ Create Account
 </div>
 
 </section>
+
 
 <!-- WORKER APP -->
 
@@ -642,6 +643,7 @@ Do tasks, Earn rewards!
 
 </div>
 
+
 <button
 onclick="toggleTheme()"
 class="icon-btn"
@@ -653,7 +655,9 @@ title="Theme">
 
 </header>
 
+
 <div class="p-5 space-y-5">
+
 
 <!-- BALANCE -->
 
@@ -676,6 +680,7 @@ Available wallet balance
 </p>
 
 </div>
+
 
 <!-- ACTIONS -->
 
@@ -703,6 +708,7 @@ title="Transaction History">
 
 </div>
 
+
 <div class="action-grid">
 
 <button
@@ -722,6 +728,7 @@ Request a payout
 </p>
 
 </button>
+
 
 <button
 onclick="openWithdrawalHistory()"
@@ -745,6 +752,7 @@ View payout status
 
 </div>
 
+
 <!-- BOTTOM NAV -->
 
 <nav class="bottom-nav">
@@ -763,6 +771,7 @@ Home
 
 </button>
 
+
 <button
 onclick="openTelegramChannel()">
 
@@ -773,8 +782,8 @@ onclick="openTelegramChannel()">
 <div>
 Telegram
 </div>
-
 </button>
+
 
 <button
 onclick="openSupport()">
@@ -788,6 +797,7 @@ Support
 </div>
 
 </button>
+
 
 <button
 onclick="openSettings()">
@@ -804,9 +814,8 @@ Settings
 
 </nav>
 
-</div>
-
 </section>
+
 
 <!-- WITHDRAWAL MODAL -->
 
@@ -840,9 +849,11 @@ class="icon-btn">
 
 </div>
 
+
 <form
 onsubmit="createWithdrawal(event)"
 class="space-y-4">
+
 
 <div>
 
@@ -863,6 +874,7 @@ placeholder="Enter amount">
 </div>
 
 </div>
+
 
 <div>
 
@@ -890,6 +902,7 @@ Gift Card
 
 </div>
 
+
 <div id="upiFields">
 
 <div class="mb-3">
@@ -907,6 +920,7 @@ placeholder="name@upi">
 </div>
 
 </div>
+
 
 <div>
 
@@ -927,8 +941,9 @@ placeholder="Enter email">
 
 </div>
 
+
 <div
-id="giftFields"
+    id="giftFields"
 class="hidden">
 
 <div class="mb-3">
@@ -959,6 +974,7 @@ Google Play Gift Card
 
 </div>
 
+
 <div>
 
 <label class="field-label">
@@ -978,6 +994,7 @@ placeholder="Enter email">
 
 </div>
 
+
 <button class="primary">
 Request Withdrawal
 </button>
@@ -987,6 +1004,7 @@ Request Withdrawal
 </div>
 
 </div>
+
 
 <!-- TRANSACTION HISTORY MODAL -->
 
@@ -1020,6 +1038,7 @@ class="icon-btn">
 
 </div>
 
+
 <div
 id="transactions"
 class="history-box space-y-3">
@@ -1028,6 +1047,7 @@ class="history-box space-y-3">
 </div>
 
 </div>
+
 
 <!-- WITHDRAWAL HISTORY MODAL -->
 
@@ -1061,6 +1081,7 @@ class="icon-btn">
 
 </div>
 
+
 <div
 id="workerWithdrawals"
 class="history-box space-y-3">
@@ -1069,6 +1090,7 @@ class="history-box space-y-3">
 </div>
 
 </div>
+
 
 <!-- WITHDRAWAL DETAILS MODAL -->
 
@@ -1102,12 +1124,17 @@ class="icon-btn">
 
 </div>
 
-<div id="withdrawalDetailsContent"></div>
+<div
+id="withdrawalDetails"
+class="history-box">
+</div>
 
 </div>
 
-    </div>
-    <!-- ADMIN -->
+</div>
+
+
+<!-- ADMIN -->
 
 <section
 id="adminPage"
@@ -1135,6 +1162,7 @@ ADMIN PANEL
 
 </div>
 
+
 <div class="flex gap-2">
 
 <button
@@ -1147,6 +1175,7 @@ class="icon-btn">
 
 </button>
 
+
 <button
 onclick="logout()"
 class="secondary text-red-400">
@@ -1158,6 +1187,7 @@ Logout
 </div>
 
 </header>
+
 
 <div class="p-5 space-y-5">
 
@@ -1179,6 +1209,7 @@ class="text-2xl font-bold mt-1">
 
 </div>
 
+
 <div class="card rounded-2xl p-4">
 
 <p class="muted text-xs">
@@ -1197,6 +1228,7 @@ class="text-2xl font-bold text-yellow-400 mt-1">
 
 </div>
 
+
 <div class="flex gap-5 border-b border-dark">
 
 <button
@@ -1207,6 +1239,7 @@ class="pb-3 text-blue-400 font-bold">
 Withdrawals
 
 </button>
+
 
 <button
 id="adminWorkerTab"
@@ -1219,6 +1252,7 @@ Workers
 
 </div>
 
+
 <div id="adminWithdrawalsView">
 
 <div
@@ -1227,6 +1261,7 @@ class="space-y-3">
 </div>
 
 </div>
+
 
 <div
 id="adminWorkersView"
@@ -1248,6 +1283,7 @@ class="space-y-3">
 </div>
 
 </section>
+
 
 <!-- SETTINGS POPUP -->
 
@@ -1273,6 +1309,7 @@ class="icon-btn">
 
 </div>
 
+
 <button
 onclick="openProfile()"
 class="w-full flex items-center gap-4 p-4 rounded-xl card mb-3 text-left">
@@ -1294,6 +1331,7 @@ View and edit your profile
 </div>
 
 </button>
+
 
 <button
 onclick="logout()"
@@ -1319,7 +1357,13 @@ Sign out of your account
 
 </div>
 
+    </div>
+    </button>
+
 </div>
+
+</div>
+
 
 <!-- PROFILE PAGE -->
 
@@ -1351,9 +1395,11 @@ Account information
 
 </header>
 
+
 <div class="p-5">
 
 <div class="profile-card">
+
 
 <div class="flex items-start justify-between gap-4">
 
@@ -1364,6 +1410,7 @@ id="profileAvatar"
 class="avatar"
 src="./file_00000000e37481fabb8b78aea4e71cd6.png">
 
+
 <label
 for="avatarInput"
 class="absolute bottom-0 right-0 w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center border-2 border-white cursor-pointer">
@@ -1371,6 +1418,7 @@ class="absolute bottom-0 right-0 w-9 h-9 rounded-full bg-blue-600 flex items-cen
 📷
 
 </label>
+
 
 <input
 id="avatarInput"
@@ -1380,6 +1428,7 @@ class="hidden"
 onchange="uploadAvatar(event)">
 
 </div>
+
 
 <button
 onclick="editProfile()"
@@ -1391,6 +1440,7 @@ class="px-4 py-2.5 rounded-xl bg-blue-600 text-white font-bold text-sm">
 
 </div>
 
+
 <div class="mt-5">
 
 <h2
@@ -1400,6 +1450,7 @@ class="text-2xl font-extrabold">
 Worker
 
 </h2>
+
 
 <p
 id="profileEmailTop"
@@ -1411,7 +1462,9 @@ email@example.com
 
 </div>
 
+
 <div class="profile-meta">
+
 
 <div class="profile-meta-box">
 
@@ -1428,6 +1481,7 @@ Not set
 </p>
 
 </div>
+
 
 <div class="profile-meta-box">
 
@@ -1446,6 +1500,7 @@ AP000000
 </div>
 
 </div>
+
 
 <div class="mt-4 flex items-center justify-between rounded-2xl px-4 py-3 bg-emerald-500/10 border border-emerald-500/20">
 
@@ -1473,6 +1528,7 @@ Active
 
 </section>
 
+
 <!-- EDIT PROFILE MODAL -->
 
 <div
@@ -1497,19 +1553,23 @@ class="icon-btn">
 
 </div>
 
+
 <form
 onsubmit="saveProfile(event)"
 class="space-y-4">
+
 
 <input
 id="editName"
 required
 placeholder="Full Name">
 
+
 <input
 id="editDob"
 type="date"
 required>
+
 
 <button class="primary">
 Save Changes
@@ -1521,10 +1581,12 @@ Save Changes
 
 </div>
 
+
 <script>
 
 let currentTheme =
 localStorage.getItem("ap_theme") || "dark";
+
 
 function applyTheme() {
 
@@ -1550,6 +1612,7 @@ $("adminThemeIcon").textContent = "☀";
 
 }
 
+
 function toggleTheme() {
 
 currentTheme =
@@ -1566,17 +1629,20 @@ applyTheme();
 
 }
 
+
 function openSettings() {
 
 $("settingsModal").classList.remove("hidden");
 
 }
 
+
 function closeSettings() {
 
 $("settingsModal").classList.add("hidden");
 
 }
+
 
 function openProfile() {
 
@@ -1590,6 +1656,7 @@ loadProfilePage();
 
 }
 
+
 function closeProfile() {
 
 $("profilePage").classList.add("hidden");
@@ -1598,25 +1665,32 @@ $("workerPage").classList.remove("hidden");
 
 }
 
+
 async function loadProfilePage() {
 
 if (!currentUser || !currentProfile)
 return;
 
+
 $("profileNameTop").textContent =
 currentProfile.full_name || "Worker";
+
 
 $("profileWorkerId").textContent =
 currentProfile.worker_id || "AP000000";
 
+
 $("profileEmailTop").textContent =
 currentUser.email || "-";
+
 
 const dob =
 currentProfile.date_of_birth;
 
+
 $("profileDobTop").textContent =
 dob || "Not set";
+
 
 if (currentProfile.avatar_url) {
 
@@ -1632,6 +1706,7 @@ $("profileAvatar").src =
 
 }
 
+
 function editProfile() {
 
 $("editName").value =
@@ -1642,9 +1717,10 @@ currentProfile.date_of_birth || "";
 
 $("editProfileModal").classList.remove(
 "hidden"
-);
+    );
 
 }
+
 
 function closeEditProfile() {
 
@@ -1654,15 +1730,18 @@ $("editProfileModal").classList.add(
 
 }
 
+
 async function saveProfile(event) {
 
 event.preventDefault();
+
 
 const name =
 $("editName").value.trim();
 
 const dob =
 $("editDob").value;
+
 
 if (!name || !dob) {
 
@@ -1675,6 +1754,7 @@ return;
 
 }
 
+
 try {
 
 const { error } =
@@ -1686,10 +1766,13 @@ date_of_birth: dob
 })
 .eq("id", currentUser.id);
 
+
 if (error) throw error;
+
 
 currentProfile.full_name = name;
 currentProfile.date_of_birth = dob;
+
 
 closeEditProfile();
 
@@ -1699,6 +1782,7 @@ toast(
 "Profile updated successfully.",
 "success"
 );
+
 
 } catch (error) {
 
@@ -1713,6 +1797,7 @@ error.message,
 
 }
 
+
 async function uploadAvatar(event) {
 
 const file =
@@ -1720,6 +1805,7 @@ event.target.files[0];
 
 if (!file)
 return;
+
 
 if (!file.type.startsWith("image/")) {
 
@@ -1732,6 +1818,7 @@ return;
 
 }
 
+
 if (file.size > 2 * 1024 * 1024) {
 
 toast(
@@ -1743,6 +1830,7 @@ return;
 
 }
 
+
 try {
 
 const extension =
@@ -1750,6 +1838,7 @@ file.name.split(".").pop().toLowerCase();
 
 const filePath =
 `${currentUser.id}/avatar.${extension}`;
+
 
 const { error: uploadError } =
 await db.storage
@@ -1763,16 +1852,20 @@ contentType: file.type
 }
 );
 
+
 if (uploadError)
 throw uploadError;
+
 
 const { data } =
 db.storage
 .from("avatars")
 .getPublicUrl(filePath);
 
+
 const avatarUrl =
 data.publicUrl;
+
 
 const { error: updateError } =
 await db
@@ -1782,19 +1875,24 @@ avatar_url: avatarUrl
 })
 .eq("id", currentUser.id);
 
+
 if (updateError)
 throw updateError;
+
 
 currentProfile.avatar_url =
 avatarUrl;
 
+
 $("profileAvatar").src =
 avatarUrl;
+
 
 toast(
 "Profile photo updated.",
 "success"
 );
+
 
 } catch (error) {
 
@@ -1809,6 +1907,7 @@ toast(
 
 }
 
+
 </script>
 
 <script>
@@ -1816,8 +1915,10 @@ toast(
 const SUPABASE_URL =
 "https://ykswgkrmqsmdneobykri.supabase.co";
 
+
 const SUPABASE_KEY =
 "sb_publishable_iED-0Op0GP8e1msvL7ksdw_53rXjJ_H";
+
 
 const db =
 supabase.createClient(
@@ -1825,8 +1926,10 @@ SUPABASE_URL,
 SUPABASE_KEY
 );
 
+
 const $ = id =>
 document.getElementById(id);
+
 
 let currentUser = null;
 let currentProfile = null;
@@ -1835,10 +1938,12 @@ let withdrawals = [];
 let selectedWorker = null;
 let selectedWithdrawal = null;
 
+
 function toast(message, type = "info") {
 
 const box =
 document.createElement("div");
+
 
 box.style.cssText =
 "background:" +
@@ -1851,16 +1956,20 @@ box.style.cssText =
 "border-radius:12px;margin-bottom:8px;" +
 "font-size:14px;font-weight:bold";
 
+
 box.textContent =
 message;
 
+
 $("toast").appendChild(box);
+
 
 setTimeout(() => {
 box.remove();
 },3500);
 
 }
+
 
 function money(value) {
 
@@ -1875,6 +1984,7 @@ maximumFractionDigits:2
 
 }
 
+
 function showPage(id) {
 
 $("authPage").classList.add("hidden");
@@ -1884,37 +1994,42 @@ $("profilePage").classList.add("hidden");
 
 $(id).classList.remove("hidden");
 
+
 if (id === "workerPage") {
 
 $("settingsModal").classList.add("hidden");
 $("withdrawalModal").classList.add("hidden");
 $("transactionHistoryModal").classList.add("hidden");
 $("withdrawalHistoryModal").classList.add("hidden");
-$("withdrawalDetailsModal").classList.add("hidden");
 
 }
 
 }
+
 
 function showAuthTab(type) {
 
 const login =
 type === "login";
 
+
 $("loginForm").classList.toggle(
 "hidden",
 !login
 );
+
 
 $("registerForm").classList.toggle(
 "hidden",
 login
 );
 
+
 $("loginTab").className =
 login
 ? "flex-1 py-3 rounded-xl bg-blue-600 font-bold"
 : "flex-1 py-3 rounded-xl muted";
+
 
 $("registerTab").className =
 !login
@@ -1923,9 +2038,11 @@ $("registerTab").className =
 
 }
 
+
 async function login(event) {
 
 event.preventDefault();
+
 
 try {
 
@@ -1942,10 +2059,13 @@ $("loginPassword").value
 
 });
 
+
 if (error)
 throw error;
 
+
 await openApp(data.user);
+
 
 } catch (error) {
 
@@ -1960,9 +2080,11 @@ error.message,
 
 }
 
+
 async function registerUser(event) {
 
 event.preventDefault();
+
 
 try {
 
@@ -1995,8 +2117,10 @@ $("regDob").value
 
 });
 
+
 if (error)
 throw error;
+
 
 if (data.session) {
 
@@ -2016,6 +2140,7 @@ $("regEmail").value.trim();
 
 }
 
+
 } catch (error) {
 
 console.error(error);
@@ -2024,14 +2149,15 @@ toast(
 error.message,
 "error"
 );
+   }
 
 }
 
-}
 
 async function openApp(user) {
 
 currentUser = user;
+
 
 const { data,error } =
 await db
@@ -2049,8 +2175,10 @@ email
 .eq("id",user.id)
 .single();
 
+
 if (error)
 throw error;
+
 
 if (data.is_active === false) {
 
@@ -2060,7 +2188,9 @@ throw new Error(
 
 }
 
+
 currentProfile = data;
+
 
 if (data.role === "admin") {
 
@@ -2078,6 +2208,7 @@ await loadWorker();
 
 }
 
+
 async function restoreSession() {
 
 try {
@@ -2085,8 +2216,10 @@ try {
 const { data,error } =
 await db.auth.getSession();
 
+
 if (error)
 throw error;
+
 
 if (data.session) {
 
@@ -2100,6 +2233,7 @@ showPage("authPage");
 
 }
 
+
 } catch (error) {
 
 console.error(error);
@@ -2109,6 +2243,7 @@ showPage("authPage");
 }
 
 }
+
 
 async function logout() {
 
@@ -2128,6 +2263,7 @@ toast(
 
 }
 
+
 function openWithdrawal() {
 
 $("withdrawalModal")
@@ -2137,12 +2273,14 @@ changePaymentMethod();
 
 }
 
+
 function closeWithdrawal() {
 
 $("withdrawalModal")
 .classList.add("hidden");
 
 }
+
 
 function openTransactionHistory() {
 
@@ -2153,11 +2291,13 @@ loadWorkerTransactions();
 
 }
 
+
 function closeTransactionHistory() {
 
 $("transactionHistoryModal").classList.add("hidden");
 
 }
+
 
 function openWithdrawalHistory() {
 
@@ -2168,17 +2308,13 @@ loadWorkerWithdrawals();
 
 }
 
+
 function closeWithdrawalHistory() {
 
 $("withdrawalHistoryModal").classList.add("hidden");
 
 }
 
-function closeWithdrawalDetails() {
-
-$("withdrawalDetailsModal").classList.add("hidden");
-
-}
 
 function goHome() {
 
@@ -2196,6 +2332,7 @@ $("workerPage")
 
 }
 
+
 function openTelegramChannel() {
 
 window.open(
@@ -2204,6 +2341,7 @@ window.open(
 );
 
 }
+
 
 function openSupport() {
 
@@ -2214,122 +2352,8 @@ window.open(
 
 }
 
+
 async function loadWorker() {
-
-$("workerBalance").textContent =
-"₹0.00";
-
-const { data: wallet,error } =
-await db
-.from("wallets")
-.select("balance")
-.eq(
-"user_id",
-currentUser.id
-)
-.single();
-
-if (!error && wallet) {
-
-$("workerBalance").textContent =
-money(wallet.balance);
-
-}
-
-await loadWorkerTransactions();
-
-await loadWorkerWithdrawals();
-
-}
-
-async function loadWorkerTransactions() {
-
-const { data,error } =
-await db
-.from("transactions")
-.select(`
-id,
-type,
-amount,
-description,
-balance_after,
-created_at
-`)
-.eq(
-"user_id",
-currentUser.id
-)
-.order(
-"created_at",
-{ascending:false}
-)
-.limit(50);
-
-if (error) {
-
-console.error(error);
-
-$("transactions").innerHTML =
-`<p class="muted text-sm">
-Unable to load transactions.
-</p>`;
-
-return;
-
-}
-
-if (!data || !data.length) {
-
-$("transactions").innerHTML =
-`<p class="muted text-sm">
-No transactions yet.
-</p>`;
-
-return;
-
-}
-
-$("transactions").innerHTML =
-data.map(item => {
-
-const credit =
-item.type === "credit";
-
-return `
-<div class="card rounded-xl p-4 flex justify-between">
-
-<div>
-
-<p class="font-bold text-sm">
-${item.description || item.type}
-</p>
-
-<p class="muted text-[10px] mt-1">
-${new Date(
-item.created_at
-).toLocaleString("en-IN")}
-</p>
-
-</div>
-
-<p class="${
-credit
-? "green"
-: "red"
-} font-bold">
-
-${credit ? "+" : "-"}
-${money(item.amount)}
-
-</p>
-
-</div>
-`;
-
-}).join("");
-
-}
- async function loadWorker() {
 
 $("workerBalance").textContent =
 "₹0.00";
@@ -2710,108 +2734,7 @@ if (!data || !data.length) {
 
 $("workerWithdrawals").innerHTML =
 `<p class="muted text-sm">
-No withdrawal requests yet.
-</p>`;
-
-return;
-
-}
-
-
-window.workerWithdrawalData = data;
-
-$("workerWithdrawals").innerHTML =
-data.map((item,index) => {
-
-const status =
-item.status || "pending";
-
-const statusClass =
-withdrawalStatusClass(status);
-
-const statusText =
-withdrawalStatusText(status);
-
-return `
-
-<div class="withdrawal-history-row">
-
-<div class="withdrawal-history-main">
-
-<div class="withdrawal-history-icon">
-₹
-</div>
-
-<div>
-
-<p class="withdrawal-history-title">
-Withdrawal
-</p>
-
-<p class="withdrawal-history-sub">
-${new Date(
-item.created_at
-).toLocaleString("en-IN")}
-</p>
-
-</div>
-
-</div>
-
-
-<div class="withdrawal-history-right">
-
-<div class="withdrawal-history-amount">
--${money(item.amount)}
-</div>
-
-<button
-type="button"
-class="withdrawal-view-btn"
-onclick="openWithdrawalDetails(${index})">
-
-View Details
-
-</button>
-
-<div class="withdrawal-history-status ${statusClass}">
-${statusText}
-</div>
-
-</div>
-
-</div>
-
-`;
-
-}).join("");
-
-}
-
-
-function changePaymentMethod() {
-
-const upi =
-$("paymentMethod").value === "upi";
-
-
-$("upiFields").classList.toggle(
-"hidden",
-!upi
-);
-
-
-$("giftFields").classList.toggle(
-"hidden",
-upi
-);
-
-
-}
-
-
-async function createWithdrawal(event) {
-
+No withdraw
 event.preventDefault();
 
 
@@ -2953,7 +2876,6 @@ error.message,
 
 }
 
-
 }
 
 
@@ -3021,7 +2943,7 @@ ids
 
 walletData =
 result.data || [];
-}
+    }
 
 
 const balances =
@@ -3176,66 +3098,6 @@ Number(amountText);
 if (!amount || amount < 1) {
 
 toast(
-"Minimum add-money amount is ₹1.",
-"error"
-);
-
-return;
-
-}
-
-
-const description =
-prompt(
-"Transaction description:",
-"Admin credit"
-) || "Admin credit";
-
-
-try {
-
-const { error } =
-await db.rpc(
-"admin_add_money",
-{
-p_user_id:
-selectedWorker.id,
-
-p_amount:
-amount,
-
-p_description:
-description
-}
-);
-
-
-if (error)
-throw error;
-
-
-toast(
-`${money(amount)} added successfully.`,
-"success"
-);
-
-
-selectedWorker = null;
-
-await loadAdmin();
-
-
-} catch (error) {
-
-console.error(error);
-
-toast(
-error.message,
-"error"
-);
-
-    }
-    toast(
 "Minimum add-money amount is ₹1.",
 "error"
 );
@@ -3819,4 +3681,3 @@ restoreSession();
 
 </body>
 </html>
-    
