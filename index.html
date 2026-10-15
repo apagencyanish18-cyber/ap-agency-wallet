@@ -3529,7 +3529,7 @@ async function saveSelectedWorkerLiveListRate() {
   message.textContent = "Saving rate...";
 
   try {
-    const { data, error } = await supabase.rpc(
+    const { data, error } = await db.rpc(
       "ap_admin_set_worker_rate",
       {
         p_worker_id: selectedWorker.id,
