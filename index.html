@@ -3448,37 +3448,38 @@ Reject
 
 function adminTab(type) {
 
-const withdrawalsTab =
-type === "withdrawals";
+  const withdrawalsTab = type === "withdrawals";
+  const workersTab = type === "workers";
+  const liveListTab = type === "liveList";
 
+  $("adminWithdrawalsView").classList.toggle(
+    "hidden",
+    !withdrawalsTab
+  );
 
-$("adminWithdrawalsView")
-.classList.toggle(
-"hidden",
-!withdrawalsTab
-);
+  $("adminWorkersView").classList.toggle(
+    "hidden",
+    !workersTab
+  );
 
+  $("adminLiveListView").classList.toggle(
+    "hidden",
+    !liveListTab
+  );
 
-$("adminWorkersView")
-.classList.toggle(
-"hidden",
-withdrawalsTab
-);
+  $("adminWithdrawalTab").className = withdrawalsTab
+    ? "pb-3 text-blue-400 font-bold border-b-2 border-blue-500"
+    : "pb-3 muted font-bold";
 
+  $("adminWorkerTab").className = workersTab
+    ? "pb-3 text-blue-400 font-bold border-b-2 border-blue-500"
+    : "pb-3 muted font-bold";
 
-$("adminWithdrawalTab").className =
-withdrawalsTab
-? "pb-3 text-blue-400 font-bold border-b-2 border-blue-500"
-: "pb-3 muted font-bold";
-
-
-$("adminWorkerTab").className =
-!withdrawalsTab
-? "pb-3 text-blue-400 font-bold border-b-2 border-blue-500"
-: "pb-3 muted font-bold";
+  $("adminLiveListTab").className = liveListTab
+    ? "pb-3 text-blue-400 font-bold border-b-2 border-blue-500"
+    : "pb-3 muted font-bold";
 
 }
-
 
 function approvePrompt(withdrawalId) {
 
