@@ -3213,6 +3213,29 @@ $('adminDetailWorkerEmail').textContent = worker.email || "Not available";
 $('adminDetailWorkerBalance').textContent = money(worker.balance);
 }
 
+const rateInput = $("adminWorkerLiveListRate");
+const rateMessage = $("adminWorkerLiveListRateMsg");
+
+rateInput.value = "";
+rateMessage.textContent = "Loading rate...";
+
+try {
+  const { data, error } = await db.rpc(
+    "ap_admin_get_worker_rate",
+    { p_worker_id: worker.id }
+  );
+
+  if (error) throw error;
+
+  rateInput.value = data == null ? "" : data;
+  rateMessage.textContent = data == null
+    ? "No rate set for this worker yet."
+    : "Current rate loaded.";
+} catch (error) {
+  console.error("Could not load worker rate:", error);
+  rateMessage.textContent = "Could not load rate.";
+}
+    
 
 function closeAdminWorkerDetails() {
 $('adminWorkerDetailsView').classList.add('hidden');
