@@ -720,6 +720,24 @@ title="Transaction History">
 <div class="action-grid">
 
 <button
+onclick="openWorkerLiveList()"
+class="action-item">
+
+<div class="text-2xl mb-2">
+📋
+</div>
+
+<p class="font-extrabold text-sm">
+Live List
+</p>
+
+<p class="muted text-[11px] mt-1">
+View available lists and claim
+</p>
+
+</button>
+
+<button
 onclick="openWithdrawal()"
 class="action-item">
 
@@ -914,7 +932,7 @@ UPI ID
 
 <div class="input-wrap">
 
-<input
+    <input
 id="upiId"
 placeholder="name@upi">
 
@@ -1601,6 +1619,20 @@ Save Changes
 
 </div>
 
+
+<!-- LIVE LIST MODAL (safe placeholder until Supabase Live List tables/RPC are configured) -->
+<div id="workerLiveListModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="workerLiveListTitle">
+  <div class="modal-box">
+    <div class="flex justify-between items-center mb-5">
+      <h2 id="workerLiveListTitle" class="text-xl font-bold">📋 Live List</h2>
+      <button type="button" onclick="closeWorkerLiveList()" class="icon-btn" aria-label="Close Live List">✕</button>
+    </div>
+    <p class="muted text-sm">Live List ka interface abhi database se connect nahi hai.</p>
+    <p class="text-sm mt-3">Names claim aur wallet credit safely enable karne ke liye Supabase tables aur secure claim function configure karna zaroori hai. Abhi koi claim ya wallet change nahi hoga.</p>
+    <button type="button" class="primary mt-5" onclick="closeWorkerLiveList()">Close</button>
+  </div>
+</div>
+
 <script>
 
 let currentTheme =
@@ -1834,7 +1866,7 @@ await db.storage
 .upload(
 filePath,
 file,
-{
+    {
 upsert: true,
 contentType: file.type
 }
@@ -2201,6 +2233,17 @@ toast(
 "success"
 );
 
+}
+
+
+function openWorkerLiveList() {
+  const modal = $("workerLiveListModal");
+  if (modal) modal.classList.remove("hidden");
+}
+
+function closeWorkerLiveList() {
+  const modal = $("workerLiveListModal");
+  if (modal) modal.classList.add("hidden");
 }
 
 function openWithdrawal() {
@@ -2757,7 +2800,7 @@ $("paymentMethod").value;
 const email =
 method === "upi"
 ? $("withdrawEmail").value.trim()
-: $("giftEmail").value.trim();
+    : $("giftEmail").value.trim();
 
 
 const upi =
@@ -3692,3 +3735,4 @@ restoreSession();
 
 </body>
 </html>
+    
