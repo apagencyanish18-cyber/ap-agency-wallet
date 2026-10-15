@@ -3509,6 +3509,45 @@ function adminTab(type) {
     : "pb-3 muted font-bold";
 
 }
+    
+async function saveSelectedWorkerLiveListRate() {
+  const rateInput = document.getElementById("adminWorkerLiveListRate");
+  const message = document.getElementById("adminWorkerLiveListRateMsg");
+
+  if (!selectedWorker || !selectedWorker.id) {
+    message.textContent = "Please select a worker first.";
+    return;
+  }
+
+  const rate = Number(rateInput.value);
+
+  if (rateInput.value.trim() === "" || !Number.isFinite(rate) || rate < 0 || rate > 10000) {
+    message.textContent = "Enter a valid rate between ₹0 and ₹10000.";
+    return;
+  }
+
+  message.textContent = "Saving rate...";
+
+  try {
+    const { data, error } = await supabase.rpc(
+      "ap_admin_set_worker_rate",
+      {
+        p_worker_id: selectedWorker.id,
+        p_rate: rate
+      }
+    );
+
+    if (error) throw error;
+
+    message.textContent = data === true
+      ? "Rate saved successfully."
+      : "Rate could not be confirmed.";
+  } catch (error) {
+    console.error("Live List rate error:", error);
+    message.textContent = "Error saving rate. Check Supabase configuration.";
+  }
+}
+
 
 function approvePrompt(withdrawalId) {
 
